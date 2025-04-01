@@ -1,3 +1,5 @@
+from sqlalchemy import select
+
 from app.ext.extensions import db
 from app.models import Permission, RolePermission
 from app.models.auth import Role
@@ -12,28 +14,23 @@ class UserRolePermissionMapper:
         db.session.commit()
 
     @staticmethod
-    def getUserRole(userId):
-        roles = db.session.query(UserRole, Role).join(
-            Role, UserRole.role_id == Role.role_id
-        ).filter(UserRole.user_id == userId).all()
+    def getUserRole(userId: str):
+        q = select(Role).join(UserRole).where(UserRole.user_id == userId)
+        roles = db.session.execute(q).scalars()
         serialized_roles = [
             {
-                "role_id": role_obj.role_id,
-                "role_name": role_obj.role_name,
-                "description": role_obj.description
+                "role_id": res.role_id,
+                "role_name": res.role_name,
+                "description": res.description
             }
-            for user_role, role_obj in roles
+            for res in roles
         ]
-        print(serialized_roles)
         return serialized_roles
 
     @staticmethod
-    def getRolePermissions(roleId):
-        permissions = (db.session.query(Permission.permission_id, Permission.permission_name, Permission.description)
-                       .distinct()
-                       .join(RolePermission, RolePermission.permission_id == Permission.permission_id)
-                       .filter(RolePermission.role_id == roleId).all())
-
+    def getRolePermissions(roleId: int):
+        q = select(Permission).distinct().join(RolePermission).where(RolePermission.role_id == roleId)
+        permissions = db.session.execute(q).scalars()
         serialized_permissions = [
             {
                 "permission_id": p.permission_id,
@@ -41,5 +38,4 @@ class UserRolePermissionMapper:
                 "description": p.description,
             } for p in permissions
         ]
-
         return serialized_permissions
