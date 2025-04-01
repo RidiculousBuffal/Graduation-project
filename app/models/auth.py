@@ -28,7 +28,7 @@ class User(db.Model, SerializerMixin):
     engineers = db.relationship('Engineer', backref='user', lazy='dynamic')
     audit_logs = db.relationship('AuditLog', backref='user', lazy='dynamic')
 
-    serialize_rules = ('-password',)
+    serialize_rules = ('-password', '-roles', '-engineers', '-audit_logs')
 
     def __init__(self, **kwargs):
         if 'user_id' not in kwargs:
@@ -55,6 +55,7 @@ class Role(db.Model, SerializerMixin):
     # Relationships
     permissions = db.relationship('Permission', secondary='role_permissions',
                                   backref=db.backref('roles', lazy='dynamic'))
+    serialize_rules = ('-permissions',)
 
 
 class Permission(db.Model, SerializerMixin):
@@ -65,8 +66,6 @@ class Permission(db.Model, SerializerMixin):
     permission_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     permission_name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.String(255))
-    resource = db.Column(db.String(100), nullable=False)
-    action = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
 
