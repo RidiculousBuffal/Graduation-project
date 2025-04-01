@@ -26,3 +26,10 @@ class UserMapper:
     @staticmethod
     def validate_username(username: str) -> bool:
         return User.query.filter_by(username=username).first() is None
+
+    @staticmethod
+    def add_user(username,password,email):
+        user = User(username=username,password=password,email=email)
+        db.session.add(user)
+        db.session.commit()
+        return user.user_id
