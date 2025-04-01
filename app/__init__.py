@@ -16,6 +16,6 @@ def create_app(config_name='default'):
 
     # 注册蓝图
     from app.routes.auth_api import auth_bp
-    app.register_blueprint(auth_bp, url_perfix='/api/auth')
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
     return app
