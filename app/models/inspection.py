@@ -6,7 +6,9 @@ from sqlalchemy.dialects.mysql import JSON
 
 class InspectionRecord(db.Model):
     __tablename__ = 'inspection_records'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     inspection_id = db.Column(db.String(50), primary_key=True)
     inspection_name = db.Column(db.String(50))
     task_id = db.Column(db.String(50), db.ForeignKey('tasks.task_id', ondelete='CASCADE'), nullable=False,
@@ -33,7 +35,9 @@ class InspectionRecord(db.Model):
 
 class InspectionProject(db.Model):
     __tablename__ = 'inspection_projects'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     project_id = db.Column(db.String(50), primary_key=True)
     project_name = db.Column(db.String(100), nullable=False)
     inspection_id = db.Column(db.String(50), db.ForeignKey('inspection_records.inspection_id'))

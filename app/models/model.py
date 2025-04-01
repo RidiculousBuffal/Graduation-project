@@ -4,7 +4,9 @@ import uuid
 
 class Model(db.Model):
     __tablename__ = 'models'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     model_id = db.Column(db.String(50), primary_key=True)
     model_name = db.Column(db.String(255))
     model_description = db.Column(db.Text)

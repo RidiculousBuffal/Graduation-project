@@ -12,6 +12,7 @@ class Config:
         f"{os.environ.get('DB_HOST')}:"
         f"{os.environ.get('DB_PORT')}/"
         f"{os.environ.get('DB_NAME')}"
+        f"?charset=utf8mb4"
     )
     JWT_SECRET_KEY = os.environ.get('SECRET_KEY')
     JWT_ACCESS_TOKEN_EXPIRES = 3600  # 1 hour

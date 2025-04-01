@@ -5,7 +5,9 @@ import uuid
 
 class Flight(db.Model):
     __tablename__ = 'flights'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     flight_id = db.Column(db.String(50), primary_key=True)
     aircraft_id = db.Column(db.String(50), db.ForeignKey('aircraft.aircraft_id'), nullable=False)
     terminal_id = db.Column(db.String(50), db.ForeignKey('terminal.terminal_id'))

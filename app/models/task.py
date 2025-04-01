@@ -5,7 +5,9 @@ import uuid
 
 class Task(db.Model):
     __tablename__ = 'tasks'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     task_id = db.Column(db.String(50), primary_key=True)
     flight_id = db.Column(db.String(50), db.ForeignKey('flights.flight_id', ondelete='CASCADE'), nullable=False)
     estimated_start = db.Column(db.DateTime)

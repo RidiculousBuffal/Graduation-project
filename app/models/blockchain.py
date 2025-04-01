@@ -5,7 +5,9 @@ import uuid
 
 class BlockchainTransaction(db.Model):
     __tablename__ = 'blockchain_transactions'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     transaction_id = db.Column(db.String(100), primary_key=True)
     inspection_id = db.Column(db.String(50), db.ForeignKey('inspection_records.inspection_id', ondelete='CASCADE'))
     transaction_hash = db.Column(db.String(255), nullable=False, comment='交易哈希')

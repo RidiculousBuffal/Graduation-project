@@ -4,7 +4,9 @@ import uuid
 
 class Terminal(db.Model):
     __tablename__ = 'terminal'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     terminal_id = db.Column(db.String(50), primary_key=True)
     terminal_name = db.Column(db.String(50))
     description = db.Column(db.Text)

@@ -6,7 +6,9 @@ from app.ext.extensions import db
 
 class Dictionary(db.Model):
     __tablename__ = 'dictionary'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     dict_key = db.Column(db.String(50), primary_key=True)
     dict_name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(255))

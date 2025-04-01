@@ -5,7 +5,9 @@ from app.ext.extensions import db
 
 class AuditLog(db.Model):
     __tablename__ = 'audit_logs'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     log_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     user_id = db.Column(db.String(50), db.ForeignKey('users.user_id', ondelete='SET NULL'))
     action = db.Column(db.String(50), nullable=False)

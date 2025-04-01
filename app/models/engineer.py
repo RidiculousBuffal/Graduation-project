@@ -5,7 +5,9 @@ import uuid
 
 class Engineer(db.Model):
     __tablename__ = 'engineers'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     engineer_id = db.Column(db.String(50), primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     gender = db.Column(db.CHAR, comment='M-男, F-女')

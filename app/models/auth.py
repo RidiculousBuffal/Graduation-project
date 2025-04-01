@@ -6,7 +6,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):
     __tablename__ = 'users'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     user_id = db.Column(db.String(50), primary_key=True)
     username = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(255), nullable=False)
@@ -37,7 +39,9 @@ class User(db.Model):
 
 class Role(db.Model):
     __tablename__ = 'roles'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     role_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     role_name = db.Column(db.String(50), unique=True, nullable=False)
     description = db.Column(db.String(255))
@@ -51,7 +55,9 @@ class Role(db.Model):
 
 class Permission(db.Model):
     __tablename__ = 'permissions'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     permission_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     permission_name = db.Column(db.String(100), unique=True, nullable=False)
     description = db.Column(db.String(255))
@@ -63,7 +69,9 @@ class Permission(db.Model):
 
 class UserRole(db.Model):
     __tablename__ = 'user_roles'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     user_id = db.Column(db.String(50), db.ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id', ondelete='CASCADE'), primary_key=True)
     created_at = db.Column(db.TIMESTAMP, default=datetime.now(),onupdate=datetime.now(), nullable=False)
@@ -71,7 +79,9 @@ class UserRole(db.Model):
 
 class RolePermission(db.Model):
     __tablename__ = 'role_permissions'
-
+    __table_args__ = {
+        "mysql_charset": "utf8mb4"
+    }
     role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id', ondelete='CASCADE'), primary_key=True)
     permission_id = db.Column(db.Integer, db.ForeignKey('permissions.permission_id', ondelete='CASCADE'),
                               primary_key=True)
