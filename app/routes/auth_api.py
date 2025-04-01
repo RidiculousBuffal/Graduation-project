@@ -5,6 +5,7 @@ from app.consts.auth import AuthConsts
 from app.models.auth import User
 from app.models.response import ResponseModel
 from app.service.authService import AuthService
+
 auth_bp = Blueprint('auth', __name__)
 
 
@@ -28,5 +29,5 @@ def register():
             msg=AuthConsts.INFO_REQUIRED,
         ).to_dict(), 200
     user = User(**data)
-    result = AuthService.register(user.username, user.password, user.email)
-    return result.to_dict(),200
+    result = AuthService.register(user.username, data.get('password'), user.email)
+    return result.to_dict(), 200
