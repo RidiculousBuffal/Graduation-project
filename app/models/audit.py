@@ -1,9 +1,11 @@
 from datetime import datetime
 
+from sqlalchemy_serializer import SerializerMixin
+
 from app.ext.extensions import db
 
 
-class AuditLog(db.Model):
+class AuditLog(db.Model,SerializerMixin):
     __tablename__ = 'audit_logs'
     __table_args__ = {
         "mysql_charset": "utf8mb4"

@@ -1,9 +1,11 @@
 import uuid
 
+from sqlalchemy_serializer import SerializerMixin
+
 from app.ext.extensions import db
 
 
-class AircraftType(db.Model):
+class AircraftType(db.Model,SerializerMixin):
     __tablename__ = 'aircraft_type'
     __table_args__ = {
         "mysql_charset": "utf8mb4"
@@ -22,7 +24,7 @@ class AircraftType(db.Model):
         super(AircraftType, self).__init__(**kwargs)
 
 
-class Aircraft(db.Model):
+class Aircraft(db.Model,SerializerMixin):
     __tablename__ = 'aircraft'
     __table_args__ = {
         "mysql_charset": "utf8mb4"

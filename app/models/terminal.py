@@ -1,8 +1,10 @@
+from sqlalchemy_serializer import SerializerMixin
+
 from app.ext.extensions import db
 import uuid
 
 
-class Terminal(db.Model):
+class Terminal(db.Model,SerializerMixin):
     __tablename__ = 'terminal'
     __table_args__ = {
         "mysql_charset": "utf8mb4"

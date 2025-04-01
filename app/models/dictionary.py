@@ -1,10 +1,12 @@
 import uuid
 from datetime import datetime
 
+from sqlalchemy_serializer import SerializerMixin
+
 from app.ext.extensions import db
 
 
-class Dictionary(db.Model):
+class Dictionary(db.Model,SerializerMixin):
     __tablename__ = 'dictionary'
     __table_args__ = {
         "mysql_charset": "utf8mb4"

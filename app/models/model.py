@@ -1,8 +1,10 @@
+from sqlalchemy_serializer import SerializerMixin
+
 from app.ext.extensions import db
 import uuid
 
 
-class Model(db.Model):
+class Model(db.Model,SerializerMixin):
     __tablename__ = 'models'
     __table_args__ = {
         "mysql_charset": "utf8mb4"

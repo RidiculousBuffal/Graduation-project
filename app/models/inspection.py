@@ -1,10 +1,12 @@
+from sqlalchemy_serializer import SerializerMixin
+
 from app.ext.extensions import db
 from datetime import datetime
 import uuid
 from sqlalchemy.dialects.mysql import JSON
 
 
-class InspectionRecord(db.Model):
+class InspectionRecord(db.Model,SerializerMixin):
     __tablename__ = 'inspection_records'
     __table_args__ = {
         "mysql_charset": "utf8mb4"
@@ -33,7 +35,7 @@ class InspectionRecord(db.Model):
         super(InspectionRecord, self).__init__(**kwargs)
 
 
-class InspectionProject(db.Model):
+class InspectionProject(db.Model,SerializerMixin):
     __tablename__ = 'inspection_projects'
     __table_args__ = {
         "mysql_charset": "utf8mb4"

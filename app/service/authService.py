@@ -1,9 +1,10 @@
 from flask_jwt_extended import create_access_token
 
+from app.consts.Roles import RoleConsts
 from app.consts.auth import AuthConsts
-from app.ext.extensions import db
+from app.mapper.roleMapper import RoleMapper
 from app.mapper.userMapper import UserMapper
-from app.models import User
+from app.mapper.userRoleMapper import UserRoleMapper
 from app.models.response import ResponseModel
 
 
@@ -22,7 +23,8 @@ class AuthService:
             msg=AuthConsts.LOGIN_SUCCESS,
             data={
                 "access_token": access_token,
-                "user": user
+                "user": user.to_dict(),
+                "role": UserRoleMapper.getUserRole(user.user_id)
             }
         )
 
@@ -32,7 +34,7 @@ class AuthService:
             return ResponseModel.fail(msg=AuthConsts.USERNAME_ALREADY_EXISTS)
         if email and not UserMapper.validate_email(email):
             return ResponseModel.fail(msg=AuthConsts.EMAIL_ALREADY_EXISTS)
-        user = User(username=username, password=password, email=email)
-        db.session.add(user)
-        db.session.commit()
+        user_id = UserMapper.add_user(username, password, email)
+        role_id = RoleMapper.getRole(RoleConsts.USER).role_id
+        UserRoleMapper.combineUserWithRole(user_id, role_id)
         return ResponseModel.success(msg=AuthConsts.REGISTER_SUCCESS)

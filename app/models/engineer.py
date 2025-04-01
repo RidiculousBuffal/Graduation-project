@@ -1,9 +1,11 @@
+from sqlalchemy_serializer import SerializerMixin
+
 from app.ext.extensions import db
 from datetime import datetime
 import uuid
 
 
-class Engineer(db.Model):
+class Engineer(db.Model,SerializerMixin):
     __tablename__ = 'engineers'
     __table_args__ = {
         "mysql_charset": "utf8mb4"

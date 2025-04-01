@@ -1,9 +1,11 @@
+from sqlalchemy_serializer import SerializerMixin
+
 from app.ext.extensions import db
 from datetime import datetime
 import uuid
 
 
-class BlockchainTransaction(db.Model):
+class BlockchainTransaction(db.Model,SerializerMixin):
     __tablename__ = 'blockchain_transactions'
     __table_args__ = {
         "mysql_charset": "utf8mb4"
