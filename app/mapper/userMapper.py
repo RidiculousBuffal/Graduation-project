@@ -11,13 +11,13 @@ class UserMapper:
     @staticmethod
     def get_user_by_name(username: str) -> Optional[User]:
         q = select(User).where(User.username == username)
-        user = db.session.execute(q).scalar_one()
+        user = db.session.execute(q).scalar_one_or_none()
         return user
 
     @staticmethod
     def update_last_login(user_id: str):
         q = select(User).where(User.user_id == user_id)
-        user = db.session.execute(q).scalar_one()
+        user = db.session.execute(q).scalar_one_or_none()
         if user:
             user.last_login = datetime.now()
             db.session.commit()

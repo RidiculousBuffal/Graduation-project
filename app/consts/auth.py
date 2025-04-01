@@ -1,5 +1,5 @@
 class AuthConsts:
-    LOGIN_ERROR = "密码输入错误"
+    LOGIN_ERROR = "登录失败"
     ACCOUNT_DISABLED="账号被禁用"
     LOGIN_SUCCESS="登录成功"
     USERNAME_ALREADY_EXISTS="用户名已存在"
