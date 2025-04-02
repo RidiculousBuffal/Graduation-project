@@ -8,6 +8,7 @@ import DetectModel from "@/views/DetectModel";
 import Task from "@/views/Task";
 import Engineer from "@/views/Engineer";
 import Dictionary from "@/views/Dictionary";
+import Login from "@/views/Login";
 
 
 Vue.use(VueRouter)
@@ -27,6 +28,10 @@ const routes = [
             {path:'dictionary', name: 'dictionary', component: Dictionary},
         ]
     },
+    {path:'/login',
+     name:'login',
+     component:Login
+    }
 
 ]
 
