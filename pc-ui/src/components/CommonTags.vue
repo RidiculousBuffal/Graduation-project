@@ -1,5 +1,5 @@
 <template>
-  <el-row type="flex" justify="start" class="tags">
+  <el-row type="flex" justify="start" align="end" class="tags">
     <el-tag v-for="(item, index) in tags" :key="item.path"
             :closable="item.name !== 'home'"
             size="mini"
@@ -47,8 +47,10 @@ export default {
 
 <style scoped>
 .tags{
-  padding: 10px 10px;
-  border: 2px solid grey;
+  padding: 10px 50px;
+  height: 40px;
+  border-bottom: 2px solid #ebeef5
+  /*border: 2px solid grey;*/
 }
 
 .el-tag{
