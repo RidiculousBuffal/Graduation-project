@@ -32,11 +32,11 @@ export default {
           url: 'Home/Home'
         },
         {
-          path: '/airline',
-          name: 'airline',
+          path: '/flight',
+          name: 'flight',
           label: '航线管理',
           icon: 'video-play',
-          url: 'AirlineManage/AirlineManage'
+          url: 'Flight/Flight'
         },
         {
           path: '/task',
@@ -46,18 +46,18 @@ export default {
           url: 'Task/Task'
         },
         {
-          path: '/detectRecord',
-          name: 'detectRecord',
+          path: '/inspectionRecord',
+          name: 'inspectionRecord',
           label: '检测记录',
           icon: 'notebook-2',
-          url: 'DetectRecord/DetectRecord'
+          url: 'InspectionRecord/InspectionRecord'
         },
         {
-          path: '/detectModel',
-          name: 'detectModel',
+          path: '/inspectionModel',
+          name: 'inspectionModel',
           label: '检测模型管理',
           icon: 'monitor',
-          url: 'DetectModel/DetectModel'
+          url: 'InspectionModel/InspectionModel'
         },
         {
           path: '/engineer',

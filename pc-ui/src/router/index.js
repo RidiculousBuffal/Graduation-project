@@ -2,9 +2,9 @@ import Vue from "vue";
 import Router from 'vue-router'
 import Home from "@/views/Home";
 import Main from "@/views/Main";
-import AirlineManage from "@/views/AirlineManage";
-import DetectRecord from "@/views/DetectRecord";
-import DetectModel from "@/views/DetectModel";
+import Flight from "@/views/Flight";
+import InspectionRecord from "@/views/InspectionRecord";
+import InspectionModel from "@/views/InspectionModel";
 import Task from "@/views/Task";
 import Engineer from "@/views/Engineer";
 import Dictionary from "@/views/Dictionary";
@@ -20,10 +20,10 @@ const routes = [
         redirect: '/home',
         children: [
             {path:'home', name: 'Home', component: Home},
-            {path:'airline', name: 'airline', component: AirlineManage},
+            {path:'flight', name: 'flight', component: Flight},
             {path:'task', name: 'task', component: Task},
-            {path:'detectRecord', name: 'detectRecord', component: DetectRecord},
-            {path:'detectModel', name: 'detectModel', component: DetectModel},
+            {path:'inspectionRecord', name: 'inspectionRecord', component: InspectionRecord},
+            {path:'inspectionModel', name: 'inspectionModel', component: InspectionModel},
             {path:'engineer', name: 'engineer', component: Engineer},
             {path:'dictionary', name: 'dictionary', component: Dictionary},
         ]

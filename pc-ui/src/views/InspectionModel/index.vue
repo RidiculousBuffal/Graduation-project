@@ -1,17 +1,32 @@
 <template>
   <div>
     <el-form :model="queryParams" v-show="showSearch" ref="queryForm" size="small" :inline="true">
-          <el-form-item label="字典名称" prop="dictName">
-            <el-input v-model="queryParams.dictName"
-                      placeholder="请输入字典名称"
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="姓名" prop="name">
+            <el-input v-model="queryParams.name"
+                      placeholder="请输入姓名"
                       clearable maxlength="50"
                       style="width: 200px;"
                       @keyup.enter.native="handleQuery"/>
           </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="工号" prop="engineerId">
+            <el-input v-model="queryParams.engineerId"
+                      placeholder="请输入工号"
+                      clearable maxlength="50"
+                      style="width: 200px;"
+                      @keyup.enter.native="handleQuery"/>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
           <el-form-item style="position: absolute; right: 1%">
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
           </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
 
     <el-row :gutter="10" style="margin-bottom: 8px">
@@ -26,26 +41,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-            type="danger"
-            plain
-            icon="el-icon-delete"
-            size="mini"
-            :disabled="multiple"
-            @click="handleDelete"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
             type="warning"
             plain
             icon="el-icon-download"
@@ -53,7 +48,7 @@
             @click="handleExport"
         >导出</el-button>
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns" page-key="dictionary"></right-toolbar>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns" page-key="engineer"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="dictList" @selection-change="handleSelectionChange">
@@ -61,9 +56,13 @@
       <el-table-column label="序号" type="index" align="center" width="60">
         <template slot-scope="scope">{{(queryParams.pageNum-1)*queryParams.pageSize+scope.$index+1}}</template>
       </el-table-column>
-      <el-table-column label="字典键值" align="center" prop="dictKey" />
-      <el-table-column label="字典名称" align="center" prop="dictName" />
-      <el-table-column label="字典描述" align="center" prop="description" :show-overflow-tooltip="true"/>
+      <el-table-column label="工号" align="center" prop="engineerId" />
+      <el-table-column label="姓名" align="center" prop="name" />
+      <el-table-column label="性别" align="center" prop="gender" />
+      <el-table-column label="所属部门" align="center" prop="department" />
+      <el-table-column label="工龄" align="center" prop="workYear"/>
+      <el-table-column label="人脸图片" align="center" prop="faceInfo" />
+      <el-table-column label="联系方式" align="center" prop="contactInfo" />
       <el-table-column label="操作" align="center" fixed="right" width="180">
         <template slot-scope="scope">
           <el-button
@@ -90,26 +89,32 @@
         @pagination="getList"
     />
 
-<!--    新增/修改弹窗-->
+    <!--    新增/修改弹窗-->
     <el-dialog :title="title" :visible.sync="open" width="520px" append-to-body :close-on-click-modal="false">
       <el-form ref="form" :model="form" :rules="rules" label-width="90px">
-        <el-form-item label="字典键值" prop="dictKey">
-          <el-input v-model="form.dictKey" placeholder="请输入字典键值" />
+        <el-form-item label="工号" prop="engineerId">
+          <el-input v-model="form.engineerId" placeholder="请输入工号" />
         </el-form-item>
-        <el-form-item label="字典名称" prop="dictName">
-          <el-input v-model="form.dictName" placeholder="请输入字典名称" />
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="form.name" placeholder="请输入姓名" />
         </el-form-item>
-<!--        <el-form-item label="状态" prop="status">-->
-<!--          <el-radio-group v-model="form.status">-->
-<!--            <el-radio-->
-<!--                v-for="dict in dict.type.sys_normal_disable"-->
-<!--                :key="dict.value"-->
-<!--                :label="dict.value"-->
-<!--            >{{dict.label}}</el-radio>-->
-<!--          </el-radio-group>-->
-<!--        </el-form-item>-->
-        <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" type="textarea" placeholder="请输入内容"></el-input>
+        <el-form-item label="性别" prop="description">
+          <el-select v-model="form.description" placeholder="请选择性别">
+            <el-option v-for="item in genderList" :key="item.dictKey"
+                       :value="item.dictKey" :label="item.dictName"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所属部门" prop="department">
+          <el-select v-model="form.department" placeholder="请选择所属部门">
+            <el-option v-for="item in departmentList" :key="item.dictKey"
+                       :value="item.dictKey" :label="item.dictName"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="人脸图片" prop="faceInfo">
+          <el-input v-model="form.faceInfo"/>
+        </el-form-item>
+        <el-form-item label="联系方式" prop="contactInfo">
+          <el-input v-model="form.contactInfo" placeholder="请输入联系方式" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -122,7 +127,7 @@
 
 <script>
 export default {
-  name: "Dictionary",
+  name: "DetectModel",
   data() {
     return {
       // 遮罩层
@@ -140,19 +145,26 @@ export default {
       total: 3,
       // 字典列表
       dictList: [
-        { dictKey: 'terminal_building', dictName: '航站楼', description: '--' },
-        { dictKey: 'role_config', dictName: '角色配置', description: '--' },
-        { dictKey: 'department', dictName: '部门', description: '--' },
+        { engineerId: '33467', name: 'xxx', gender: '女', department: '维修控制中心', faceInfo: '', contactInfo: '13323456472', workYear: '3年'},
+        { engineerId: '33468', name: 'admin', gender: '男', department: '航班维修部门', faceInfo: '', contactInfo: '13323456472', workYear: '3年'},
+        { engineerId: '33469', name: 'aaa', gender: '女', department: '航班维修部门', faceInfo: '', contactInfo: '13323456472', workYear: '2年'},
+        { engineerId: '33470', name: 'bbb', gender: '男', department: '维修控制中心', faceInfo: '', contactInfo: '13323456472', workYear: '1年'},
       ],
+      //
+      genderList: [],
+      //
+      departmentList: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        dictKey: null,
-        dictName: null,
-        description: null,
-        parentKey: null,
-        sortOrder: null,
+        engineerId: null,
+        name: null,
+        gender: null,
+        department: null,
+        workYear: null,
+        contactInfo: null,
+        userId: null,
         createdAt: null,
         updatedAt: null
       },
@@ -198,9 +210,9 @@ export default {
       const dictId = row.dictId || this.ids
       // getType(dictId).then(response => {
       //   this.form = response.data;
-        this.form = row;
-        this.open = true;
-        this.title = "修改字典类型";
+      this.form = row;
+      this.open = true;
+      this.title = "修改字典类型";
       // });
     },
     /** 提交按钮 */
@@ -209,13 +221,13 @@ export default {
         if (valid) {
           if (this.form.dictKey !== undefined) {
             // updateType(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+            this.$modal.msgSuccess("修改成功");
             //   this.open = false;
             //   this.getList();
             // });
           } else {
             // addType(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+            this.$modal.msgSuccess("新增成功");
             //   this.open = false;
             //   this.getList();
             // });
@@ -234,7 +246,7 @@ export default {
       //   return delType(dictIds);
       // }).then(() => {
       //   this.getList();
-        this.$modal.msgSuccess("删除成功");
+      this.$modal.msgSuccess("删除成功");
       // }).catch(() => {});
     },
     // 多选框选中数据
