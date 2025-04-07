@@ -137,6 +137,13 @@
         </template>
       </el-table-column>
     </el-table>
+    <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
+    />
     <!-- 添加或修改任务信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="700px" :close-on-click-modal="false" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
@@ -226,6 +233,40 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog 
+      title="分配工程师" 
+      :visible.sync="assignDialogVisible" 
+      width="500px"
+      :close-on-click-modal="false"
+      append-to-body>
+      
+      <!-- 单选下拉框 -->
+      <el-form label-width="100px">
+        <el-form-item label="工程师" prop="engineer">
+          <el-select
+            v-model="form.engineer"
+            clearable
+            placeholder="请选择工程师"
+            style="width: 100%">
+            <el-option
+              v-for="engineer in engineerList"
+              :key="engineer.id"
+              :label="engineer.name"
+              :value="engineer.name">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="assignCancel">取消</el-button>
+        <el-button 
+          type="primary" 
+          @click="confirmAssign"> 
+          确认分配
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -298,6 +339,8 @@ export default {
       form: {},
       // 表单校验
       rules: {},
+      assignDialogVisible:false,
+      engineerList:[]
     }
   },
   created() {
@@ -423,6 +466,11 @@ export default {
         }
       });
     },
+    // 取消按钮
+    cancel() {
+      this.reset();
+      this.open = false;
+    },
     // 删除
     handleDelete(row) {
       const names = row.TaskID;
@@ -440,6 +488,19 @@ export default {
       //   ...this.queryParams
       // }, `building_${new Date().getTime()}.xlsx`)
     },
+    // 任务分配
+    assignTask(row){
+      this.assignDialogVisible=true;
+    },
+    // 取消
+    assignCancel(){
+      this.assignDialogVisible=false;
+    },
+    // 确认分配
+    confirmAssign(){
+      this.$modal.msgSuccess("分配成功");
+      this.assignDialogVisible=false;
+    }
   }
 }
 </script>
