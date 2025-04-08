@@ -20,6 +20,7 @@ var/
 .installed.cfg
 *.egg
 
+node_modules/
 # Virtual Environment
 venv/
 ENV/

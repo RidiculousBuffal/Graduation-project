@@ -6,3 +6,4 @@ class AuthConsts:
     EMAIL_ALREADY_EXISTS="邮箱已经存在"
     REGISTER_SUCCESS="注册成功"
     INFO_REQUIRED='用户名密码不能为空'
+    REFRESH_SUCCESS='刷新令牌成功'

@@ -1,4 +1,4 @@
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, create_refresh_token
 
 from app.consts.Roles import RoleConsts
 from app.consts.auth import AuthConsts
@@ -27,11 +27,13 @@ class AuthService:
             "role": roles,
             "permissions": permissions
         }
-        access_token = create_access_token(identity=payload)
+        access_token = create_access_token(identity=user.user_id)
+        refresh_token = create_refresh_token(identity=user.user_id)
         return ResponseModel.success(
             msg=AuthConsts.LOGIN_SUCCESS,
             data={
                 "access_token": access_token,
+                "refresh_token": refresh_token,
                 "payload": payload
             }
         )

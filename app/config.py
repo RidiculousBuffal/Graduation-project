@@ -1,4 +1,6 @@
 import os
+from datetime import timedelta
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,7 +17,8 @@ class Config:
         f"?charset=utf8mb4"
     )
     JWT_SECRET_KEY = os.environ.get('SECRET_KEY')
-    JWT_ACCESS_TOKEN_EXPIRES = 3600  # 1 hour
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=1)  # 1 天
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30) # refresh token 30天
 
 class DevelopmentConfig(Config):
     DEBUG = True
