@@ -2,9 +2,9 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 
 from app.consts.Roles import RoleConsts
 from app.consts.auth import AuthConsts
-from app.mapper.roleMapper import RoleMapper
-from app.mapper.userMapper import UserMapper
-from app.mapper.userRolePermissionMapper import UserRolePermissionMapper
+from app.mapper.auth.roleMapper import RoleMapper
+from app.mapper.auth.userMapper import UserMapper
+from app.mapper.auth.userRolePermissionMapper import UserRolePermissionMapper
 from app.models.response import ResponseModel
 
 

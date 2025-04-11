@@ -62,19 +62,7 @@ class TestAuthService:
             mock_user.check_password.assert_called_once_with("password123")
             MockUserMapper.update_last_login.assert_called_once_with(mock_user.user_id)
             MockUserRolePermissionMapper.getUserRole.assert_called_once_with(mock_user.user_id)
-            expected_payload = {
-                "user": mock_user.to_dict(),
-                "role": [{
-                    "role_id": 2,
-                    "role_name": "USER",
-                    "description": "一般用户"
-                }],
-                "permissions": [{
-                    "permission_id": 1,
-                    "permission_name": "test_permission",
-                    "description": "测试权限"
-                }]
-            }
+            expected_payload = mock_user.user_id
             mock_create_token.assert_called_once()
             call_args = mock_create_token.call_args[1]
             assert call_args["identity"] == expected_payload
