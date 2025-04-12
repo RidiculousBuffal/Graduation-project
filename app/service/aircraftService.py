@@ -1,5 +1,7 @@
 from typing import Optional
 
+from sqlalchemy.exc import IntegrityError
+
 from app.DTO.aircrafts import (
     AircraftCreateDTO, AircraftUpdateDTO, AircraftDTO,
     AircraftTypeCreateDTO, AircraftTypeUpdateDTO, AircraftTypeDTO
@@ -13,7 +15,7 @@ from app.models.response import ResponseModel
 class AircraftService:
     # Aircraft 相关服务方法
     @staticmethod
-    async def create_aircraft(aircraft_data: AircraftCreateDTO) -> ResponseModel:
+    def create_aircraft(aircraft_data: AircraftCreateDTO) -> ResponseModel:
         """创建飞机记录"""
         # 参数校验
         if not aircraft_data.aircraft_name or not aircraft_data.typeid:
@@ -26,7 +28,12 @@ class AircraftService:
             result = AircraftMapper.create(aircraft_data)
             return ResponseModel.success(
                 msg=AircraftConsts.ADD_PLANE_SUCCESS,
-                data=result
+                data=result.model_dump()
+            )
+        except IntegrityError as e:
+            return ResponseModel.fail(
+                msg=AircraftConsts.GET_TYPE_NOT_FOUND,
+                data={"error":str(e)}
             )
         except Exception as e:
             return ResponseModel.fail(
@@ -35,7 +42,7 @@ class AircraftService:
             )
 
     @staticmethod
-    async def get_aircraft_by_id(aircraft_id: str) -> ResponseModel:
+    def get_aircraft_by_id(aircraft_id: str) -> ResponseModel:
         """根据ID获取飞机记录"""
         if not aircraft_id:
             return ResponseModel.fail(
@@ -47,7 +54,7 @@ class AircraftService:
         if result:
             return ResponseModel.success(
                 msg=AircraftConsts.GET_PLANE_SUCCESS,
-                data=result
+                data=result.model_dump()
             )
         return ResponseModel.fail(
             msg=AircraftConsts.GET_PLANE_NOT_FOUND,
@@ -55,7 +62,7 @@ class AircraftService:
         )
 
     @staticmethod
-    async def update_aircraft(aircraft_id: str, update_data: AircraftUpdateDTO) -> ResponseModel:
+    def update_aircraft(aircraft_id: str, update_data: AircraftUpdateDTO) -> ResponseModel:
         """更新飞机记录"""
         if not aircraft_id:
             return ResponseModel.fail(
@@ -67,7 +74,7 @@ class AircraftService:
         if result:
             return ResponseModel.success(
                 msg=AircraftConsts.UPDATE_PLANE_SUCCESS,
-                data=result
+                data=result.model_dump()
             )
         return ResponseModel.fail(
             msg=AircraftConsts.UPDATE_PLANE_ERROR,
@@ -75,7 +82,7 @@ class AircraftService:
         )
 
     @staticmethod
-    async def delete_aircraft(aircraft_id: str) -> ResponseModel:
+    def delete_aircraft(aircraft_id: str) -> ResponseModel:
         """删除飞机记录"""
         if not aircraft_id:
             return ResponseModel.fail(
@@ -95,7 +102,7 @@ class AircraftService:
         )
 
     @staticmethod
-    async def search_aircraft(
+    def search_aircraft(
             aircraft_name: Optional[str] = None,
             aircraft_age: Optional[str] = None,
             aircraft_type_name: Optional[str] = None,
@@ -118,12 +125,12 @@ class AircraftService:
         )
         return ResponseModel.success(
             msg=AircraftConsts.SEARCH_PLANE_SUCCESS,
-            data=result
+            data=result.model_dump()
         )
 
     # AircraftType 相关服务方法
     @staticmethod
-    async def create_aircraft_type(type_data: AircraftTypeCreateDTO) -> ResponseModel:
+    def create_aircraft_type(type_data: AircraftTypeCreateDTO) -> ResponseModel:
         """创建飞机类型记录"""
         # 参数校验
         if not type_data.type_name:
@@ -136,7 +143,7 @@ class AircraftService:
             result: AircraftTypeDTO = AircraftTypeMapper.create(type_data)
             return ResponseModel.success(
                 msg=AircraftConsts.ADD_TYPE_SUCCESS,
-                data=result
+                data=result.model_dump()
             )
         except Exception as e:
             return ResponseModel.fail(
@@ -145,7 +152,7 @@ class AircraftService:
             )
 
     @staticmethod
-    async def get_aircraft_type_by_id(typeid: str) -> ResponseModel:
+    def get_aircraft_type_by_id(typeid: str) -> ResponseModel:
         """根据ID获取飞机类型记录"""
         if not typeid:
             return ResponseModel.fail(
@@ -157,7 +164,7 @@ class AircraftService:
         if result:
             return ResponseModel.success(
                 msg=AircraftConsts.GET_TYPE_SUCCESS,
-                data=result
+                data=result.model_dump()
             )
         return ResponseModel.fail(
             msg=AircraftConsts.GET_TYPE_NOT_FOUND,
@@ -165,7 +172,7 @@ class AircraftService:
         )
 
     @staticmethod
-    async def update_aircraft_type(typeid: str, update_data: AircraftTypeUpdateDTO) -> ResponseModel:
+    def update_aircraft_type(typeid: str, update_data: AircraftTypeUpdateDTO) -> ResponseModel:
         """更新飞机类型记录"""
         if not typeid:
             return ResponseModel.fail(
@@ -177,7 +184,7 @@ class AircraftService:
         if result:
             return ResponseModel.success(
                 msg=AircraftConsts.UPDATE_TYPE_SUCCESS,
-                data=result
+                data=result.model_dump()
             )
         return ResponseModel.fail(
             msg=AircraftConsts.UPDATE_TYPE_ERROR,
@@ -185,7 +192,7 @@ class AircraftService:
         )
 
     @staticmethod
-    async def delete_aircraft_type(typeid: str) -> ResponseModel:
+    def delete_aircraft_type(typeid: str) -> ResponseModel:
         """删除飞机类型记录"""
         if not typeid:
             return ResponseModel.fail(
@@ -205,7 +212,7 @@ class AircraftService:
         )
 
     @staticmethod
-    async def search_aircraft_type(
+    def search_aircraft_type(
             type_name: Optional[str] = None,
             page_num: int = 1,
             page_size: int = 10
@@ -224,5 +231,5 @@ class AircraftService:
         )
         return ResponseModel.success(
             msg=AircraftConsts.SEARCH_TYPE_SUCCESS,
-            data=result
+            data=result.model_dump()
         )
