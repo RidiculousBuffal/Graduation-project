@@ -33,7 +33,7 @@ class AircraftService:
         except IntegrityError as e:
             return ResponseModel.fail(
                 msg=AircraftConsts.GET_TYPE_NOT_FOUND,
-                data={"error":str(e)}
+                data={"error": str(e)}
             )
         except Exception as e:
             return ResponseModel.fail(
@@ -70,16 +70,27 @@ class AircraftService:
                 data={"error": "飞机ID不能为空"}
             )
 
-        result: Optional[AircraftDTO] = AircraftMapper.update(aircraft_id, update_data)
-        if result:
-            return ResponseModel.success(
-                msg=AircraftConsts.UPDATE_PLANE_SUCCESS,
-                data=result.model_dump()
+        try:
+            result: Optional[AircraftDTO] = AircraftMapper.update(aircraft_id, update_data)
+            if result:
+                return ResponseModel.success(
+                    msg=AircraftConsts.UPDATE_PLANE_SUCCESS,
+                    data=result.model_dump()
+                )
+            return ResponseModel.fail(
+                msg=AircraftConsts.UPDATE_PLANE_ERROR,
+                data={"error": f"未找到ID为{aircraft_id}的飞机或更新失败"}
             )
-        return ResponseModel.fail(
-            msg=AircraftConsts.UPDATE_PLANE_ERROR,
-            data={"error": f"未找到ID为{aircraft_id}的飞机或更新失败"}
-        )
+        except IntegrityError as e:
+            return ResponseModel.fail(
+                msg=AircraftConsts.GET_TYPE_NOT_FOUND,
+                data={"error": str(e)}
+            )
+        except Exception as e:
+            return ResponseModel.fail(
+                msg=AircraftConsts.UPDATE_PLANE_ERROR,
+                data={"error": str(e)}
+            )
 
     @staticmethod
     def delete_aircraft(aircraft_id: str) -> ResponseModel:
@@ -140,6 +151,11 @@ class AircraftService:
             )
 
         try:
+            type_ = AircraftTypeMapper.search(type_data.type_name)
+            if len(type_.data) > 0:
+                return ResponseModel.fail(
+                    msg=AircraftConsts.AIRCRAFT_TYPE_ALREADY_EXISTS
+                )
             result: AircraftTypeDTO = AircraftTypeMapper.create(type_data)
             return ResponseModel.success(
                 msg=AircraftConsts.ADD_TYPE_SUCCESS,
@@ -159,7 +175,6 @@ class AircraftService:
                 msg=AircraftConsts.INVALID_TYPE_DATA,
                 data={"error": "飞机类型ID不能为空"}
             )
-
         result: Optional[AircraftTypeDTO] = AircraftTypeMapper.get_by_id(typeid)
         if result:
             return ResponseModel.success(
@@ -179,7 +194,12 @@ class AircraftService:
                 msg=AircraftConsts.INVALID_TYPE_DATA,
                 data={"error": "飞机类型ID不能为空"}
             )
-
+        if update_data.type_name:
+            type_ = AircraftTypeMapper.search(update_data.type_name)
+            if len(type_.data) > 0 and type_.data[0].typeid != typeid:
+                return ResponseModel.fail(
+                    msg=AircraftConsts.AIRCRAFT_TYPE_ALREADY_EXISTS
+                )
         result: Optional[AircraftTypeDTO] = AircraftTypeMapper.update(typeid, update_data)
         if result:
             return ResponseModel.success(

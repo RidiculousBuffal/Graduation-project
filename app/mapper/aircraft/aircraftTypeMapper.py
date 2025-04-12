@@ -1,6 +1,11 @@
-from typing import Optional
+from sqlalchemy import select
 
-from sqlalchemy import select, delete, update
+from app.DTO.aircrafts import AircraftTypeCreateDTO, AircraftTypeDTO, AircraftTypeUpdateDTO, \
+    AircraftTypePagedResponseDTO
+from app.DTO.pagination import PaginationDTO
+from app.ext.extensions import db
+from app.models.aircraft import AircraftType
+from sqlalchemy import select
 
 from app.DTO.aircrafts import AircraftTypeCreateDTO, AircraftTypeDTO, AircraftTypeUpdateDTO, \
     AircraftTypePagedResponseDTO
@@ -76,7 +81,7 @@ class AircraftTypeMapper:
         query = select(AircraftType)
         if type_name:
             query = query.where(AircraftType.type_name == type_name)
-
+        query = query.order_by(AircraftType.type_name)
         pagination = db.paginate(
             select=query,
             page=pageNum,

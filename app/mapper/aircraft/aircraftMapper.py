@@ -94,8 +94,6 @@ class AircraftMapper:
             select(Aircraft, AircraftType.type_name, AircraftType.description)
             .join(AircraftType)
         )
-        print(query)
-
         conditions = []
         if aircraftName:
             conditions.append(Aircraft.aircraft_name == aircraftName)
@@ -106,7 +104,7 @@ class AircraftMapper:
 
         if conditions:
             query = query.where(*conditions)
-
+        query = query.order_by(Aircraft.aircraft_name)
         pagination = db.paginate(
             select=query,
             page=pageNum,

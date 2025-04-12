@@ -16,7 +16,7 @@ class AircraftType(db.Model, SerializerMixin):
     description = db.Column(db.Text, comment='描述')
 
     # Relationships
-    aircrafts = db.relationship('Aircraft', backref='type', lazy='dynamic')
+    aircrafts = db.relationship('Aircraft', backref='type', lazy='dynamic',cascade='all, delete-orphan')
 
     serialize_rules = ('-aircrafts')
 
@@ -34,10 +34,11 @@ class Aircraft(db.Model, SerializerMixin):
     aircraft_id = db.Column(db.String(50), primary_key=True)
     aircraft_name = db.Column(db.String(255), comment='飞机名字')
     age = db.Column(db.BigInteger)
-    typeid = db.Column(db.String(50), db.ForeignKey('aircraft_type.typeid'), comment='飞机型号ID')
+    typeid = db.Column(db.String(50), db.ForeignKey('aircraft_type.typeid',ondelete='cascade'), comment='飞机型号ID')
 
     # Relationships
-    flights = db.relationship('Flight', backref='aircraft', lazy='dynamic')
+    flights = db.relationship('Flight', backref='aircraft', lazy='dynamic',cascade='all, delete-orphan')
+    reference_images = db.relationship('AircraftReferenceImage',backref='aircraft',lazy='dynamic',cascade='all, delete-orphan')
 
     def __init__(self, **kwargs):
         if 'aircraft_id' not in kwargs:
@@ -56,10 +57,10 @@ class AircraftReferenceImage(db.Model, SerializerMixin):
     image_name = db.Column(db.String(255), comment='图片名')
     image_description = db.Column(db.Text, comment='图片描述')
     image_json = db.Column(db.Text, comment='图片json格式点位')
-    aircraft_id = db.Column(db.String(50), db.ForeignKey('aircraft.aircraft_id'), comment='飞机ID')
+    aircraft_id = db.Column(db.String(50), db.ForeignKey('aircraft.aircraft_id',ondelete='cascade'), comment='飞机ID')
 
     # Relationships
-    aircraft = db.relationship('Aircraft', backref='reference_images', lazy='joined')
+    # aircraft = db.relationship('Aircraft', backref='reference_images', lazy='joined')
 
     def __init__(self, **kwargs):
         super(AircraftReferenceImage, self).__init__(**kwargs)
