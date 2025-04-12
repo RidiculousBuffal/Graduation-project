@@ -1,5 +1,6 @@
 import uuid
 
+from sqlalchemy import JSON
 from sqlalchemy_serializer import SerializerMixin
 
 from app.ext.extensions import db
@@ -56,7 +57,7 @@ class AircraftReferenceImage(db.Model, SerializerMixin):
     image_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True, comment='图片ID')
     image_name = db.Column(db.String(255), comment='图片名')
     image_description = db.Column(db.Text, comment='图片描述')
-    image_json = db.Column(db.Text, comment='图片json格式点位')
+    image_json = db.Column(JSON, comment='图片json格式点位')
     aircraft_id = db.Column(db.String(50), db.ForeignKey('aircraft.aircraft_id',ondelete='cascade'), comment='飞机ID')
 
     # Relationships
