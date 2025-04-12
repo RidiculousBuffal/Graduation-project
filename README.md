@@ -25,13 +25,18 @@ cp .env.example .env
 - 只要创建数据库即可,不需要`create table`
 
 ## 执行数据库迁移
-
-- **建议每次push的时候执行一下**
+### pull
+- **建议每次pull代码的时候执行一下**
 
 ```bash
 flask db upgrade 
 ```
+### push
+- **建议每次push代码的时候执行一下**
 
+```bash
+flask db migrate -m "迁移信息" 
+```
 ## 部署webase
 
 - 已经把docker镜像打包好了,直接拉镜像启动

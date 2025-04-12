@@ -22,3 +22,4 @@ class AircraftConsts:
     GET_TYPE_NOT_FOUND = '飞机类型信息未找到'
     SEARCH_TYPE_SUCCESS = '查询飞机类型列表成功'
     INVALID_TYPE_DATA = '飞机类型数据无效'
+    AIRCRAFT_TYPE_ALREADY_EXISTS = '飞机类型已存在'
