@@ -23,7 +23,7 @@ def permission_required(permissions, all_required=True):
             else:
                 has_permission = any(p in user_permissions_name for p in permissions)
             if not has_permission:
-                return ResponseModel.fail(f'权限校验失败,要求权限:{permissions}'), 403
+                return ResponseModel.fail(f'权限校验失败,要求权限:{permissions}').to_dict(), 403
             return func(*args, **kwargs)
 
         return wrapper
