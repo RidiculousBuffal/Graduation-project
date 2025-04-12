@@ -1,7 +1,9 @@
 # tests/conftest.py
 import pytest
+
 from app import create_app
 from app.ext.extensions import db
+from scripts.startScripts import initRoles, initPermissions, combineRoleWithPermissions
 
 
 @pytest.fixture
@@ -13,6 +15,11 @@ def app():
     with app.app_context():
         # Create all tables
         db.create_all()
+        # 初始化角色
+        initRoles()
+        # 初始化权限
+        initPermissions()
+        combineRoleWithPermissions()
         yield app
         # Clean up after the test
         db.session.remove()

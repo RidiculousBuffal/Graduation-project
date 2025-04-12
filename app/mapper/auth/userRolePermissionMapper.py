@@ -2,7 +2,7 @@ from sqlalchemy import select, and_
 
 from app.ext.extensions import db
 from app.models import Permission, RolePermission
-from app.models.auth import Role
+from app.models.auth import Role,User
 from app.models.auth import UserRole
 
 
@@ -40,6 +40,19 @@ class UserRolePermissionMapper:
         ]
         return serialized_permissions
 
+    @staticmethod
+    def getUserPermissions(userId:str):
+        q = select(Permission).distinct().join(RolePermission).join(Role).join(UserRole).join(User).where(User.user_id==userId)
+        permissions = db.session.execute(q).scalars()
+        serialized_permissions = [
+            {
+                "permission_id": p.permission_id,
+                "permission_name": p.permission_name,
+                "description": p.description,
+            } for p in permissions
+        ]
+        return serialized_permissions
+    
     @staticmethod
     def combine_role_permission(roleId, permissionId):
         rp = RolePermission(role_id=roleId, permission_id=permissionId)
