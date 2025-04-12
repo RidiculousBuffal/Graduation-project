@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 from app import create_app
 from app.ext.extensions import db
-from scripts.startScripts import initRoles
+from scripts.startScripts import initRoles, initPermissions, combineRoleWithPermissions
 
 load_dotenv()
 
@@ -19,6 +19,8 @@ def make_shell_context():
 with app.app_context():
     # 初始化角色
     initRoles()
-
+    # 初始化权限
+    initPermissions()
+    combineRoleWithPermissions()
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

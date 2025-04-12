@@ -1,0 +1,24 @@
+class AircraftConsts:
+    # Aircraft 相关常量
+    ADD_PLANE_SUCCESS = '添加飞机成功'
+    ADD_PLANE_ERROR = '添加飞机失败'
+    UPDATE_PLANE_SUCCESS = '更新飞机成功'
+    UPDATE_PLANE_ERROR = '更新飞机失败'
+    DELETE_PLANE_SUCCESS = '删除飞机成功'
+    DELETE_PLANE_ERROR = '删除飞机失败'
+    GET_PLANE_SUCCESS = '获取飞机信息成功'
+    GET_PLANE_NOT_FOUND = '飞机信息未找到'
+    SEARCH_PLANE_SUCCESS = '查询飞机列表成功'
+    INVALID_PLANE_DATA = '飞机数据无效'
+
+    # AircraftType 相关常量
+    ADD_TYPE_SUCCESS = '添加飞机类型成功'
+    ADD_TYPE_ERROR = '添加飞机类型失败'
+    UPDATE_TYPE_SUCCESS = '更新飞机类型成功'
+    UPDATE_TYPE_ERROR = '更新飞机类型失败'
+    DELETE_TYPE_SUCCESS = '删除飞机类型成功'
+    DELETE_TYPE_ERROR = '删除飞机类型失败'
+    GET_TYPE_SUCCESS = '获取飞机类型信息成功'
+    GET_TYPE_NOT_FOUND = '飞机类型信息未找到'
+    SEARCH_TYPE_SUCCESS = '查询飞机类型列表成功'
+    INVALID_TYPE_DATA = '飞机类型数据无效'

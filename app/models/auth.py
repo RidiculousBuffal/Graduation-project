@@ -57,6 +57,9 @@ class Role(db.Model, SerializerMixin):
                                   backref=db.backref('roles', lazy='dynamic'))
     serialize_rules = ('-permissions',)
 
+    def __init__(self, **kwargs):
+        super(Role, self).__init__(**kwargs)
+
 
 class Permission(db.Model, SerializerMixin):
     __tablename__ = 'permissions'
@@ -68,6 +71,9 @@ class Permission(db.Model, SerializerMixin):
     description = db.Column(db.String(255))
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
+
+    def __init__(self, **kwargs):
+        super(Permission, self).__init__(**kwargs)
 
 
 class UserRole(db.Model, SerializerMixin):
@@ -92,3 +98,5 @@ class RolePermission(db.Model, SerializerMixin):
     permission_id = db.Column(db.Integer, db.ForeignKey('permissions.permission_id', ondelete='CASCADE'),
                               primary_key=True)
     created_at = db.Column(db.TIMESTAMP, default=datetime.now(), onupdate=datetime.now(), nullable=False)
+    def __init__(self, **kwargs):
+        super(RolePermission, self).__init__(**kwargs)
