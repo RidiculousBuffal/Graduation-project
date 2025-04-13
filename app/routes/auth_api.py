@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from flask_jwt_extended.exceptions import JWTExtendedException
 
+from app.annotations.permissionAnnot import permission_required
 from app.consts.Network import NetWorkConst
 from app.consts.auth import AuthConsts
 from app.models.auth import User

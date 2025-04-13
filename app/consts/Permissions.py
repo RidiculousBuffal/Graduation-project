@@ -57,6 +57,10 @@ class Permissions:
         "description": "更新飞机类型"
     }
 
+    FILE_UPLOAD = {
+        "permission_name":"IPFS.FILE.UPLOAD",
+        "description":"上传文件到IPFS"
+    }
 
 if __name__ == '__main__':
     # 获取所有权限字典
