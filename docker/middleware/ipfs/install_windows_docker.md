@@ -20,14 +20,16 @@ docker pull ipfs/kubo:master-latest
 # 安装
 
 ```bash
- docker run -d --name ipfs_host -v ./ipfs_staging:/export -v ./ipfs_data:/data/ipfs -p 10500:4001 -p 10501:4001/udp -p 10502:8080 -p 10503:5001 ipfs/kubo:master-latest
+ docker run -d --name ipfs_host -v ./ipfs_staging:/export -v ./ipfs_data:/data/ipfs -p 10500:4001 -p 10501:4001/udp -p 8080:8080 -p 10503:5001 ipfs/kubo:master-latest
 ```
 
 # 进入到容器中
 
 ```bash
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["http://localhost:3000", "https://webui.ipfs.io", "http:
-//127.0.0.1:5001","http://localhost:10500","http://localhost:10501","http://localhost:10502","http://localhost:10503"]'
+//127.0.0.1:5001","http://localhost:10500","http://localhost:10501","http://localhost:10502","http://localhost:10503","http://localhost:5000"]'
+
+
 ```
 
 # 扩充Windows docker UDP缓冲区
