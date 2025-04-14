@@ -18,8 +18,10 @@ class IPFSClient:
             host = f"http://{host}"
         if not gateway_host.startswith(('http://', 'https://')):
             gateway_host = f"http://{gateway_host}"
-
-        self.api_url = f"{host}:{port}{base_path}"
+        if host.startswith("https://"):
+            self.api_url=f'''{host}{base_path}'''
+        else:
+            self.api_url = f"{host}:{port}{base_path}"
         self.gateway = f'{gateway_host}:{gate_way_port}/ipfs'
         self.session = session or requests.Session()
 
