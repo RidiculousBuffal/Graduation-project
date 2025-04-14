@@ -2,7 +2,6 @@ from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from flask_jwt_extended.exceptions import JWTExtendedException
 
-from app.annotations.permissionAnnot import permission_required
 from app.consts.Network import NetWorkConst
 from app.consts.auth import AuthConsts
 from app.models.auth import User
@@ -37,12 +36,13 @@ def refresh():
             "access_token": access_token,
         }
         return ResponseModel.success(AuthConsts.REFRESH_SUCCESS, payload).to_dict(), 200
-    except JWTExtendedException as e:   # 处理 JWT 扩展库的所有异常
+    except JWTExtendedException as e:  # 处理 JWT 扩展库的所有异常
         # 捕获并返回有关无效或过期的 Token 异常
         print("JWT Error:", str(e))
         return ResponseModel.fail("Invalid or expired token").to_dict(), 401
     except Exception as e:  # 捕获其他未知异常，保证接口健壮性
         return ResponseModel.fail("An unexpected error occurred").to_dict(), 500
+
 
 @auth_bp.route('/register', methods=[NetWorkConst.POST])
 def register():

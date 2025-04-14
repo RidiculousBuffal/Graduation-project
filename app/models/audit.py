@@ -18,5 +18,7 @@ class AuditLog(db.Model,SerializerMixin):
     blockchain_operator = db.Column(db.String(42), nullable=True, comment='区块链操作者地址')  # 操作者地址，如0x...
     timestamp = db.Column(db.TIMESTAMP, default=datetime.now(), onupdate=datetime.now(),nullable=False)
 
+    def __init__(self, **kwargs):
+        super(AuditLog, self).__init__(**kwargs)
     def __repr__(self):
         return f"<AuditLog(log_id={self.log_id}, user_id={self.user_id}, action={self.action})>"
