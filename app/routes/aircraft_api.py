@@ -5,6 +5,7 @@ from app.DTO.aircrafts import (
     AircraftCreateDTO, AircraftUpdateDTO,
     AircraftTypeCreateDTO, AircraftTypeUpdateDTO
 )
+from app.annotations.loggingAnnot import logging_to_blockchain
 from app.annotations.permissionAnnot import permission_required
 from app.consts.Network import NetWorkConst
 from app.consts.Permissions import Permissions
@@ -55,6 +56,7 @@ def delete_aircraft(aircraft_id: str):
 
 @aircraft_bp.get('/searchAircraft')
 @permission_required(Permissions.AIRCRAFT_READ.get('permission_name'), True)
+@logging_to_blockchain(event_name='SEARCH_AIRCRAFT')
 def search_aircraft():
     args = request.args
     aircraft_name = args.get('aircraft_name', type=str)
