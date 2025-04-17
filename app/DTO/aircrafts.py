@@ -3,7 +3,7 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 from app.DTO.pagination import PaginationDTO
-
+from app.DTO.file import FileDTO
 
 class AircraftTypeDTO(BaseModel):
     typeid: str
@@ -49,4 +49,41 @@ class AircraftPagedResponseDTO(BaseModel):
 
 class AircraftTypePagedResponseDTO(BaseModel):
     data: List[AircraftTypeDTO]
+    pagination: PaginationDTO
+
+
+class AircraftReferenceImagePoint(BaseModel):
+    id: Optional[int] = None
+    x: Optional[float] = None
+    y: Optional[float] = None
+
+
+class AircraftReferenceImageJson(BaseModel):
+
+    fileInfo: FileDTO
+    pointInfo: List[AircraftReferenceImagePoint]
+
+
+class AircraftReferenceImageDTO(BaseModel):
+    image_id: str
+    image_name: str
+    image_description: str
+    image_json: AircraftReferenceImageJson
+    aircraft_id: str
+    aircraft_name: Optional[str] = None  # 新增 aircraft_name 字段
+
+class AircraftReferenceImageCreateDTO(BaseModel):
+    image_name: str
+    image_description: str
+    image_json: AircraftReferenceImageJson
+    aircraft_id: str
+
+class AircraftReferenceImageUpdateDTO(BaseModel):
+    image_name: Optional[str] = None
+    image_description: Optional[str] = None
+    image_json: Optional[AircraftReferenceImageJson] = None
+    aircraft_id: Optional[str] = None
+
+class AircraftReferenceImagePagedResponseDTO(BaseModel):
+    data: List[AircraftReferenceImageDTO]
     pagination: PaginationDTO

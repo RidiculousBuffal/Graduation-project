@@ -34,12 +34,12 @@ class IPFSService:
         # 时间戳格式 (可选: 'timestamp', 'datetime', 'date')
         self.timestamp_format = config.IPFS_TIMESTAMP_FORMAT
 
-        # 确保基础目录存在
-        if self.use_mfs:
-            try:
-                self.client.create_directory(self.mfs_base_dir)
-            except Exception:
-                pass  # 如果目录已存在，忽略错误
+        # # 确保基础目录存在
+        # if self.use_mfs:
+        #     try:
+        #         self.client.create_directory(self.mfs_base_dir)
+        #     except Exception:
+        #         pass  # 如果目录已存在，忽略错误
 
     def add_timestamp_to_filename(self, filename):
         """

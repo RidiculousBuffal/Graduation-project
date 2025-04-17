@@ -12,9 +12,13 @@ def create_app(config_name='default'):
 
     # Initialize extensions
     db.init_app(app)
+    print('✅ 数据库链接成功')
     migrate.init_app(app, db)
+    print('✅ 数据库迁移成功')
     jwt.init_app(app)
+    print('✅ jwt初始化成功')
     cors.init_app(app)
+    print('✅ cors初始化成功')
 
     # 注册蓝图
     from app.routes.auth_api import auth_bp
