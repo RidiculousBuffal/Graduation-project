@@ -25,7 +25,7 @@ class InspectionRecord(db.Model, SerializerMixin):
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
     model_id = db.Column(db.String(50), db.ForeignKey('models.model_id'), comment='使用的模型')
-    reference_image_id = db.Column(db.BigInteger, db.ForeignKey('aircraft_reference_image.image_id', ondelete='CASCADE'))
+    reference_image_id = db.Column(db.String(50), db.ForeignKey('aircraft_reference_image.image_id', ondelete='CASCADE'))
     # Relationships
     task = db.relationship('Task', backref='inspection_records')
     status_dict = db.relationship('Dictionary', foreign_keys=[inspection_status])

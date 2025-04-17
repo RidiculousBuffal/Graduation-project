@@ -54,7 +54,7 @@ class AircraftReferenceImage(db.Model, SerializerMixin):
     }
 
     # 字段定义，与 SQL 表结构对应
-    image_id = db.Column(db.BigInteger, primary_key=True, autoincrement=True, comment='图片ID')
+    image_id = db.Column(db.String(50), primary_key=True, comment='图片ID')
     image_name = db.Column(db.String(255), comment='图片名')
     image_description = db.Column(db.Text, comment='图片描述')
     image_json = db.Column(JSON, comment='图片json格式点位')
@@ -64,4 +64,6 @@ class AircraftReferenceImage(db.Model, SerializerMixin):
     # aircraft = db.relationship('Aircraft', backref='reference_images', lazy='joined')
 
     def __init__(self, **kwargs):
+        if 'image_id' not in kwargs:
+            kwargs['image_id'] = str(uuid.uuid4())
         super(AircraftReferenceImage, self).__init__(**kwargs)
