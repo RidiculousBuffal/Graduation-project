@@ -1,12 +1,13 @@
+import uuid
+from datetime import datetime
+
+from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy_serializer import SerializerMixin
 
 from app.ext.extensions import db
-from datetime import datetime
-import uuid
-from sqlalchemy.dialects.mysql import JSON
 
 
-class InspectionRecord(db.Model,SerializerMixin):
+class InspectionRecord(db.Model, SerializerMixin):
     __tablename__ = 'inspection_records'
     __table_args__ = {
         "mysql_charset": "utf8mb4"
@@ -21,13 +22,16 @@ class InspectionRecord(db.Model,SerializerMixin):
     start_time = db.Column(db.DateTime)
     end_time = db.Column(db.DateTime)
     inspection_status = db.Column(db.String(50), db.ForeignKey('dictionary.dict_key'))
-    created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(),onupdate=datetime.now(), nullable=False)
+    created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
-
+    model_id = db.Column(db.String(50), db.ForeignKey('models.model_id'), comment='使用的模型')
+    reference_image_id = db.Column(db.BigInteger, db.ForeignKey('aircraft_reference_image.image_id', ondelete='CASCADE'))
     # Relationships
     task = db.relationship('Task', backref='inspection_records')
     status_dict = db.relationship('Dictionary', foreign_keys=[inspection_status])
-    projects = db.relationship('InspectionProject', backref='inspection', lazy='dynamic')
+    items = db.relationship('InspectionItem', backref='inspection', lazy='dynamic')
+    model = db.relationship('Model', backref='inspection_projects')
+    reference_image = db.relationship('AircraftReferenceImage', backref='inspection_records')
 
     def __init__(self, **kwargs):
         if 'inspection_id' not in kwargs:
@@ -35,25 +39,23 @@ class InspectionRecord(db.Model,SerializerMixin):
         super(InspectionRecord, self).__init__(**kwargs)
 
 
-class InspectionProject(db.Model,SerializerMixin):
-    __tablename__ = 'inspection_projects'
+class InspectionItem(db.Model, SerializerMixin):
+    __tablename__ = 'inspection_item'
     __table_args__ = {
         "mysql_charset": "utf8mb4"
     }
-    project_id = db.Column(db.String(50), primary_key=True)
-    project_name = db.Column(db.String(100), nullable=False)
+    item_id = db.Column(db.String(50), primary_key=True)
+    item_name = db.Column(db.String(100), nullable=False)
     inspection_id = db.Column(db.String(50), db.ForeignKey('inspection_records.inspection_id'))
-    model_id = db.Column(db.String(50), db.ForeignKey('models.model_id'), comment='使用的模型')
-    project_points = db.Column(JSON, comment='各个点位,检测结果,检测图url,json数据')
+    item_point = db.Column(JSON, comment='单个点位,送测照片,点位坐标+照片Json')
     description = db.Column(db.Text)
-    reference_images = db.Column(JSON, comment='参考图片路径或URL的JSON数组')
+    result = db.Column(JSON, comment='检测结果')
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), nullable=False)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.utcnow, nullable=False)
 
     # Relationships
-    model = db.relationship('Model', backref='inspection_projects')
 
     def __init__(self, **kwargs):
-        if 'project_id' not in kwargs:
-            kwargs['project_id'] = str(uuid.uuid4())
-        super(InspectionProject, self).__init__(**kwargs)
+        if 'item_id' not in kwargs:
+            kwargs['item_id'] = str(uuid.uuid4())
+        super(InspectionItem, self).__init__(**kwargs)

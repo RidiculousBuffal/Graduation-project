@@ -6,7 +6,7 @@ from app.models.blockchain import BlockchainTransaction
 from app.models.dictionary import Dictionary
 from app.models.engineer import Engineer
 from app.models.flight import Flight
-from app.models.inspection import InspectionRecord, InspectionProject
+from app.models.inspection import InspectionRecord, InspectionItem
 from app.models.model import Model
 from app.models.task import Task
 from app.models.terminal import Terminal
