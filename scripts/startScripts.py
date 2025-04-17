@@ -1,7 +1,9 @@
+from app.consts.Dict import DictionaryData
 from app.consts.Permissions import Permissions
 from app.consts.Roles import RoleConsts
 from app.mapper.auth.permissionMapper import PermissionMapper
 from app.mapper.auth.userRolePermissionMapper import UserRolePermissionMapper
+from app.models import Dictionary
 
 
 def initRoles():
@@ -21,6 +23,7 @@ def initRoles():
         }.get(role_name, '')
         db.session.add(Role(role_name=role_name, description=description))
     db.session.commit()
+    print('✅角色初始化成功')
 
 
 def initPermissions():
@@ -41,6 +44,7 @@ def initPermissions():
         else:
             db.session.add(Permission(permission_name=perm_name, description=perm_desc))
             db.session.commit()
+    print('✅权限初始化成功')
 
 
 def combineRoleWithPermissions():
@@ -67,3 +71,56 @@ def combineRoleWithPermissions():
     admin_role = RoleMapper.getRole(RoleConsts.ADMIN)
     admin_permissions = [getattr(Permissions, attr) for attr in dir(Permissions) if not attr.startswith('__')]
     _quickAddRolePermissions(admin_role.role_id, admin_permissions)
+    print('✅角色绑定到权限成功')
+def initDictionaryData():
+    from sqlalchemy import inspect
+    from app.ext.extensions import db
+    inspector = inspect(db.engine)
+    if 'dictionary' not in inspector.get_table_names():
+        print("Table 'dictionary' does not exist. Skipping dictionary data initialization.")
+        return
+
+    existing_dict_keys = {d.dict_key for d in Dictionary.query.all()}
+    all_items = [attr for attr in dir(DictionaryData) if not attr.startswith('__')]
+    all_data = [getattr(DictionaryData, item) for item in all_items]
+
+    # 按层级插入数据，确保父记录先插入
+    inserted_keys = set(existing_dict_keys)
+    pending_data = all_data[:]
+    while pending_data:
+        inserted_this_round = False
+        remaining_data = []
+        for item_data in pending_data:
+            dict_key = item_data.get('dict_key')
+            parent_key = item_data.get('parent_key')
+            # 如果已经插入或者 parent_key 是 None 或者 parent_key 已存在，则可以插入
+            if dict_key in inserted_keys:
+                continue
+            if parent_key is None or parent_key in inserted_keys:
+                new_dict = Dictionary(
+                    dict_key=dict_key,
+                    dict_name=item_data.get('dict_name'),
+                    description=item_data.get('description'),
+                    parent_key=parent_key,
+                    sort_order=item_data.get('sort_order')
+                )
+                db.session.add(new_dict)
+                inserted_keys.add(dict_key)
+                inserted_this_round = True
+            else:
+                # 父记录还未插入，暂存到下一轮
+                remaining_data.append(item_data)
+        if not inserted_this_round and remaining_data:
+            # 如果这一轮没有插入且还有剩余数据，说明可能有循环依赖或错误
+            print("Warning: Possible circular dependency or missing parent keys in dictionary data.")
+            break
+        pending_data = remaining_data
+        if inserted_this_round:
+            db.session.commit()  # 每轮插入后提交，确保父记录可用
+
+    if remaining_data:
+        print("Some dictionary entries could not be inserted due to missing parent keys:")
+        for item in remaining_data:
+            print(f" - {item.get('dict_key')} (parent_key: {item.get('parent_key')})")
+    else:
+        print('✅字典表初始化成功')

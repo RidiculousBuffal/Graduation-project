@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 from app import create_app
 from app.ext.extensions import db
-from scripts.startScripts import initRoles, initPermissions, combineRoleWithPermissions
+from scripts.startScripts import initRoles, initPermissions, combineRoleWithPermissions, initDictionaryData
 
 load_dotenv()
 
@@ -21,6 +21,9 @@ with app.app_context():
     initRoles()
     # 初始化权限
     initPermissions()
+    # 绑定角色和权限
     combineRoleWithPermissions()
+    # 字典表
+    initDictionaryData()
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
