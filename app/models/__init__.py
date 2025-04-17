@@ -2,7 +2,7 @@
 from app.models.aircraft import Aircraft, AircraftType
 from app.models.audit import AuditLog
 from app.models.auth import User, Role, Permission, UserRole, RolePermission
-from app.models.blockchain import BlockchainTransaction
+
 from app.models.dictionary import Dictionary
 from app.models.engineer import Engineer
 from app.models.flight import Flight
