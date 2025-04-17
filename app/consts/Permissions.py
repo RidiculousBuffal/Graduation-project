@@ -61,10 +61,10 @@ class Permissions:
         "permission_name": "IPFS.FILE.UPLOAD",
         "description": "上传文件到IPFS"
     }
-    AIRCRAFT_IMAGE_ADD = {"permission_name": "aircraft_image:add", "description": "添加飞机参考图片权限"}
-    AIRCRAFT_IMAGE_READ = {"permission_name": "aircraft_image:read", "description": "读取飞机参考图片权限"}
-    AIRCRAFT_IMAGE_UPDATE = {"permission_name": "aircraft_image:update", "description": "更新飞机参考图片权限"}
-    AIRCRAFT_IMAGE_DELETE = {"permission_name": "aircraft_image:delete", "description": "删除飞机参考图片权限"}
+    AIRCRAFT_IMAGE_ADD = {"permission_name": "AIRCRAFT.IMAGE.ADD", "description": "添加飞机参考图片权限"}
+    AIRCRAFT_IMAGE_READ = {"permission_name": "AIRCRAFT.IMAGE.READ", "description": "读取飞机参考图片权限"}
+    AIRCRAFT_IMAGE_UPDATE = {"permission_name": "AIRCRAFT.IMAGE.UPDATE", "description": "更新飞机参考图片权限"}
+    AIRCRAFT_IMAGE_DELETE = {"permission_name": "AIRCRAFT.IMAGE.DELETE", "description": "删除飞机参考图片权限"}
 
 
 if __name__ == '__main__':
