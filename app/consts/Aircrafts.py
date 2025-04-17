@@ -23,3 +23,15 @@ class AircraftConsts:
     SEARCH_TYPE_SUCCESS = '查询飞机类型列表成功'
     INVALID_TYPE_DATA = '飞机类型数据无效'
     AIRCRAFT_TYPE_ALREADY_EXISTS = '飞机类型已存在'
+
+# AircraftReferenceImage 相关常量
+    ADD_IMAGE_SUCCESS = '添加飞机参考图片成功'
+    ADD_IMAGE_ERROR = '添加飞机参考图片失败'
+    UPDATE_IMAGE_SUCCESS = '更新飞机参考图片成功'
+    UPDATE_IMAGE_ERROR = '更新飞机参考图片失败'
+    DELETE_IMAGE_SUCCESS = '删除飞机参考图片成功'
+    DELETE_IMAGE_ERROR = '删除飞机参考图片失败'
+    GET_IMAGE_SUCCESS = '获取飞机参考图片信息成功'
+    GET_IMAGE_NOT_FOUND = '飞机参考图片信息未找到'
+    SEARCH_IMAGE_SUCCESS = '查询飞机参考图片列表成功'
+    INVALID_IMAGE_DATA = '飞机参考图片数据无效'
