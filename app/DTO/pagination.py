@@ -6,3 +6,4 @@ class PaginationDTO(BaseModel):
     page_size: int
     total: int
     total_pages: int
+    model_config = {"from_attributes": True}

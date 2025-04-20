@@ -3,7 +3,7 @@ import pytest
 
 from app import create_app
 from app.ext.extensions import db
-from scripts.startScripts import initRoles, initPermissions, combineRoleWithPermissions
+from scripts.startScripts import initRoles, initPermissions, combineRoleWithPermissions, initDictionaryData
 
 
 @pytest.fixture
@@ -20,6 +20,8 @@ def app():
         # 初始化权限
         initPermissions()
         combineRoleWithPermissions()
+        # 字典表
+        initDictionaryData()
         yield app
         # Clean up after the test
         db.session.remove()

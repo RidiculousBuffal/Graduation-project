@@ -61,11 +61,55 @@ class Permissions:
         "permission_name": "IPFS.FILE.UPLOAD",
         "description": "上传文件到IPFS"
     }
-    AIRCRAFT_IMAGE_ADD = {"permission_name": "AIRCRAFT.IMAGE.ADD", "description": "添加飞机参考图片权限"}
-    AIRCRAFT_IMAGE_READ = {"permission_name": "AIRCRAFT.IMAGE.READ", "description": "读取飞机参考图片权限"}
-    AIRCRAFT_IMAGE_UPDATE = {"permission_name": "AIRCRAFT.IMAGE.UPDATE", "description": "更新飞机参考图片权限"}
-    AIRCRAFT_IMAGE_DELETE = {"permission_name": "AIRCRAFT.IMAGE.DELETE", "description": "删除飞机参考图片权限"}
+    AIRCRAFT_IMAGE_ADD = {
+        "permission_name": "AIRCRAFT.IMAGE.ADD",
+        "description": "添加飞机参考图片权限"
+    }
+    AIRCRAFT_IMAGE_READ = {
+        "permission_name": "AIRCRAFT.IMAGE.READ",
+        "description": "读取飞机参考图片权限"
+    }
+    AIRCRAFT_IMAGE_UPDATE = {
+        "permission_name": "AIRCRAFT.IMAGE.UPDATE",
+        "description": "更新飞机参考图片权限"
+    }
+    AIRCRAFT_IMAGE_DELETE = {
+        "permission_name": "AIRCRAFT.IMAGE.DELETE",
+        "description": "删除飞机参考图片权限"
+    }
 
+    TERMINAL_ADD = {
+        "permission_name": "TERMINAL.ADD",
+        "description": "添加航站楼信息"
+    }
+    TERMINAL_READ = {
+        "permission_name": "TERMINAL.READ",
+        "description": "查看航站楼信息"
+    }
+    TERMINAL_UPDATE = {
+        "permission_name": "TERMINAL.UPDATE",
+        "description": "更新航站楼信息"
+    }
+    TERMINAL_DELETE = {
+        "permission_name": "TERMINAL.DELETE",
+        "description": "删除航站楼信息"
+    }
+    FLIGHT_ADD = {
+        "permission_name": "FLIGHT.ADD",
+        "description": "添加航班信息"
+    }
+    FLIGHT_READ = {
+        "permission_name": "FLIGHT.READ",
+        "description": "查看航班信息"
+    }
+    FLIGHT_UPDATE = {
+        "permission_name": "FLIGHT.UPDATE",
+        "description": "更新航班信息"
+    }
+    FLIGHT_DELETE = {
+        "permission_name": "FLIGHT.DELETE",
+        "description": "删除航班信息"
+    }
 
 if __name__ == '__main__':
     # 获取所有权限字典

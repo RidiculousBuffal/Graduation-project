@@ -5,13 +5,6 @@ from app.DTO.aircrafts import AircraftTypeCreateDTO, AircraftTypeDTO, AircraftTy
 from app.DTO.pagination import PaginationDTO
 from app.ext.extensions import db
 from app.models.aircraft import AircraftType
-from sqlalchemy import select
-
-from app.DTO.aircrafts import AircraftTypeCreateDTO, AircraftTypeDTO, AircraftTypeUpdateDTO, \
-    AircraftTypePagedResponseDTO
-from app.DTO.pagination import PaginationDTO
-from app.ext.extensions import db
-from app.models.aircraft import AircraftType
 
 
 class AircraftTypeMapper:
