@@ -23,35 +23,30 @@ cp .env.example .env
 2. 自行创建数据库
 
 - 只要创建数据库即可,不需要`create table`
+- 创建完数据库自行填写`.env`文件夹的相关信息
 
 ## 执行数据库迁移
 ### pull
-- **建议每次pull代码的时候执行一下**
+- **建议每次pull代码的时候执行一下(不执行默认第一次启动应用的时候自动执行)**  
 
 ```bash
 flask db upgrade 
 ```
 ### push
-- **建议每次push代码的时候执行一下**
+- **建议每次push代码的时候执行一下（如果涉及到数据库更改）**
 
 ```bash
 flask db migrate -m "迁移信息" 
 ```
-## 部署webase
 
-- 已经把docker镜像打包好了,直接拉镜像启动
-
-```bash
-docker run -d \
-  -p 30300:30300 -p 30301:30301 -p 30302:30302 -p 30303:30303 \
-  -p 20200:20200 -p 20201:20201 -p 20202:20202 -p 20203:20203 \
-  -p 8545:8545 -p 8546:8546 -p 8547:8547 -p 8548:8548 \
-  -p 5002:5002 \
-  --name fisco-all-in-one \
-  ridiculousbuffalo/fisco-webase-all-in-one:1.0.0
-```
-
-要自行构建镜像去[webase-fisco](docker%2Fmiddleware%2Fwebase-fisco)中自行`docker build`即可
+## 启动区块链服务
+根据[README.md](web3%2FREADME.md)自行启动区块链服务 \
+随便找一个`private Key`填入`.env`文件的`PRIVATE_KEY`处:
+![img.png](readmeimg%2Fimg.png) 
+把合约地址填入到`.env`文件的`CONTRACT_ADDRESS`处
+![img1.png](readmeimg%2Fimg1.png)
+## 启动ipfs分布式文件存储
+根据[install_windows_docker.md](docker%2Fmiddleware%2Fipfs%2Finstall_windows_docker.md)自行启动分布式文件存储服务
 
 ## 自动测试
 

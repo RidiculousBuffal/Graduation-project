@@ -22,8 +22,10 @@ docker pull ipfs/kubo:master-latest
 ```bash
  docker run -d --name ipfs_host -v ./ipfs_staging:/export -v ./ipfs_data:/data/ipfs -p 10500:4001 -p 10501:4001/udp -p 8080:8080 -p 10503:5001 ipfs/kubo:master-latest
 ```
+![img_3.png](img_3.png)
 
 # 进入到容器中
+![img_2.png](img_2.png)
 
 ```bash
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["http://localhost:3000", "https://webui.ipfs.io", "http:
@@ -45,3 +47,6 @@ sysctl -w net.core.wmem_max=7500000
 http://localhost:10503/webui
 ```
 ![img.png](img.png)
+
+在文件出新建一个叫做`uploads`的文件夹
+![img_1.png](img_1.png)
