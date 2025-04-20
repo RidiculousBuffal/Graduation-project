@@ -1,4 +1,8 @@
 class Permissions:
+    DICTIONARY_READ = {
+        "permission_name": "DICTIONARY.READ",
+        "description": "获取数据字典中的所有值"
+    }
     USER_ADD = {
         "permission_name": "USER.ADD",
         "description": "增加用户"
@@ -110,6 +114,7 @@ class Permissions:
         "permission_name": "FLIGHT.DELETE",
         "description": "删除航班信息"
     }
+
 
 if __name__ == '__main__':
     # 获取所有权限字典
