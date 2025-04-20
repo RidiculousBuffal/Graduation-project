@@ -1,4 +1,3 @@
-# tests/test_terminal_mapper.py
 from app.DTO.terminals import TerminalCreateDTO, TerminalUpdateDTO
 from app.mapper.terminal.terminalMapper import TerminalMapper
 

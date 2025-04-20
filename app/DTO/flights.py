@@ -1,6 +1,7 @@
-from typing import Optional, List
-from pydantic import BaseModel, ConfigDict
 from datetime import datetime
+from typing import Optional, List
+
+from pydantic import BaseModel, ConfigDict
 
 from app.DTO.pagination import PaginationDTO
 
@@ -17,7 +18,10 @@ class FlightCreateDTO(BaseModel):
     approval_status: Optional[str] = "pending"  # 默认值：待审批
 
     # reference https://docs.pydantic.dev/latest/api/config/#pydantic.config.ConfigDict.validate_assignment
-    model_config = ConfigDict(from_attributes=True) # 测试一下pydantic v2 新特性
+    model_config = ConfigDict(from_attributes=True, json_encoders={
+        datetime: lambda v: v.isoformat() if v else None
+    })  # 测试一下pydantic v2 新特性
+
 
 class FlightUpdateDTO(BaseModel):
     aircraft_id: Optional[str] = None
@@ -30,7 +34,10 @@ class FlightUpdateDTO(BaseModel):
     health_status: Optional[str] = None
     approval_status: Optional[str] = None
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, json_encoders={
+        datetime: lambda v: v.isoformat() if v else None
+    })  # 测试一下pydantic v2 新特性
+
 
 class FlightDTO(BaseModel):
     flight_id: str
@@ -46,7 +53,10 @@ class FlightDTO(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, json_encoders={
+        datetime: lambda v: v.isoformat() if v else None
+    })  # 测试一下pydantic v2 新特性
+
 
 class FlightDetailDTO(BaseModel):
     flight_id: str
@@ -64,10 +74,15 @@ class FlightDetailDTO(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, json_encoders={
+        datetime: lambda v: v.isoformat() if v else None
+    })  # 测试一下pydantic v2 新特性
+
 
 class FlightPagedResponseDTO(BaseModel):
     data: List[FlightDetailDTO]  # 使用 FlightDetailDTO 替代 FlightDTO
     pagination: PaginationDTO
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, json_encoders={
+        datetime: lambda v: v.isoformat() if v else None
+    })  # 测试一下pydantic v2 新特性

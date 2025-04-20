@@ -10,3 +10,8 @@ class FlightConsts:
     DELETE_FLIGHT_SUCCESS = "删除航班成功"
     DELETE_FLIGHT_ERROR = "删除航班失败"
     SEARCH_FLIGHT_SUCCESS = "查询航班列表成功"
+    # 新增错误消息，覆盖健壮性检查中的场景
+    TIME_CONFLICT_ERROR = "时间冲突错误"
+    TIMESTAMP_ORDER_ERROR = "时间顺序错误"
+    INVALID_STATUS_ERROR = "无效的状态值"
+    ACTUAL_VS_ESTIMATED_ERROR = "实际时间与预计时间冲突"

@@ -52,13 +52,23 @@ def delete_flight(flight_id: str):
 @flight_bp.get('/searchFlight')
 @permission_required(Permissions.FLIGHT_READ.get('permission_name'), True)
 def search_flight():
-    """分页查询航班记录，包含详细信息"""
+    """分页查询航班记录，包含详细信息，支持按航站楼名称、飞机名称及时间段查询"""
     args = request.args
     aircraft_id = args.get('aircraft_id', type=str)
     terminal_id = args.get('terminal_id', type=str)
     flight_status = args.get('flight_status', type=str)
     health_status = args.get('health_status', type=str)
     approval_status = args.get('approval_status', type=str)
+    aircraft_name = args.get('aircraft_name', type=str)  # 新增：按飞机名称查询
+    terminal_name = args.get('terminal_name', type=str)  # 新增：按航站楼名称查询
+    estimated_departure_start = args.get('estimated_departure_start', type=str)  # 新增：预计起飞起始时间
+    estimated_departure_end = args.get('estimated_departure_end', type=str)      # 新增：预计起飞结束时间
+    estimated_arrival_start = args.get('estimated_arrival_start', type=str)      # 新增：预计到达起始时间
+    estimated_arrival_end = args.get('estimated_arrival_end', type=str)          # 新增：预计到达结束时间
+    actual_departure_start = args.get('actual_departure_start', type=str)        # 新增：实际起飞起始时间
+    actual_departure_end = args.get('actual_departure_end', type=str)            # 新增：实际起飞结束时间
+    actual_arrival_start = args.get('actual_arrival_start', type=str)            # 新增：实际到达起始时间
+    actual_arrival_end = args.get('actual_arrival_end', type=str)                # 新增：实际到达结束时间
     page_num = args.get('page_num', default=1, type=int)
     page_size = args.get('page_size', default=10, type=int)
 
@@ -68,6 +78,16 @@ def search_flight():
         flight_status=flight_status,
         health_status=health_status,
         approval_status=approval_status,
+        aircraft_name=aircraft_name,
+        terminal_name=terminal_name,
+        estimated_departure_start=estimated_departure_start,
+        estimated_departure_end=estimated_departure_end,
+        estimated_arrival_start=estimated_arrival_start,
+        estimated_arrival_end=estimated_arrival_end,
+        actual_departure_start=actual_departure_start,
+        actual_departure_end=actual_departure_end,
+        actual_arrival_start=actual_arrival_start,
+        actual_arrival_end=actual_arrival_end,
         page_num=page_num,
         page_size=page_size
     )

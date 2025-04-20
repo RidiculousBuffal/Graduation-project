@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class PaginationDTO(BaseModel):
@@ -6,4 +6,4 @@ class PaginationDTO(BaseModel):
     page_size: int
     total: int
     total_pages: int
-    model_config = {"from_attributes": True}
+    model_config = ConfigDict(from_attributes=True)
