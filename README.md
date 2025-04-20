@@ -54,3 +54,11 @@ flask db migrate -m "迁移信息"
 ```bash
 pytest 
 ```
+
+## 启动项目
+```bash
+flask run
+```
+## 调试项目
+在`pycharm`做如下配置,打断点调试即可:
+![img_1.png](readmeimg%2Fimg_1.png)
