@@ -24,13 +24,14 @@ class InspectionRecord(db.Model, SerializerMixin):
     inspection_status = db.Column(db.String(50), db.ForeignKey('dictionary.dict_key'))
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
-    model_id = db.Column(db.String(50), db.ForeignKey('models.model_id'), comment='使用的模型')
-    reference_image_id = db.Column(db.String(50), db.ForeignKey('aircraft_reference_image.image_id', ondelete='CASCADE'))
+
+    reference_image_id = db.Column(db.String(50),
+                                   db.ForeignKey('aircraft_reference_image.image_id', ondelete='CASCADE'))
     # Relationships
     task = db.relationship('Task', backref='inspection_records')
     status_dict = db.relationship('Dictionary', foreign_keys=[inspection_status])
     items = db.relationship('InspectionItem', backref='inspection', lazy='dynamic')
-    model = db.relationship('Model', backref='inspection_projects')
+
     reference_image = db.relationship('AircraftReferenceImage', backref='inspection_records')
 
     def __init__(self, **kwargs):
@@ -52,6 +53,8 @@ class InspectionItem(db.Model, SerializerMixin):
     result = db.Column(JSON, comment='检测结果')
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), nullable=False)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.utcnow, nullable=False)
+    model_id = db.Column(db.String(50), db.ForeignKey('models.model_id'), comment='使用的模型')
+    model = db.relationship('Model', backref='inspection_item')
 
     # Relationships
 
