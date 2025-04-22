@@ -28,6 +28,10 @@ cp .env.example .env
 ## 执行数据库迁移
 ### pull
 - **建议每次pull代码的时候执行一下(不执行默认第一次启动应用的时候自动执行)**  
+- **不要手动去修改数据库表结构!要修改表结构在[models](app%2Fmodels)中修改**
+- **不要手动去修改数据库表结构!要修改表结构在[models](app%2Fmodels)中修改**
+- **不要手动去修改数据库表结构!要修改表结构在[models](app%2Fmodels)中修改**
+- **不要手动去修改数据库表结构!要修改表结构在[models](app%2Fmodels)中修改**
 
 ```bash
 flask db upgrade 
