@@ -2,8 +2,8 @@ name: Sync Gitee to GitHub
 
 on:
   schedule:
-    - cron: '0 */1 * * *'
-  workflow_dispatch:
+    - cron: '0 */1 * * *' # 每小时触发一次
+  workflow_dispatch: # 手动触发
 
 jobs:
   sync:
@@ -48,7 +48,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           # 添加 GitHub 远程仓库，使用 HTTPS 和 GITHUB_TOKEN 认证
-          git remote add github https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository_owner }}/large_passenger_aircraft.git
+          git remote add github https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/RidiculousBuffal/Graduation-project.git
           # 推送所有分支
           git push github --all
           # 推送所有标签
