@@ -39,8 +39,7 @@ jobs:
 
       - name: Clone Gitee Repository
         run: |
-          git clone git@gitee.com:chai-xiaoxiexie/large_passenger_aircraft.git gitee-repo
-
+          git clone --mirror git@gitee.com:chai-xiaoxiexie/large_passenger_aircraft.git gitee-repo
       - name: Push to GitHub
         run: |
           cd gitee-repo
