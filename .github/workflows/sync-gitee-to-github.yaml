@@ -1,0 +1,39 @@
+name: Sync Gitee to GitHub
+
+on:
+  schedule:
+    - cron: '0 */8 * * *' # 每8小时触发一次
+  workflow_dispatch: # 手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }} # 克隆 GitHub 仓库，用于初始化
+          persist-credentials: false
+
+      - name: Setup SSH for Gitee
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GITEE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan gitee.com >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Clone Gitee Repository
+        run: |
+         git clone --mirror git@gitee.com:chai-xiaoxiexie/large_passenger_aircraft.git gitee-repo
+          cd gitee-repo
+          git remote add github git@github.com:${{ github.repository_owner }}/large_passenger_aircraft.git
+
+      - name: Push All Branches and Tags to GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd gitee-repo
+          git push github --all
+          git push github --tags
