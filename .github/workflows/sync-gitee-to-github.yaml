@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Checkout GitHub Repository
-        uses: actions/checkout@v4.0.0
+        uses: actions/checkout@v4
         with:
           persist-credentials: false # 不使用默认凭据，我们手动配置
           fetch-depth: 0 # 获取所有历史记录和分支
@@ -42,10 +42,14 @@ jobs:
           git clone git@gitee.com:chai-xiaoxiexie/large_passenger_aircraft.git gitee-repo
 
       - name: Push to GitHub
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository_owner }}/large_passenger_aircraft
-          directory: gitee-repo
-          branch: '*' # 推送所有分支，需验证是否有效
-          tags: true # 推送所有标签
+        run: |
+          cd gitee-repo
+          # 设置 Git 用户信息
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # 添加 GitHub 远程仓库，使用 HTTPS 和 GITHUB_TOKEN 认证
+          git remote add github https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository_owner }}/large_passenger_aircraft.git
+          # 推送所有分支
+          git push github --all
+          # 推送所有标签
+          git push github --tags
