@@ -27,6 +27,7 @@ class User(db.Model, SerializerMixin):
     roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'))
     engineers = db.relationship('Engineer', backref='user', lazy='dynamic')
     audit_logs = db.relationship('AuditLog', backref='user', lazy='dynamic')
+    tasks = db.relationship('Task', backref='admin', lazy='dynamic')
 
     serialize_rules = ('-password', '-roles', '-engineers', '-audit_logs')
 

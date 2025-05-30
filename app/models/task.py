@@ -16,6 +16,7 @@ class Task(db.Model,SerializerMixin):
     estimated_end = db.Column(db.DateTime)
     actual_start = db.Column(db.DateTime)
     actual_end = db.Column(db.DateTime)
+    admin_id = db.Column(db.String(50), db.ForeignKey('users.user_id', ondelete='SET NULL'))
     engineer_id = db.Column(db.String(50), db.ForeignKey('engineers.engineer_id', ondelete='SET NULL'))
     task_status = db.Column(db.String(50), db.ForeignKey('dictionary.dict_key'))
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(),onupdate=datetime.now(), nullable=False)
