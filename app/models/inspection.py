@@ -16,7 +16,7 @@ class InspectionRecord(db.Model, SerializerMixin):
     inspection_name = db.Column(db.String(50))
     task_id = db.Column(db.String(50), db.ForeignKey('tasks.task_id', ondelete='CASCADE'), nullable=False,
                         comment='所属任务编号')
-    executor_id = db.Column(db.String(50), db.ForeignKey('engineers.engineer_id', ondelete='SET NULL'),
+    executor_id = db.Column(db.String(50), db.ForeignKey('users.user_id', ondelete='SET NULL'),
                             comment='执行工程师')
     progress = db.Column(db.Integer, default=0, comment='完成百分比')
     start_time = db.Column(db.DateTime)

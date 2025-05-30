@@ -22,14 +22,19 @@ class User(db.Model, SerializerMixin):
     last_login = db.Column(db.DateTime)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
+    # 添加原Engineer表的字段
+    name = db.Column(db.String(100))
+    gender = db.Column(db.CHAR, comment='M-男, F-女')
+    department = db.Column(db.String(100))
+    work_years = db.Column(db.Integer)
+    contact_info = db.Column(db.String(255))
 
     # Relationships
     roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'))
-    engineers = db.relationship('Engineer', backref='user', lazy='dynamic')
     audit_logs = db.relationship('AuditLog', backref='user', lazy='dynamic')
     tasks = db.relationship('Task', backref='admin', lazy='dynamic')
-
-    serialize_rules = ('-password', '-roles', '-engineers', '-audit_logs')
+    inspection_records = db.relationship('InspectionRecord', backref='executor', lazy='dynamic')
+    serialize_rules = ('-password', '-roles', '-audit_logs', '-tasks', '-inspection_records')
 
     def __init__(self, **kwargs):
         if 'user_id' not in kwargs:
@@ -99,5 +104,6 @@ class RolePermission(db.Model, SerializerMixin):
     permission_id = db.Column(db.Integer, db.ForeignKey('permissions.permission_id', ondelete='CASCADE'),
                               primary_key=True)
     created_at = db.Column(db.TIMESTAMP, default=datetime.now(), onupdate=datetime.now(), nullable=False)
+
     def __init__(self, **kwargs):
         super(RolePermission, self).__init__(**kwargs)

@@ -4,7 +4,7 @@ from app.models.audit import AuditLog
 from app.models.auth import User, Role, Permission, UserRole, RolePermission
 
 from app.models.dictionary import Dictionary
-from app.models.engineer import Engineer
+# from app.models.engineer import Engineer
 from app.models.flight import Flight
 from app.models.inspection import InspectionRecord, InspectionItem
 from app.models.model import Model
