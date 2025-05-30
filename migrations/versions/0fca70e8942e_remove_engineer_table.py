@@ -17,7 +17,6 @@ depends_on = None
 
 
 def upgrade():
-
     with op.batch_alter_table('inspection_records', schema=None) as batch_op:
         batch_op.drop_constraint('inspection_records_ibfk_1', type_='foreignkey')
         batch_op.create_foreign_key(None, 'users', ['executor_id'], ['user_id'], ondelete='SET NULL')
@@ -46,27 +45,31 @@ def downgrade():
         batch_op.drop_column('gender')
         batch_op.drop_column('name')
 
+    op.create_table('engineers',
+                    sa.Column('engineer_id', mysql.VARCHAR(length=50), nullable=False),
+                    sa.Column('name', mysql.VARCHAR(length=100), nullable=False),
+                    sa.Column('gender', mysql.CHAR(length=1), nullable=True, comment='M-男, F-女'),
+                    sa.Column('department', mysql.VARCHAR(length=100), nullable=True),
+                    sa.Column('work_years', mysql.INTEGER(display_width=11), autoincrement=False, nullable=True),
+                    sa.Column('contact_info', mysql.VARCHAR(length=255), nullable=True),
+                    sa.Column('user_id', mysql.VARCHAR(length=50), nullable=True),
+                    sa.Column('created_at', mysql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'),
+                              nullable=False),
+                    sa.Column('updated_at', mysql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'),
+                              nullable=False),
+                    sa.ForeignKeyConstraint(['user_id'], ['users.user_id'], name='engineers_ibfk_1',
+                                            ondelete='SET NULL'),
+                    sa.PrimaryKeyConstraint('engineer_id'),
+                    mysql_default_charset='utf8mb4',
+                    mysql_engine='InnoDB'
+                    )
     with op.batch_alter_table('tasks', schema=None) as batch_op:
         batch_op.add_column(sa.Column('engineer_id', mysql.VARCHAR(length=50), nullable=True))
         batch_op.create_foreign_key('tasks_ibfk_1', 'engineers', ['engineer_id'], ['engineer_id'], ondelete='SET NULL')
 
     with op.batch_alter_table('inspection_records', schema=None) as batch_op:
         batch_op.drop_constraint(None, type_='foreignkey')
-        batch_op.create_foreign_key('inspection_records_ibfk_1', 'engineers', ['executor_id'], ['engineer_id'], ondelete='SET NULL')
+        batch_op.create_foreign_key('inspection_records_ibfk_1', 'engineers', ['executor_id'], ['engineer_id'],
+                                    ondelete='SET NULL')
 
-    op.create_table('engineers',
-    sa.Column('engineer_id', mysql.VARCHAR(length=50), nullable=False),
-    sa.Column('name', mysql.VARCHAR(length=100), nullable=False),
-    sa.Column('gender', mysql.CHAR(length=1), nullable=True, comment='M-男, F-女'),
-    sa.Column('department', mysql.VARCHAR(length=100), nullable=True),
-    sa.Column('work_years', mysql.INTEGER(display_width=11), autoincrement=False, nullable=True),
-    sa.Column('contact_info', mysql.VARCHAR(length=255), nullable=True),
-    sa.Column('user_id', mysql.VARCHAR(length=50), nullable=True),
-    sa.Column('created_at', mysql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
-    sa.Column('updated_at', mysql.TIMESTAMP(), server_default=sa.text('CURRENT_TIMESTAMP'), nullable=False),
-    sa.ForeignKeyConstraint(['user_id'], ['users.user_id'], name='engineers_ibfk_1', ondelete='SET NULL'),
-    sa.PrimaryKeyConstraint('engineer_id'),
-    mysql_default_charset='utf8mb4',
-    mysql_engine='InnoDB'
-    )
     # ### end Alembic commands ###
