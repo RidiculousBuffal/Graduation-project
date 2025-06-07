@@ -1,5 +1,9 @@
 import os
 
+if os.environ.get("FLASK_ENV") == "production":
+    from gevent import monkey;
+
+    monkey.patch_all()
 from dotenv import load_dotenv
 
 from app import create_app
