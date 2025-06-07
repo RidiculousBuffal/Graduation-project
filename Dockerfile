@@ -37,4 +37,4 @@ RUN apk del gcc musl-dev libffi-dev && \
 EXPOSE 5000
 
 # 启动命令
-CMD ["python", "run.py"]
+CMD ["uv", "run", "python", "run.py"]
