@@ -31,15 +31,6 @@ RUN /app/.venv/bin/python -m pip install --upgrade pip && \
 
 # 生产镜像
 FROM python:3.12-slim-bookworm AS production
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc g++ libc-dev libffi-dev libmariadb-dev pkg-config
-
-ARG PIP_INDEX_URL=https://pypi.org/simple
-RUN pip config set global.index-url ${PIP_INDEX_URL}
-WORKDIR /app
-
-ENV PATH="/app/.venv/bin:$PATH"
-
 ARG APT_MIRROR_SOURCE
 RUN if [ "$APT_MIRROR_SOURCE" = "aliyun" ]; then \
       sed -i 's@deb.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list.d/debian.sources && \
@@ -48,19 +39,18 @@ RUN if [ "$APT_MIRROR_SOURCE" = "aliyun" ]; then \
       sed -i 's@deb.debian.org@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list.d/debian.sources && \
       sed -i 's@security.debian.org@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list.d/debian.sources ; \
     fi
-
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc g++ libc-dev libffi-dev libmariadb-dev pkg-config
+WORKDIR /app
+ENV PATH="/app/.venv/bin:$PATH"
 COPY --from=builder /app/.venv /app/.venv
 COPY app ./app
 COPY migrations ./migrations
 COPY scripts ./scripts
 COPY run.py ./
 COPY entrypoint.sh /entrypoint.sh
-
 RUN chmod +x /entrypoint.sh
-
 EXPOSE 5000
-
 ENV FLASK_ENV=production
 ENV FLASK_APP=run.py
-
 ENTRYPOINT ["/entrypoint.sh"]
