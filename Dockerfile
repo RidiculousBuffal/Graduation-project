@@ -33,6 +33,7 @@ RUN /app/.venv/bin/python -m pip install --upgrade pip && \
 FROM python:3.12-slim-bookworm AS production
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc g++ libc-dev libffi-dev libmariadb-dev pkg-config \
+    
 ARG PIP_INDEX_URL=https://pypi.org/simple
 RUN pip config set global.index-url ${PIP_INDEX_URL}
 WORKDIR /app
