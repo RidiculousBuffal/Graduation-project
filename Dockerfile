@@ -1,40 +1,63 @@
-# 使用小体积的Python Alpine镜像作为基础
-FROM python:3.12-alpine
+ARG APT_MIRROR_SOURCE=standard
+FROM python:3.12-slim-bookworm AS builder
 
 # 设置工作目录
 WORKDIR /app
+ARG PIP_INDEX_URL=https://pypi.org/simple
+RUN pip config set global.index-url ${PIP_INDEX_URL}
+# 使用 ARG，在需要时替换 apt 源
+ARG APT_MIRROR_SOURCE
+RUN if [ "$APT_MIRROR_SOURCE" = "aliyun" ]; then \
+      sed -i 's@deb.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list.d/debian.sources && \
+      sed -i 's@security.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list.d/debian.sources ; \
+    elif [ "$APT_MIRROR_SOURCE" = "tsinghua" ]; then \
+      sed -i 's@deb.debian.org@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list.d/debian.sources && \
+      sed -i 's@security.debian.org@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list.d/debian.sources ; \
+    fi
 
-# 安装uv包管理工具
-RUN pip install --no-cache-dir uv
+# 推荐版本锁定，生产更稳
+RUN pip install --no-cache-dir uv==0.7.11
 
-# 安装系统依赖项（如MySQL客户端所需的库）
-RUN apk add --no-cache \
-    gcc \
-    musl-dev \
-    libffi-dev \
-    mariadb-dev
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc g++ libc-dev libffi-dev libmariadb-dev pkg-config
 
-# 复制项目文件
+# 创建虚拟环境
+RUN python -m venv /app/.venv
+
 COPY pyproject.toml uv.lock ./
+RUN /app/.venv/bin/python -m pip install --upgrade pip && \
+    /app/.venv/bin/pip install uv && \
+    /app/.venv/bin/uv sync --python /app/.venv/bin/python
+
+# 生产镜像
+FROM python:3.12-slim-bookworm AS production
+ARG PIP_INDEX_URL=https://pypi.org/simple
+RUN pip config set global.index-url ${PIP_INDEX_URL}
+WORKDIR /app
+
+ENV PATH="/app/.venv/bin:$PATH"
+
+ARG APT_MIRROR_SOURCE
+RUN if [ "$APT_MIRROR_SOURCE" = "aliyun" ]; then \
+      sed -i 's@deb.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list.d/debian.sources && \
+      sed -i 's@security.debian.org@mirrors.aliyun.com@g' /etc/apt/sources.list.d/debian.sources ; \
+    elif [ "$APT_MIRROR_SOURCE" = "tsinghua" ]; then \
+      sed -i 's@deb.debian.org@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list.d/debian.sources && \
+      sed -i 's@security.debian.org@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list.d/debian.sources ; \
+    fi
+
+COPY --from=builder /app/.venv /app/.venv
 COPY app ./app
 COPY migrations ./migrations
 COPY scripts ./scripts
 COPY run.py ./
+COPY entrypoint.sh /entrypoint.sh
 
-# 设置环境变量
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    FLASK_ENV=production
+RUN chmod +x /entrypoint.sh
 
-# 使用uv sync安装依赖项
-RUN uv sync
-
-# 清理构建依赖，减小镜像体积
-RUN apk del gcc musl-dev libffi-dev && \
-    rm -rf /var/cache/apk/*
-
-# 暴露端口
 EXPOSE 5000
 
-# 启动命令
-CMD ["uv", "run", "python", "run.py"]
+ENV FLASK_ENV=production
+ENV FLASK_APP=run.py
+
+ENTRYPOINT ["/entrypoint.sh"]

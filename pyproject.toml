@@ -10,6 +10,7 @@ dependencies = [
     "flask-jwt-extended>=4.7.1",
     "flask-migrate>=4.1.0",
     "flask-sqlalchemy>=3.1.1",
+    "gunicorn>=23.0.0",
     "marshmallow>=3.26.1",
     "mysqlclient>=2.2.7",
     "pydantic>=2.11.3",
