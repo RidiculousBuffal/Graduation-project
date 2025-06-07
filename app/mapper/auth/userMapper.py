@@ -4,7 +4,7 @@ from typing import Optional
 from sqlalchemy import select
 
 from app.ext.extensions import db
-from app.models.auth import User
+from app.models.auth import User, Role, UserRole
 
 
 class UserMapper:
@@ -42,3 +42,20 @@ class UserMapper:
         db.session.add(user)
         db.session.commit()
         return user.user_id
+
+    @staticmethod
+    def delete_user(user_id: str):
+        q = select(User).where(User.user_id == user_id)
+        user = db.session.execute(q).scalar_one_or_none()
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+
+    @staticmethod
+    def get_users_by_role(role_name: str):
+
+        q = (select(User).join(UserRole, User.user_id == UserRole.user_id)
+             .join(Role, UserRole.role_id == Role.role_id)
+             .where(Role.role_name == role_name))
+        users = db.session.execute(q).scalars().all()
+        return [u.to_dict() for u in users]

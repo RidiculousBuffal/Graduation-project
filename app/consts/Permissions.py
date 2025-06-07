@@ -115,6 +115,42 @@ class Permissions:
         "description": "删除航班信息"
     }
 
+    # 任务相关权限
+    TASK_ADD = {
+        "permission_name": "TASK.ADD",
+        "description": "添加任务"
+    }
+    TASK_READ = {
+        "permission_name": "TASK.READ",
+        "description": "查看任务"
+    }
+    TASK_UPDATE = {
+        "permission_name": "TASK.UPDATE",
+        "description": "更新任务"
+    }
+    TASK_DELETE = {
+        "permission_name": "TASK.DELETE",
+        "description": "删除任务"
+    }
+    
+    # 检查记录相关权限
+    INSPECTION_ADD = {
+        "permission_name": "INSPECTION.ADD",
+        "description": "添加检查记录"
+    }
+    INSPECTION_READ = {
+        "permission_name": "INSPECTION.READ",
+        "description": "查看检查记录"
+    }
+    INSPECTION_UPDATE = {
+        "permission_name": "INSPECTION.UPDATE",
+        "description": "更新检查记录"
+    }
+    INSPECTION_DELETE = {
+        "permission_name": "INSPECTION.DELETE",
+        "description": "删除检查记录"
+    }
+    
 
 if __name__ == '__main__':
     # 获取所有权限字典

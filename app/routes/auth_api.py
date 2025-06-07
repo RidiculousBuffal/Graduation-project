@@ -2,7 +2,9 @@ from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from flask_jwt_extended.exceptions import JWTExtendedException
 
+from app.annotations.permissionAnnot import permission_required
 from app.consts.Network import NetWorkConst
+from app.consts.Permissions import Permissions
 from app.consts.auth import AuthConsts
 from app.models.auth import User
 from app.models.response import ResponseModel
@@ -20,6 +22,13 @@ def login():
         ).to_dict(), 200
     user = User(**data)
     result = AuthService.login(user.username, password=data.get('password'))
+    return result.to_dict(), 200
+
+
+@auth_bp.route('/getEngineers', methods=[NetWorkConst.GET])
+@permission_required(Permissions.USER_READ.get('permission_name'))
+def getEngineers():
+    result = AuthService.getAllEngineers()
     return result.to_dict(), 200
 
 

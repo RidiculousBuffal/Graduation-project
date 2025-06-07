@@ -7,7 +7,7 @@ from sqlalchemy_serializer import SerializerMixin
 from app.ext.extensions import db
 
 
-class InspectionRecord(db.Model, SerializerMixin):
+class InspectionRecord(db.Model):
     __tablename__ = 'inspection_records'
     __table_args__ = {
         "mysql_charset": "utf8mb4"
@@ -38,6 +38,20 @@ class InspectionRecord(db.Model, SerializerMixin):
         if 'inspection_id' not in kwargs:
             kwargs['inspection_id'] = str(uuid.uuid4())
         super(InspectionRecord, self).__init__(**kwargs)
+
+    def to_dict(self):
+        return {
+            'inspection_id': self.inspection_id,
+            'inspection_name': self.inspection_name,
+            'task_id': self.task_id,
+            'executor_id': self.executor_id,
+            'progress': self.progress,
+            'start_time': self.start_time,
+            'end_time': self.end_time,
+            'inspection_status': self.inspection_status,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
+        }
 
 
 class InspectionItem(db.Model, SerializerMixin):

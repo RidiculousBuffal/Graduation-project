@@ -1,0 +1,11 @@
+class TaskConsts:
+    TASK_CREATE_SUCCESS="任务创建成功"
+    TASK_CREATE_FAIL="任务创建失败"
+    TASK_FIND_SUCCESS="任务搜索成功"
+    TASK_NOT_FOUND="任务不存在"
+    TASK_FETCH_FAIL="获取任务失败"
+    TASK_UPDATE_FAIL="更新任务失败"
+    TASK_DELETE_SUCCESS="任务删除成功"
+    TASK_DELETE_FAIL="任务删除失败"
+    TASK_SEARCH_FAIL="任务搜索失败"
+    TASK_UPDATE_SUCCESS="任务更新成功"

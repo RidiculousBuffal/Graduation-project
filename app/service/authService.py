@@ -48,3 +48,7 @@ class AuthService:
         role_id = RoleMapper.getRole(RoleConsts.USER).role_id
         UserRolePermissionMapper.combineUserWithRole(user_id, role_id)
         return ResponseModel.success(msg=AuthConsts.REGISTER_SUCCESS)
+
+    @staticmethod
+    def getAllEngineers():
+        return ResponseModel.success(UserMapper.get_users_by_role(RoleConsts.ENGINEER))
