@@ -90,3 +90,7 @@ Bourne Shell                     1              4              4              5
 SUM:                           103           1114            623           6362
 -------------------------------------------------------------------------------
 ```
+
+# 使用docker 启动后端
+`docker build --build-arg APT_MIRROR_SOURCE=aliyun -t aircraft --network host .`
+`docker run --env-file .env  aircraft `
