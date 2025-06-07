@@ -36,10 +36,10 @@ def test_ipfs_client():
 
     # 初始化客户端 - 注意修正了URL协议
     client = IPFSClient(
-        host="http://127.0.0.1",
-        port=10503,  # 使用你的Docker端口
-        gateway_host='http://127.0.0.1',
-        gate_way_port=8080  # Gateway端口
+        host="http://43.167.245.135",
+        port=30882,  # 使用你的Docker端口
+        gateway_host='http://43.167.245.135',
+        gate_way_port=30640  # Gateway端口
     )
 
     print("1. 初始化IPFS客户端完成\n")
