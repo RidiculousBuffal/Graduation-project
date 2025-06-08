@@ -4,8 +4,9 @@ import {createRoot} from 'react-dom/client'
 import './index.css'
 import MyApp from './MyApp.tsx'
 import {App, ConfigProvider} from "antd";
-import {BrowserRouter} from "react-router";
+
 import zhCN from 'antd/locale/zh_CN';
+import {BrowserRouter} from "react-router";
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

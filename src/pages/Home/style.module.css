@@ -1,0 +1,92 @@
+.layout {
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  background: #001529;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.username {
+  margin: 0 12px;
+  color: white;
+}
+
+.logoutButton {
+  color: white;
+}
+
+.logoutButton:hover {
+  color: #1890ff;
+}
+
+.sider {
+  background: #fff;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.mainContent {
+  padding: 24px;
+}
+
+.content {
+  padding: 24px;
+  min-height: 280px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.infoSection {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 300px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+}
+
+.userDetails {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.permissionList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 4px 12px;
+  background-color: #f0f7ff;
+  color: #1890ff;
+  border-radius: 4px;
+  font-size: 14px;
+}

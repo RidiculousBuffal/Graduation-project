@@ -10,13 +10,18 @@ import {
 } from '@ant-design/icons';
 import {Canvas} from '@react-three/fiber';
 import {OrbitControls, Environment, Float} from '@react-three/drei';
-import AirplaneModel from './AirplaneModel';
+import AirplaneModel from './AirplaneModel.tsx';
 import './LandingPage.css';
+import {useNavigate} from "react-router";
 
 const {Header, Content, Footer} = Layout;
 const {Title, Paragraph} = Typography;
 
 const LandingPage: React.FC = () => {
+    const nav = useNavigate()
+    const login = () => {
+        nav('/login')
+    }
     return (
         <Layout className="landing-page">
             {/* Header */}
@@ -27,7 +32,7 @@ const LandingPage: React.FC = () => {
                         <span className="logo-text">AeroDetect</span>
                     </div>
                     <Space size="large">
-                        <Button type="primary" size="large">开始体验</Button>
+                        <Button type="primary" size="large" onClick={login}>开始体验</Button>
                     </Space>
                 </div>
             </Header>
@@ -48,10 +53,10 @@ const LandingPage: React.FC = () => {
                                     提升机场运营效率，保障飞行安全。
                                 </Paragraph>
                                 <Space size="large" className="hero-buttons">
-                                    <Button type="primary" size="large" icon={<EyeOutlined/>}>
+                                    <Button type="primary" size="large" icon={<EyeOutlined/>} onClick={login}>
                                         立即体验
                                     </Button>
-                                    <Button size="large" color={"default"} variant={'dashed'} >
+                                    <Button size="large" color={"default"} variant={'dashed'}>
                                         了解更多
                                     </Button>
                                 </Space>
