@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 
 from app.ext.extensions import db
 from app.models.auth import User, Role, UserRole
@@ -19,7 +19,12 @@ class UserMapper:
         q = select(User).where(User.user_id == user_id)
         user = db.session.execute(q).scalar_one_or_none()
         if user:
-            user.last_login = datetime.now()
+            # 只更新last_login字段，不影响create_at
+            db.session.execute(
+                update(User)
+                .where(User.user_id == user_id)
+                .values(last_login=datetime.now())
+            )
             db.session.commit()
 
     @staticmethod

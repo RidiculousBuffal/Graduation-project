@@ -20,7 +20,7 @@ class User(db.Model, SerializerMixin):
     faceInfo = db.Column(db.Text, comment='人脸数据信息,可以是人脸的url链接,json等')
     status = db.Column(db.Boolean, default=True, comment='1-启用, 0-禁用')
     last_login = db.Column(db.DateTime)
-    created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
+    created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), nullable=False)
     updated_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
     # 添加原Engineer表的字段
     name = db.Column(db.String(100))
