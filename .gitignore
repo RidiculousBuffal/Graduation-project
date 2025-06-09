@@ -17,7 +17,7 @@ static/browser_history/*.gif
 
 # user conf
 conf.yaml
-
+p2.jpg
 .idea/
 .langgraph_api/
 
@@ -29,3 +29,6 @@ archive
 /.idea/.gitignore
 /.python-version
 /.venv/
+/p1.jpg
+.env
+/p3.jpg
