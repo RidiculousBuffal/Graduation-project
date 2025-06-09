@@ -1,0 +1,31 @@
+services:
+  weaviate:
+    command:
+    - --host
+    - 0.0.0.0
+    - --port
+    - '8080'
+    - --scheme
+    - http
+    image: cr.weaviate.io/semitechnologies/weaviate:1.28.2
+    ports:
+    - 50052:8080
+    - 50051:50051
+    volumes:
+    - weaviate_data:/var/lib/weaviate
+    restart: on-failure:0
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'false'
+      AUTHENTICATION_APIKEY_ENABLED: 'true'
+      AUTHENTICATION_APIKEY_ALLOWED_KEYS: 'Zhougezuishuai22,RickYue,viewerKey'
+      AUTHENTICATION_APIKEY_USERS: 'licheng,rick,viewer'
+      AUTHORIZATION_ENABLE_RBAC: 'true'
+      AUTHORIZATION_ADMIN_USERS: 'licheng,rick'
+      AUTHORIZATION_VIEWER_USERS: 'viewer'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      ENABLE_MODULES: 'text2vec-openai'
+      CLUSTER_HOSTNAME: 'node1'
+volumes:
+  weaviate_data:
