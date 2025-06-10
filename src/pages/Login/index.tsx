@@ -19,7 +19,7 @@ const Login: React.FC = () => {
             setLoading(true);
             const success = await AuthService.login(values.username, values.password);
             if (success) {
-                navigate('/home');
+                navigate('/console');
             }
         } finally {
             setLoading(false);

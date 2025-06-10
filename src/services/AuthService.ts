@@ -69,4 +69,9 @@ export class AuthService {
         const {access_token} = useUserStore.getState();
         return access_token !== null;
     }
+
+    static checkedPermission(permission: string): boolean {
+        const permissions = useUserStore.getState().permissions
+        return permissions.some(item => item.permission_name === permission)
+    }
 }

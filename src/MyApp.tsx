@@ -6,11 +6,25 @@ import {AuthService} from "./services/AuthService.ts";
 import {Navigate, Route, Routes} from "react-router";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-
+import DashBoard from "./pages/dashboard/DashBoard.tsx";
+import AircraftList from "./pages/aircraft/list/AircraftList.tsx";
+import AircraftType from "./pages/aircraft/type/AircraftType.tsx";
+import AircraftImage from "./pages/aircraft/image/AircraftImage.tsx";
+import Flight from "./pages/flight/Flight.tsx";
+import My from "./pages/user/my/My.tsx";
+import AdminUser from "./pages/user/admin/AdminUser.tsx";
+import ModernPermissionDenied from "./pages/denied/ModernPermissionDenied.tsx";
+import {Permissions} from "./consts/permissions.ts";
+import Terminal from "./pages/terminal/Terminal.tsx";
 // 受保护的路由组件
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({children}) => {
+const ProtectedRoute = ({children, permission}: { children: React.ReactNode, permission?: string }) => {
     if (!AuthService.isLoggedIn()) {
         return <Navigate to="/" replace/>;
+    }
+    if (permission && !AuthService.checkedPermission(permission)) {
+        console.log(permission)
+        console.log(AuthService.checkedPermission(permission))
+        return <Navigate to="/permissiondenied" replace/>;
     }
     return <>{children}</>;
 };
@@ -18,8 +32,9 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({children}) => 
 // 公共路由组件（已登录用户将被重定向到首页）
 const PublicRoute: React.FC<{ children: React.ReactNode }> = ({children}) => {
     if (AuthService.isLoggedIn()) {
-        return <Navigate to="/home" replace/>;
+        return <Navigate to="/console" replace/>;
     }
+
     return <>{children}</>;
 };
 
@@ -36,14 +51,23 @@ function MyApp() {
                         </PublicRoute>
                     }
                 />
-                <Route
-                    path="/home"
-                    element={
-                        <ProtectedRoute>
-                            <Home/>
-                        </ProtectedRoute>
-                    }
-                />
+                <Route path="/console" element={<ProtectedRoute><Home/></ProtectedRoute>}>
+                    <Route index element={<ProtectedRoute><DashBoard/></ProtectedRoute>}/>
+                    <Route path="dashboard" element={<ProtectedRoute><DashBoard/></ProtectedRoute>}/>
+                    <Route path="aircraft/list" element={<ProtectedRoute
+                        permission={Permissions.AIRCRAFT_READ.permission_name}><AircraftList/></ProtectedRoute>}/>
+                    <Route path="aircraft/type" element={<ProtectedRoute
+                        permission={Permissions.AIRCRAFT_TYPE_READ.permission_name}><AircraftType/></ProtectedRoute>}/>
+                    <Route path="aircraft/image" element={<ProtectedRoute
+                        permission={Permissions.AIRCRAFT_IMAGE_READ.permission_name}><AircraftImage/></ProtectedRoute>}/>
+                    <Route path="flight" element={<ProtectedRoute
+                        permission={Permissions.FLIGHT_READ.permission_name}><Flight/></ProtectedRoute>}/>
+                    <Route path="terminal" element={<ProtectedRoute permission={Permissions.TERMINAL_READ.permission_name}><Terminal/></ProtectedRoute>}></Route>
+                    <Route path="user/my" element={<My/>}/>
+                    <Route path="user/admin"
+                           element={<ProtectedRoute permission={Permissions.USER_READ_ALL.permission_name}><AdminUser/></ProtectedRoute>}/>
+                </Route>
+                <Route path="/permissiondenied" element={<ModernPermissionDenied/>}/>
                 <Route path="*" element={<Navigate to="/" replace/>}/>
             </Routes>
         </>
