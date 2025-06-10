@@ -1,4 +1,5 @@
 import base64
+import threading
 from typing import Union
 
 import cv2
@@ -11,23 +12,44 @@ from app.lib.vector.weaviate import WeaviateClient
 
 
 class FaceRecognition:
-    app = FaceAnalysis()
+    _instance = None
+    _lock = threading.Lock()
+    _initialized = False
+
+    def __new__(cls):
+        if cls._instance is None:
+            with cls._lock:
+                if cls._instance is None:
+                    cls._instance = super(FaceRecognition, cls).__new__(cls)
+        return cls._instance
 
     def __init__(self):
-        client = WeaviateClient()
-        self.app.prepare(ctx_id=0)
-        #     weaviate连接器
-        client = client.getClient()
-        if not client.collections.exists("Face"):
-            client.collections.create("Face", vectorizer_config=[
-                Configure.NamedVectors.none(
-                    name='face_vector',
-                    vector_index_config=Configure.VectorIndex.hnsw()
-                )
-            ], properties=[
-                Property(name='uuid', data_type=DataType.UUID)
-            ])
-        client.close()
+        if self._initialized:
+            return
+
+        with self._lock:
+            if self._initialized:
+                return
+
+            client = WeaviateClient()
+            self.app = FaceAnalysis(
+                name='buffalo_sc',
+                allowed_modules=['detection', 'recognition'],
+                providers=['CPUExecutionProvider']
+            )
+            self.app.prepare(ctx_id=0)
+            client = client.getClient()
+            if not client.collections.exists("Face"):
+                client.collections.create("Face", vectorizer_config=[
+                    Configure.NamedVectors.none(
+                        name='face_vector',
+                        vector_index_config=Configure.VectorIndex.hnsw()
+                    )
+                ], properties=[
+                    Property(name='uuid', data_type=DataType.UUID)
+                ])
+            client.close()
+            self._initialized = True
 
     def face_embedding(self, data: Union[str, bytes, object]) -> np.ndarray:
         """
@@ -99,8 +121,6 @@ class FaceRecognition:
         return response
 
     def check(self, embeddings, uuid):
-        client = WeaviateClient()
-        client = client.getClient()
         res = self.search(embeddings).objects
         if res and res.objects and isinstance(res.objects, list):
             for o in res.objects:
@@ -119,4 +139,5 @@ class FaceRecognition:
         return None
 
 
+# 全局单例实例
 frc = FaceRecognition()
