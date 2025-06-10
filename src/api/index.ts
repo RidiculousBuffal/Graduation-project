@@ -1,5 +1,5 @@
 import {useUserStore} from "../store/user/userStore.ts";
-import message from "../components/globalMessage";
+import message from "../components/globalMessage/globalMessage.ts";
 import {NET_WORK_ERROR, TOKEN_EXPIRED, TOKEN_NOT_FOUND, UNAUTHORIZED} from "../consts/apiConsts.ts";
 import {initUserInfoState} from "../store/user/initState.ts";
 

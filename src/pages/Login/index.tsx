@@ -13,10 +13,16 @@ const Login: React.FC = () => {
     const [registerForm] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
     const handleLogin = async (values: { username: string; password: string; remember: boolean }) => {
         try {
             setLoading(true);
+            if (values.remember) {
+                window.localStorage.setItem("password", values.password)
+                window.localStorage.setItem("username", values.username)
+            } else {
+                window.localStorage.removeItem("password")
+                window.localStorage.removeItem("username")
+            }
             const success = await AuthService.login(values.username, values.password);
             if (success) {
                 navigate('/console');
@@ -55,18 +61,22 @@ const Login: React.FC = () => {
                             >
                                 <Form.Item
                                     name="username"
+                                    initialValue={window.localStorage.getItem("username") ?? ""}
                                     rules={[{required: true, message: '请输入用户名!'}, {
                                         min: 5,
                                         message: '用户名至少5个字符'
                                     }]}
                                 >
-                                    <Input prefix={<UserOutlined/>} placeholder="用户名"/>
+                                    <Input
+                                        prefix={<UserOutlined/>} placeholder="用户名"/>
                                 </Form.Item>
                                 <Form.Item
                                     name="password"
                                     rules={[{required: true, message: '请输入密码!'}]}
+                                    initialValue={window.localStorage.getItem("password") ?? ""}
                                 >
-                                    <Input.Password prefix={<LockOutlined/>} placeholder="密码"/>
+                                    <Input.Password
+                                        prefix={<LockOutlined/>} placeholder="密码"/>
                                 </Form.Item>
                                 <Form.Item>
                                     <Form.Item name="remember" valuePropName="checked" noStyle>

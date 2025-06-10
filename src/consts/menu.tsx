@@ -54,6 +54,10 @@ export class MyMenu {
             key: "admin",
             label: "系统用户管理",
             permission: Permissions.USER_READ_ALL
+        }, {
+            key: "security",
+            label: "账户安全",
+            permission: Permissions.USER_READ
         }]
     }]
 

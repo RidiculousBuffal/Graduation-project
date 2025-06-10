@@ -1,6 +1,6 @@
-import {login, register} from '../api/userapi';
+import {login, register, updateUserFaceInfo, updateUserPassword} from '../api/userapi';
 import {useUserStore} from '../store/user/userStore';
-import message from '../components/globalMessage';
+import message from '../components/globalMessage/globalMessage.ts';
 import {initUserInfoState} from "../store/user/initState.ts";
 
 export class AuthService {
@@ -73,5 +73,20 @@ export class AuthService {
     static checkedPermission(permission: string): boolean {
         const permissions = useUserStore.getState().permissions
         return permissions.some(item => item.permission_name === permission)
+    }
+
+    public static async updateUserFaceInfo(faceInfo: string) {
+        const f = await updateUserFaceInfo(faceInfo)
+        if (f) {
+            const user = useUserStore.getState().user
+            useUserStore.getState().setUser({...user, faceInfo: f})
+            return true
+        } else {
+            return false
+        }
+    }
+
+    public static async updateUserPassword(password: string, newPassword: string) {
+        return await updateUserPassword(password, newPassword)
     }
 }

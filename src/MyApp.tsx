@@ -16,6 +16,7 @@ import AdminUser from "./pages/user/admin/AdminUser.tsx";
 import ModernPermissionDenied from "./pages/denied/ModernPermissionDenied.tsx";
 import {Permissions} from "./consts/permissions.ts";
 import Terminal from "./pages/terminal/Terminal.tsx";
+import Security from "./pages/user/secure/Security.tsx";
 // 受保护的路由组件
 const ProtectedRoute = ({children, permission}: { children: React.ReactNode, permission?: string }) => {
     if (!AuthService.isLoggedIn()) {
@@ -62,10 +63,15 @@ function MyApp() {
                         permission={Permissions.AIRCRAFT_IMAGE_READ.permission_name}><AircraftImage/></ProtectedRoute>}/>
                     <Route path="flight" element={<ProtectedRoute
                         permission={Permissions.FLIGHT_READ.permission_name}><Flight/></ProtectedRoute>}/>
-                    <Route path="terminal" element={<ProtectedRoute permission={Permissions.TERMINAL_READ.permission_name}><Terminal/></ProtectedRoute>}></Route>
-                    <Route path="user/my" element={<My/>}/>
+                    <Route path="terminal" element={<ProtectedRoute
+                        permission={Permissions.TERMINAL_READ.permission_name}><Terminal/></ProtectedRoute>}></Route>
+                    <Route path="user/my" element={<ProtectedRoute
+                        permission={Permissions.USER_READ.permission_name}><My/></ProtectedRoute>}/>
                     <Route path="user/admin"
                            element={<ProtectedRoute permission={Permissions.USER_READ_ALL.permission_name}><AdminUser/></ProtectedRoute>}/>
+                    <Route path="user/security" element={<ProtectedRoute
+                        permission={Permissions.USER_READ.permission_name}><Security/></ProtectedRoute>}/>
+
                 </Route>
                 <Route path="/permissiondenied" element={<ModernPermissionDenied/>}/>
                 <Route path="*" element={<Navigate to="/" replace/>}/>

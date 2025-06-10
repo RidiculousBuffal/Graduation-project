@@ -1,0 +1,97 @@
+.upload-modal .ant-modal-content {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.upload-modal .ant-modal-body {
+    padding: 0;
+}
+
+.modal-content {
+    padding: 32px;
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.modal-title {
+    margin: 0 0 8px 0 !important;
+    color: #1890ff;
+    font-weight: 600;
+}
+
+.modal-subtitle {
+    font-size: 14px;
+    color: #666;
+}
+
+.form-section {
+    margin-bottom: 32px;
+}
+
+.input-group {
+    margin-bottom: 24px;
+}
+
+.capture-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.name-input {
+    border-radius: 8px;
+    border: 2px solid #f0f0f0;
+    transition: all 0.3s ease;
+}
+
+.name-input:focus {
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 24px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.cancel-btn {
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 22px;
+    font-weight: 500;
+    border: 2px solid #d9d9d9;
+    color: #666;
+}
+
+.cancel-btn:hover {
+    border-color: #1890ff;
+    color: #1890ff;
+}
+
+.upload-btn {
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 22px;
+    font-weight: 500;
+    background: linear-gradient(135deg, #1890ff, #722ed1);
+    border: none;
+    box-shadow: 0 4px 16px rgba(24, 144, 255, 0.3);
+}
+
+.upload-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(24, 144, 255, 0.4);
+}
