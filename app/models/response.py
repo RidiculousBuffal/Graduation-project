@@ -17,11 +17,11 @@ class ResponseModel:
         }
 
     @staticmethod
-    def fail(msg: str, data: Optional[Any] = None):
+    def fail(msg: Optional[str]=None, data: Optional[Any] = None):
         return ResponseModel(code=1, msg=msg, data=data)
 
     @staticmethod
-    def success(msg: str, data: Optional[Any] = None):
+    def success(msg: Optional[str]=None, data: Optional[Any] = None):
         return ResponseModel(code=0, msg=msg, data=data)
 
 

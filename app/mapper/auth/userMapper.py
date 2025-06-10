@@ -3,6 +3,7 @@ from typing import Optional
 
 from sqlalchemy import select, update
 
+from app.DTO.user import UserDTO
 from app.ext.extensions import db
 from app.models.auth import User, Role, UserRole
 
@@ -13,6 +14,32 @@ class UserMapper:
         q = select(User).where(User.username == username)
         user = db.session.execute(q).scalar_one_or_none()
         return user
+    @staticmethod
+    def updatePassword(user_id:str,hashed_pass:str):
+        u = update(User).where(User.user_id == user_id).values(password=hashed_pass)
+        db.session.execute(u)
+        db.session.commit()
+        return True
+    @staticmethod
+    def get_user_by_user_id(user_id: str) -> Optional[User]:
+        q = select(User).where(User.user_id == user_id)
+        user = db.session.execute(q).scalar_one_or_none()
+        return user
+
+    @staticmethod
+    def update_user_basic_info(user: UserDTO, user_id: str):
+        u = update(User).where(User.user_id == user_id).values(email=user.email, phone=user.phone, name=user.name,
+                                                               gender=user.gender, department=user.department,
+                                                               work_years=user.work_years, faceInfo=user.faceInfo)
+        db.session.execute(u)
+        db.session.commit()
+        return True
+
+    @staticmethod
+    def update_user_face_login_info(user_id: str, b64: str):
+        q = update(User).where(User.user_id == user_id).values(faceInfo=b64)
+        db.session.execute(q)
+        db.session.commit()
 
     @staticmethod
     def update_last_login(user_id: str):

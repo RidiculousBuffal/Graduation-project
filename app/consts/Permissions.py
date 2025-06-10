@@ -11,6 +11,10 @@ class Permissions:
         "permission_name": "USER.READ",
         "description": "查看用户"
     }
+    USER_READ_ALL = {
+        "permission_name": "USER.READ.ALL",
+        "description": "查看全部用户"
+    }
     USER_DELETE = {
         "permission_name": "USER.DELETE",
         "description": "删除用户"

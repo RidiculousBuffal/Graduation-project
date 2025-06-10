@@ -7,3 +7,9 @@ class AuthConsts:
     REGISTER_SUCCESS="注册成功"
     INFO_REQUIRED='用户名密码不能为空'
     REFRESH_SUCCESS='刷新令牌成功'
+    FACEINFO_REQUIRED='人脸信息缺失'
+    FACE_ERROR='无法校验人脸'
+    UPDATE_USER_INFO_SUCCESS='更新数据成功'
+    UPDATE_USER_INFO_FAILURE='更新数据失败'
+    ORIGIN_PASSWORD_WRONG='原密码错误'
+    UPDATE_PASSWORD_SUCCESS='更新密码成功'

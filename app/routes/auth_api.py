@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from flask_jwt_extended.exceptions import JWTExtendedException
 
+from app.DTO.user import UserDTO, ResetPasswordDTO
 from app.annotations.permissionAnnot import permission_required
 from app.consts.Network import NetWorkConst
 from app.consts.Permissions import Permissions
@@ -26,7 +27,7 @@ def login():
 
 
 @auth_bp.route('/getEngineers', methods=[NetWorkConst.GET])
-@permission_required(Permissions.USER_READ.get('permission_name'))
+@permission_required(permissions=Permissions.USER_READ.get('permission_name'))
 def getEngineers():
     result = AuthService.getAllEngineers()
     return result.to_dict(), 200
@@ -63,3 +64,41 @@ def register():
     user = User(**data)
     result = AuthService.register(user.username, data.get('password'), user.email)
     return result.to_dict(), 200
+
+
+@auth_bp.post("/updateFaceInfo")
+@jwt_required()
+def updateFaceInfo():
+    user_id = get_jwt_identity()
+    faceInfo = request.get_json().get('faceInfo', None)
+    if faceInfo is None:
+        return ResponseModel.fail(msg=AuthConsts.FACEINFO_REQUIRED).to_dict(), 200
+    else:
+        return AuthService.updateUserFaceInfo(user_id, faceInfo).to_dict(), 200
+
+
+@auth_bp.post("/loginByFaceInfo")
+def loginByFaceInfo():
+    faceInfo = request.get_json().get('faceInfo', None)
+    if faceInfo is None:
+        return ResponseModel.fail(msg=AuthConsts.FACEINFO_REQUIRED).to_dict(), 200
+    else:
+        return AuthService.loginWithFaceInfo(faceInfo).to_dict(), 200
+
+
+@auth_bp.post("/updateInfo")
+@permission_required(permissions=Permissions.USER_UPDATE.get('permission_name'))
+def updateUserInfo():
+    userInfo = request.get_json()
+    userDto = UserDTO.model_validate(userInfo)
+    user_id = get_jwt_identity()
+    return AuthService.update_user_info(userDto, user_id).to_dict(), 200
+
+
+@auth_bp.post("/updatePassword")
+@jwt_required()
+def updateUserPassword():
+    password = request.get_json()
+    password = ResetPasswordDTO.model_validate(password)
+    user_id = get_jwt_identity()
+    return AuthService.resetUserPassword(password, user_id).to_dict(), 200
