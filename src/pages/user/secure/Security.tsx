@@ -298,7 +298,7 @@ const Security: React.FC = () => {
                 visible={faceModalVisible}
                 onClose={() => setFaceModalVisible(false)}
                 onSave={handleFaceSave}
-                initialName={user.name || ''}
+                initialName={user.name || 'hack_user'}
                 existingFace={user.faceInfo || undefined}
             />
         </div>
