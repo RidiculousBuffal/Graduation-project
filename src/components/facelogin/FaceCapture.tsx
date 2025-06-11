@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState, useImperativeHandle, forwardRef} from 'react';
 import {Button, message} from 'antd';
 import {CameraOutlined, ReloadOutlined} from '@ant-design/icons';
 import './FaceCapture.css';
@@ -9,28 +9,45 @@ interface FaceCaptureProps {
     height?: number;
 }
 
-const FaceCapture: React.FC<FaceCaptureProps> = ({
-                                                     onCapture,
-                                                     width = 400,
-                                                     height = 300
-                                                 }) => {
+export interface FaceCaptureRef {
+    stopCamera: () => void;
+}
+
+const FaceCapture = forwardRef<FaceCaptureRef, FaceCaptureProps>(({
+                                                                      onCapture,
+                                                                      width = 400,
+                                                                      height = 300
+                                                                  }, ref) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const streamRef = useRef<MediaStream | null>(null);
     const [isStreaming, setIsStreaming] = useState(false);
     const [capturedImage, setCapturedImage] = useState<string>('');
 
     useEffect(() => {
-        startCamera().then(r => r);
+        startCamera();
+
+        // 组件卸载时清理资源
         return () => {
             stopCamera();
         };
     }, []);
 
+    // 暴露停止摄像头的方法给父组件
+    useImperativeHandle(ref, () => ({
+        stopCamera
+    }));
+
     const startCamera = async () => {
         try {
+            // 先停止之前的流
+            stopCamera();
+
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {width, height, facingMode: 'user'}
             });
+
+            streamRef.current = stream;
 
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
@@ -43,11 +60,18 @@ const FaceCapture: React.FC<FaceCaptureProps> = ({
     };
 
     const stopCamera = () => {
-        if (videoRef.current?.srcObject) {
-            const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
-            tracks.forEach(track => track.stop());
-            setIsStreaming(false);
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach(track => {
+                track.stop();
+            });
+            streamRef.current = null;
         }
+
+        if (videoRef.current) {
+            videoRef.current.srcObject = null;
+        }
+
+        setIsStreaming(false);
     };
 
     const capturePhoto = () => {
@@ -70,12 +94,13 @@ const FaceCapture: React.FC<FaceCaptureProps> = ({
 
         setCapturedImage(base64);
         onCapture(base64);
+        stopCamera(); // 拍照后立即停止摄像头
         message.success('人脸采集成功');
     };
 
     const retakePhoto = () => {
         setCapturedImage('');
-        startCamera().then(r => r);
+        startCamera();
     };
 
     return (
@@ -93,7 +118,6 @@ const FaceCapture: React.FC<FaceCaptureProps> = ({
                         />
                         <div className="face-guide">
                             <div className="face-outline"></div>
-
                         </div>
                     </>
                 ) : (
@@ -134,6 +158,8 @@ const FaceCapture: React.FC<FaceCaptureProps> = ({
             </div>
         </div>
     );
-};
+});
+
+FaceCapture.displayName = 'FaceCapture';
 
 export default FaceCapture;

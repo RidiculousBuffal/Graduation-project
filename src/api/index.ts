@@ -10,7 +10,7 @@ export interface Result<T> {
 }
 
 const BASE_URL = import.meta.env.VITE_APP_API_URL
-const whiteList = ['/auth/login', '/auth/register']
+const whiteList = ['/auth/login', '/auth/register','/auth/loginByFaceInfo']
 const refreshEndPoint = '/auth/refresh'
 
 class MyFetch {

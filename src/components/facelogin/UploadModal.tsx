@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+
+import React, {useState, useEffect, useRef} from 'react';
 import {Modal, Button, Typography, Space, message} from 'antd';
 import {SaveOutlined, CloseOutlined} from '@ant-design/icons';
-import FaceCapture from './FaceCapture';
+import FaceCapture, {type FaceCaptureRef} from './FaceCapture';
 import './UploadModal.css';
 
 const {Title, Text} = Typography;
@@ -24,6 +25,7 @@ const UploadModal: React.FC<UploadModalProps> = ({
     const [userName, setUserName] = useState(initialName);
     const [capturedFace, setCapturedFace] = useState<string>('');
     const [isUploading, setIsUploading] = useState(false);
+    const faceCaptureRef = useRef<FaceCaptureRef>(null);
 
     // 设置初始人脸数据和用户名
     useEffect(() => {
@@ -54,7 +56,6 @@ const UploadModal: React.FC<UploadModalProps> = ({
 
         setIsUploading(true);
         try {
-            // 调用保存回调函数
             await onSave(capturedFace);
             handleClose();
         } catch (error) {
@@ -65,10 +66,22 @@ const UploadModal: React.FC<UploadModalProps> = ({
     };
 
     const handleClose = () => {
+        // 强制停止摄像头
+        if (faceCaptureRef.current) {
+            faceCaptureRef.current.stopCamera();
+        }
+
         setUserName('');
         setCapturedFace('');
         setIsUploading(false);
         onClose();
+    };
+
+    // Modal 关闭时的额外清理
+    const handleAfterClose = () => {
+        if (faceCaptureRef.current) {
+            faceCaptureRef.current.stopCamera();
+        }
     };
 
     return (
@@ -79,7 +92,8 @@ const UploadModal: React.FC<UploadModalProps> = ({
             footer={null}
             width={600}
             className="upload-modal"
-            destroyOnHidden
+            destroyOnHidden={true}
+            afterClose={handleAfterClose}
         >
             <div className="modal-content">
                 <div className="modal-header">
@@ -92,10 +106,10 @@ const UploadModal: React.FC<UploadModalProps> = ({
                 </div>
 
                 <div className="form-section">
-
                     <div className="capture-group">
                         <label className="input-label">人脸采集</label>
                         <FaceCapture
+                            ref={faceCaptureRef}
                             onCapture={handleFaceCapture}
                             width={350}
                             height={260}

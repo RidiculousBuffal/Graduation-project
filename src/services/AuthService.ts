@@ -1,9 +1,24 @@
-import {login, register, updateUserFaceInfo, updateUserPassword} from '../api/userapi';
+import {login, loginByFaceInfo, type loginResp, register, updateUserFaceInfo, updateUserPassword} from '../api/userapi';
 import {useUserStore} from '../store/user/userStore';
 import message from '../components/globalMessage/globalMessage.ts';
 import {initUserInfoState} from "../store/user/initState.ts";
 
 export class AuthService {
+    private static processLoginInfo(response: loginResp | null) {
+        if (response) {
+            // 将登录信息存储到 zustand 中
+            useUserStore.getState().setAccessToken(response.access_token);
+            useUserStore.getState().setRefreshToken(response.refresh_token);
+            useUserStore.getState().setUser(response.payload.user);
+            useUserStore.getState().setPermissions(response.payload.permissions);
+            useUserStore.getState().setRoles(response.payload.role);
+            message.success('登录成功');
+            return true;
+        }
+        return false;
+
+    }
+
     /**
      * 用户登录
      * @param username 用户名
@@ -13,19 +28,8 @@ export class AuthService {
     static async login(username: string, password: string): Promise<boolean> {
         try {
             const response = await login(username, password);
-            if (response) {
-                // 将登录信息存储到 zustand 中
-                useUserStore.getState().setAccessToken(response.access_token);
-                useUserStore.getState().setRefreshToken(response.refresh_token);
-                useUserStore.getState().setUser(response.payload.user);
-                useUserStore.getState().setPermissions(response.payload.permissions);
-                useUserStore.getState().setRoles(response.payload.role);
-                message.success('登录成功');
-                return true;
-            }
-            return false;
+            return this.processLoginInfo(response);
         } catch (error) {
-            message.error('登录失败');
             return false;
         }
     }
@@ -39,7 +43,7 @@ export class AuthService {
      */
     static async register(username: string, password: string, email: string): Promise<boolean> {
         try {
-            const response = await register(username, password, email);
+            await register(username, password, email);
             message.success('注册成功');
             return true;
 
@@ -88,5 +92,14 @@ export class AuthService {
 
     public static async updateUserPassword(password: string, newPassword: string) {
         return await updateUserPassword(password, newPassword)
+    }
+
+    public static async loginByFaceInfo(faceInfo: string) {
+        try {
+            const resp = await loginByFaceInfo(faceInfo)
+            return this.processLoginInfo(resp);
+        } catch (error) {
+            return false;
+        }
     }
 }

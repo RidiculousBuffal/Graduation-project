@@ -1,9 +1,10 @@
+
 /* Security.css */
 .security-container {
     padding: 24px;
     background: #f5f5f5;
-    height: 100%;
-
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 /* 页面标题 */
@@ -16,7 +17,6 @@
     justify-content: center;
     color: gray;
     box-shadow: 0 8px 32px rgba(50, 50, 52, 0.3);
-    height: 10%;
 }
 
 .header-icon {
@@ -42,14 +42,11 @@
 /* 卡片容器 */
 .security-cards-container {
     display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start; /* 避免居中造成的错位 */
-    justify-content: center;
-    align-content: center;
-
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
-    height: 90%;
-
 }
 
 /* 安全卡片基础样式 */
@@ -58,7 +55,9 @@
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    height: 100%;
+    width: 100%;
+    height: auto;
+    min-height: 500px;
     display: flex;
     flex-direction: column;
 }
@@ -71,13 +70,11 @@
 /* 密码卡片 */
 .password-card {
     background: linear-gradient(135deg, #fd79a8, #e84393);
-    aspect-ratio: 1;
 }
 
 /* 人脸识别卡片 */
 .face-card {
     background: linear-gradient(135deg, #00b894, #00cec9);
-
 }
 
 /* 卡片头部 */
@@ -101,13 +98,11 @@
 .card-title {
     color: white !important;
     margin: 0 0 4px 0 !important;
-
     font-weight: 600;
 }
 
 .card-subtitle {
     color: rgba(255, 255, 255, 0.8) !important;
-
 }
 
 /* 卡片内容 */
@@ -117,7 +112,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-
 }
 
 /* 密码表单 */
@@ -184,7 +178,6 @@
     flex: 1;
     justify-content: space-between;
     gap: 20px;
-
 }
 
 .face-avatar-section,
@@ -236,7 +229,6 @@
 .face-info-text,
 .empty-info-text {
     flex: 1;
-
 }
 
 .face-desc {
@@ -265,46 +257,6 @@
     font-size: 13px;
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-    .security-container {
-        padding: 16px;
-    }
-
-    .security-header {
-        padding: 24px 20px;
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .header-icon {
-        margin-right: 0;
-        margin-bottom: 12px;
-    }
-
-    .card-content {
-        padding: 20px;
-    }
-
-    .cards-container .ant-col {
-        margin-bottom: 16px;
-    }
-}
-
-@media (max-width: 576px) {
-    .security-header {
-        padding: 20px 16px;
-    }
-
-    .card-header {
-        padding: 20px 16px 12px 16px;
-    }
-
-    .card-content {
-        padding: 16px;
-    }
-}
-
 /* 动画效果 */
 .face-avatar,
 .empty-avatar {
@@ -317,4 +269,153 @@
 
 .submit-btn {
     transition: all 0.3s ease;
+}
+
+/* 响应式设计 */
+/* 大屏幕 - 桌面端 */
+@media (min-width: 1200px) {
+    .security-cards-container .ant-row {
+        justify-content: center;
+        align-items: stretch;
+    }
+
+    .security-card {
+        min-height: 600px;
+    }
+}
+
+/* 中等屏幕 - 平板端 */
+@media (max-width: 1199px) and (min-width: 768px) {
+    .security-cards-container .ant-row {
+        justify-content: center;
+        align-items: stretch;
+    }
+
+    .security-card {
+        min-height: 550px;
+    }
+}
+
+/* 小屏幕 - 移动端 */
+@media (max-width: 767px) {
+    .security-container {
+        padding: 16px;
+    }
+
+    .security-header {
+        padding: 20px 16px;
+        margin-bottom: 20px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .header-icon {
+        margin-right: 0;
+        margin-bottom: 12px;
+        font-size: 28px;
+    }
+
+    .security-cards-container {
+        gap: 20px;
+    }
+
+    .security-cards-container .ant-row {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .security-cards-container .ant-col {
+        width: 100% !important;
+        flex: none !important;
+        max-width: 100% !important;
+        margin-bottom: 20px;
+    }
+
+    .security-card {
+        min-height: auto;
+        height: auto;
+        margin: 0;
+    }
+
+    .card-header {
+        padding: 20px 16px 12px 16px;
+    }
+
+    .card-content {
+        padding: 16px;
+    }
+
+    .face-avatar {
+        width: 120px !important;
+        height: 120px !important;
+    }
+
+    .empty-avatar {
+        width: 80px !important;
+        height: 80px !important;
+    }
+}
+
+/* 超小屏幕 */
+@media (max-width: 480px) {
+    .security-container {
+        padding: 12px;
+    }
+
+    .security-header {
+        padding: 16px 12px;
+        margin-bottom: 16px;
+    }
+
+    .header-icon {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+
+    .header-title {
+        font-size: 20px !important;
+    }
+
+    .header-subtitle {
+        font-size: 12px;
+    }
+
+    .security-cards-container .ant-col {
+        margin-bottom: 16px;
+    }
+
+    .card-header {
+        padding: 16px 12px 8px 12px;
+    }
+
+    .card-content {
+        padding: 12px;
+    }
+
+    .card-title {
+        font-size: 16px !important;
+    }
+
+    .card-subtitle {
+        font-size: 12px;
+    }
+
+    .face-avatar {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .empty-avatar {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .face-info-text Text,
+    .empty-info-text Text {
+        font-size: 16px !important;
+    }
+
+    .face-desc {
+        font-size: 14px !important;
+    }
 }

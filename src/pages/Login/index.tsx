@@ -1,27 +1,28 @@
 import React, {useState} from 'react';
-import {Button, Card, Checkbox, Form, Input, Tabs, Typography} from 'antd';
-import {LockOutlined, MailOutlined, UserOutlined} from '@ant-design/icons';
+import {Card, Tabs, Typography} from 'antd';
 import {useNavigate} from 'react-router';
 import {AuthService} from '../../services/AuthService';
+import PasswordLogin from './PasswordLogin';
+import Register from './Register';
+import FaceLogin from './FaceLogin';
 import styles from './style.module.css';
 
 const {Title} = Typography;
 const {TabPane} = Tabs;
 
 const Login: React.FC = () => {
-    const [loginForm] = Form.useForm();
-    const [registerForm] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const handleLogin = async (values: { username: string; password: string; remember: boolean }) => {
+
+    const handlePasswordLogin = async (values: { username: string; password: string; remember: boolean }) => {
         try {
             setLoading(true);
             if (values.remember) {
-                window.localStorage.setItem("password", values.password)
-                window.localStorage.setItem("username", values.username)
+                window.localStorage.setItem("password", values.password);
+                window.localStorage.setItem("username", values.username);
             } else {
-                window.localStorage.removeItem("password")
-                window.localStorage.removeItem("username")
+                window.localStorage.removeItem("password");
+                window.localStorage.removeItem("username");
             }
             const success = await AuthService.login(values.username, values.password);
             if (success) {
@@ -37,8 +38,19 @@ const Login: React.FC = () => {
             setLoading(true);
             const success = await AuthService.register(values.username, values.password, values.email);
             if (success) {
-                // 切换到登录标签
-                registerForm.resetFields();
+
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleFaceLogin = async (faceData: string) => {
+        try {
+            setLoading(true);
+            const success = await AuthService.loginByFaceInfo(faceData);
+            if (success) {
+                navigate('/console');
             }
         } finally {
             setLoading(false);
@@ -48,104 +60,33 @@ const Login: React.FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles.content}>
+                <div className={styles.header}>
+                    <Title level={2} className={styles.title}>
+                        欢迎登录
+                    </Title>
+                </div>
+
                 <Card className={styles.card}>
-                    <Tabs defaultActiveKey="login" centered>
-                        <TabPane tab="登录" key="login">
-                            <Form
-                                form={loginForm}
-                                name="login"
-                                initialValues={{remember: true}}
-                                onFinish={handleLogin}
-                                size="large"
-                                layout="vertical"
-                            >
-                                <Form.Item
-                                    name="username"
-                                    initialValue={window.localStorage.getItem("username") ?? ""}
-                                    rules={[{required: true, message: '请输入用户名!'}, {
-                                        min: 5,
-                                        message: '用户名至少5个字符'
-                                    }]}
-                                >
-                                    <Input
-                                        prefix={<UserOutlined/>} placeholder="用户名"/>
-                                </Form.Item>
-                                <Form.Item
-                                    name="password"
-                                    rules={[{required: true, message: '请输入密码!'}]}
-                                    initialValue={window.localStorage.getItem("password") ?? ""}
-                                >
-                                    <Input.Password
-                                        prefix={<LockOutlined/>} placeholder="密码"/>
-                                </Form.Item>
-                                <Form.Item>
-                                    <Form.Item name="remember" valuePropName="checked" noStyle>
-                                        <Checkbox>记住我</Checkbox>
-                                    </Form.Item>
-                                </Form.Item>
-                                <Form.Item>
-                                    <Button type="primary" htmlType="submit" className={styles.submitButton}
-                                            loading={loading}>
-                                        登录
-                                    </Button>
-                                </Form.Item>
-                            </Form>
+                    <Tabs defaultActiveKey="password" centered>
+                        <TabPane tab="密码登录" key="password">
+                            <PasswordLogin
+                                loading={loading}
+                                onSubmit={handlePasswordLogin}
+                            />
                         </TabPane>
+
+                        <TabPane tab="人脸识别" key="face">
+                            <FaceLogin
+                                loading={loading}
+                                onSubmit={handleFaceLogin}
+                            />
+                        </TabPane>
+
                         <TabPane tab="注册" key="register">
-                            <Form
-                                form={registerForm}
-                                name="register"
-                                onFinish={handleRegister}
-                                size="large"
-                                layout="vertical"
-                            >
-                                <Form.Item
-                                    name="username"
-                                    rules={[
-                                        {required: true, message: '请输入用户名!'},
-                                        {min: 5, max: 20, message: '用户名长度为5-20个字符'}
-                                    ]}
-                                >
-                                    <Input prefix={<UserOutlined/>} placeholder="用户名"/>
-                                </Form.Item>
-                                <Form.Item
-                                    name="email"
-                                    rules={[
-                                        {type: 'email', message: '请输入有效的邮箱地址!'}
-                                    ]}
-                                >
-                                    <Input prefix={<MailOutlined/>} placeholder="邮箱"/>
-                                </Form.Item>
-                                <Form.Item
-                                    name="password"
-                                    rules={[{required: true, message: '请输入密码!'}]}
-                                >
-                                    <Input.Password prefix={<LockOutlined/>} placeholder="密码"/>
-                                </Form.Item>
-                                <Form.Item
-                                    name="confirm"
-                                    dependencies={['password']}
-                                    rules={[
-                                        {required: true, message: '请确认密码!'},
-                                        ({getFieldValue}) => ({
-                                            validator(_, value) {
-                                                if (!value || getFieldValue('password') === value) {
-                                                    return Promise.resolve();
-                                                }
-                                                return Promise.reject(new Error('两次输入的密码不匹配!'));
-                                            },
-                                        }),
-                                    ]}
-                                >
-                                    <Input.Password prefix={<LockOutlined/>} placeholder="确认密码"/>
-                                </Form.Item>
-                                <Form.Item>
-                                    <Button type="primary" htmlType="submit" className={styles.submitButton}
-                                            loading={loading}>
-                                        注册
-                                    </Button>
-                                </Form.Item>
-                            </Form>
+                            <Register
+                                loading={loading}
+                                onSubmit={handleRegister}
+                            />
                         </TabPane>
                     </Tabs>
                 </Card>

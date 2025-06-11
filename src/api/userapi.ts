@@ -11,20 +11,22 @@ export async function register(username: string, password: string, email: string
     return fetchAPI.req('/auth/register', {method: "POST", body: JSON.stringify(payload)})
 }
 
+export type loginResp = {
+    access_token: string,
+    payload: {
+        permissions: permissionType,
+        role: roleType,
+        user: userType
+    },
+    refresh_token: string,
+}
+
 export async function login(username: string, password: string) {
     const payload = {
         username: username,
         password: password,
     }
-    return fetchAPI.req<{
-        access_token: string,
-        payload: {
-            permissions: permissionType,
-            role: roleType,
-            user: userType
-        },
-        refresh_token: string,
-    }>('/auth/login', {method: "POST", body: JSON.stringify(payload)})
+    return fetchAPI.req<loginResp>('/auth/login', {method: "POST", body: JSON.stringify(payload)})
 }
 
 export async function updateUserInfo(user: Partial<userType>): Promise<userType | null> {
@@ -40,4 +42,8 @@ export async function updateUserPassword(password: string, newPassword: string):
         method: "POST",
         body: JSON.stringify({password: password, newPassword: newPassword})
     })
+}
+
+export async function loginByFaceInfo(faceInfo: string) {
+    return fetchAPI.req<loginResp>('/auth/loginByFaceInfo', {method: "POST", body: JSON.stringify({faceInfo: faceInfo})})
 }
