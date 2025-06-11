@@ -40,3 +40,5 @@ logs/
 # Database
 *.db
 *.sqlite3
+
+.env.prod
