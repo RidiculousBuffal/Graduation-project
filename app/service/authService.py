@@ -85,7 +85,10 @@ class AuthService:
         user_id = frc.check_without_uuid(embed)
         if user_id:
             user = UserMapper.get_user_by_user_id(user_id)
-            return AuthService._process_login_info(user)
+            if user:
+                return AuthService._process_login_info(user)
+            else:
+                return ResponseModel.fail(msg=AuthConsts.FACE_ERROR)
         else:
             return ResponseModel.fail(msg=AuthConsts.FACE_ERROR)
 

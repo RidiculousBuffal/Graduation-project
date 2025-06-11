@@ -133,9 +133,13 @@ class FaceRecognition:
     def check_without_uuid(self, embeddings):
 
         res = self.search(embeddings)
-        if res and res.objects and isinstance(res.objects, list):
-            for o in res.objects:
-                return str(o.properties.get('uuid'))
+        try:
+            if res and res.objects and isinstance(res.objects, list):
+                for o in res.objects:
+                    return str(o.properties.get('uuid'))
+        except Exception as e:
+            print(e)
+            print(res)
         return None
 
 
