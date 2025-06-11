@@ -83,7 +83,7 @@ const Security: React.FC = () => {
                         ...user,
                         faceInfo: null
                     };
-                    if (await UserService.updateUserInfo(updatedUser)) {
+                    if (await UserService.deleteFaceInfo(updatedUser)) {
                         message.success("删除成功")
                     }
                 } catch (error) {
