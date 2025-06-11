@@ -66,11 +66,11 @@ function MyApp() {
                     <Route path="terminal" element={<ProtectedRoute
                         permission={Permissions.TERMINAL_READ.permission_name}><Terminal/></ProtectedRoute>}></Route>
                     <Route path="user/my" element={<ProtectedRoute
-                        permission={Permissions.USER_READ.permission_name}><My/></ProtectedRoute>}/>
+                        permission={Permissions.PROFILE_READ.permission_name}><My/></ProtectedRoute>}/>
                     <Route path="user/admin"
                            element={<ProtectedRoute permission={Permissions.USER_READ_ALL.permission_name}><AdminUser/></ProtectedRoute>}/>
                     <Route path="user/security" element={<ProtectedRoute
-                        permission={Permissions.USER_READ.permission_name}><Security/></ProtectedRoute>}/>
+                        permission={Permissions.PROFILE_READ.permission_name}><Security/></ProtectedRoute>}/>
 
                 </Route>
                 <Route path="/permissiondenied" element={<ModernPermissionDenied/>}/>

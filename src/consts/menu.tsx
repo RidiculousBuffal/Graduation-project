@@ -49,7 +49,7 @@ export class MyMenu {
         children: [{
             key: "my",
             label: "个人信息修改",
-            permission: Permissions.USER_READ,
+            permission: Permissions.PROFILE_READ,
         }, {
             key: "admin",
             label: "系统用户管理",
@@ -57,7 +57,7 @@ export class MyMenu {
         }, {
             key: "security",
             label: "账户安全",
-            permission: Permissions.USER_READ
+            permission: Permissions.PROFILE_READ
         }]
     }]
 
