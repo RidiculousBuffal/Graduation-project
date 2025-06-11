@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash
 from app.DTO.user import UserDTO, ResetPasswordDTO
 from app.consts.Roles import RoleConsts
 from app.consts.auth import AuthConsts
+from app.exceptions.face import NoFaceFound
 from app.lib.face.faceRecognition import FaceRecognition
 from app.lib.face.faceRecognition import frc
 from app.mapper.auth.roleMapper import RoleMapper
@@ -68,13 +69,19 @@ class AuthService:
     def updateUserFaceInfo(user_id, face_info):
         UserMapper.update_user_face_login_info(user_id, face_info)
         # 上传图片到向量数据库
-        embed = frc.face_embedding(face_info)
+        try:
+            embed = frc.face_embedding(face_info)
+        except NoFaceFound as e:
+            return ResponseModel.fail(msg=AuthConsts.FACEINFO_REQUIRED)
         frc.put_embedding_to_weaviate(embed, user_id)
         return ResponseModel.success(msg=None, data=face_info)
 
     @staticmethod
     def loginWithFaceInfo(face_info):
-        embed = frc.face_embedding(face_info)
+        try:
+            embed = frc.face_embedding(face_info)
+        except NoFaceFound as e:
+            return ResponseModel.fail(msg=AuthConsts.FACEINFO_REQUIRED)
         user_id = frc.check_without_uuid(embed)
         if user_id:
             user = UserMapper.get_user_by_user_id(user_id)

@@ -8,6 +8,7 @@ from insightface.app import FaceAnalysis
 from weaviate.collections.classes.config import Configure, Property, DataType
 from weaviate.collections.classes.grpc import MetadataQuery
 
+from app.exceptions.face import NoFaceFound
 from app.lib.vector.weaviate import WeaviateClient
 
 
@@ -73,7 +74,7 @@ class FaceRecognition:
 
         faces = self.app.get(img)
         if not faces:
-            raise ValueError('No face found!')
+            raise NoFaceFound()
         return faces[0].embedding
 
     def delete_embedding(self, uuid):
@@ -114,7 +115,7 @@ class FaceRecognition:
         response = face.query.near_vector(
             near_vector=embeddings,
             limit=3,
-            distance=0.20,
+            distance=0.25,
             return_metadata=MetadataQuery(distance=True),
         )
         client.close()
@@ -130,12 +131,11 @@ class FaceRecognition:
         return False
 
     def check_without_uuid(self, embeddings):
-        client = WeaviateClient()
-        client = client.getClient()
-        res = self.search(embeddings).objects
+
+        res = self.search(embeddings)
         if res and res.objects and isinstance(res.objects, list):
             for o in res.objects:
-                return o.get('uuid')
+                return str(o.properties.get('uuid'))
         return None
 
 
