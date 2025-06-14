@@ -113,7 +113,7 @@ class TerminalService:
         if success:
             return ResponseModel.success(
                 msg=TerminalConsts.DELETE_TERMINAL_SUCCESS,
-                data=None
+                data=True
             )
         return ResponseModel.fail(
             msg=TerminalConsts.DELETE_TERMINAL_ERROR,
@@ -123,6 +123,7 @@ class TerminalService:
     @staticmethod
     def search_terminal(
             terminal_name: Optional[str] = None,
+            terminal_description: Optional[str] = None,
             page_num: int = 1,
             page_size: int = 10
     ) -> ResponseModel:
@@ -136,7 +137,9 @@ class TerminalService:
         result = TerminalMapper.search(
             terminal_name=terminal_name,
             pageNum=page_num,
-            pageSize=page_size
+            pageSize=page_size,
+            terminal_description=terminal_description,
+            fuzzySearch=True
         )
         return ResponseModel.success(
             msg=TerminalConsts.SEARCH_TERMINAL_SUCCESS,

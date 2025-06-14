@@ -1,9 +1,12 @@
+from typing import Optional
+
 from sqlalchemy import select
 
-from app.DTO.terminals import TerminalCreateDTO, TerminalDTO, TerminalUpdateDTO, TerminalPagedResponseDTO
 from app.DTO.pagination import PaginationDTO
+from app.DTO.terminals import TerminalCreateDTO, TerminalDTO, TerminalUpdateDTO, TerminalPagedResponseDTO
 from app.ext.extensions import db
 from app.models.terminal import Terminal
+
 
 class TerminalMapper:
     @staticmethod
@@ -65,13 +68,18 @@ class TerminalMapper:
     @staticmethod
     def search(
             terminal_name: str = None,
+            terminal_description: Optional[str] = None,
             pageNum: int = 1,
-            pageSize: int = 10
+            pageSize: int = 10,
+            fuzzySearch: Optional[bool] = False,
     ):
         """分页查询 Terminal 记录"""
         query = select(Terminal)
         if terminal_name:
-            query = query.where(Terminal.terminal_name == terminal_name)
+            query = query.where(Terminal.terminal_name.ilike(
+                f'%{terminal_name}%') if fuzzySearch else Terminal.terminal_name == terminal_name)
+        if terminal_description:
+            query = query.where(Terminal.description.ilike(f'%{terminal_description}%'))
         query = query.order_by(Terminal.terminal_name)
         pagination = db.paginate(
             select=query,

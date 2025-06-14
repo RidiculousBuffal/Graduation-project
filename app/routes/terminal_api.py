@@ -10,6 +10,7 @@ from app.service.terminalService import TerminalService
 
 terminal_bp = Blueprint('terminal', __name__)
 
+
 @terminal_bp.post('/createTerminal')
 @permission_required(Permissions.TERMINAL_ADD.get('permission_name'), True)
 def create_terminal():
@@ -22,12 +23,14 @@ def create_terminal():
     except ValidationError as e:
         return ResponseModel.fail(msg=NetWorkConst.PARAMS_MISSING, data=str(e)).to_dict(), 400
 
+
 @terminal_bp.get('/getTerminal/<string:terminal_id>')
 @permission_required(Permissions.TERMINAL_READ.get('permission_name'), True)
 def get_terminal(terminal_id: str):
     """根据ID获取航站楼记录"""
     result = TerminalService.get_terminal_by_id(terminal_id)
     return result.to_dict(), 200
+
 
 @terminal_bp.post('/updateTerminal/<string:terminal_id>')
 @permission_required(Permissions.TERMINAL_UPDATE.get('permission_name'), True)
@@ -41,12 +44,14 @@ def update_terminal(terminal_id: str):
     except ValidationError as e:
         return ResponseModel.fail(msg=NetWorkConst.PARAMS_MISSING, data=str(e)).to_dict(), 400
 
+
 @terminal_bp.delete('/deleteTerminal/<string:terminal_id>')
 @permission_required(Permissions.TERMINAL_DELETE.get('permission_name'), True)
 def delete_terminal(terminal_id: str):
     """删除航站楼记录"""
     result = TerminalService.delete_terminal(terminal_id)
     return result.to_dict(), 200
+
 
 @terminal_bp.get('/searchTerminal')
 @permission_required(Permissions.TERMINAL_READ.get('permission_name'), True)
@@ -56,9 +61,12 @@ def search_terminal():
     terminal_name = args.get('terminal_name', type=str)
     page_num = args.get('page_num', default=1, type=int)
     page_size = args.get('page_size', default=10, type=int)
-
+    terminal_description = args.get('terminal_description', type=str)
+    if not terminal_description:
+        terminal_description = request.args.get('description', type=str)
     result = TerminalService.search_terminal(
         terminal_name=terminal_name,
+        terminal_description=terminal_description,
         page_num=page_num,
         page_size=page_size
     )
