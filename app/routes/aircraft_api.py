@@ -5,7 +5,6 @@ from app.DTO.aircrafts import (
     AircraftCreateDTO, AircraftUpdateDTO,
     AircraftTypeCreateDTO, AircraftTypeUpdateDTO, AircraftReferenceImageUpdateDTO, AircraftReferenceImageCreateDTO
 )
-from app.annotations.loggingAnnot import logging_to_blockchain
 from app.annotations.permissionAnnot import permission_required
 from app.consts.Network import NetWorkConst
 from app.consts.Permissions import Permissions
@@ -120,15 +119,18 @@ def delete_aircraft_type(typeid: str):
 def search_aircraft_type():
     args = request.args
     type_name = args.get('type_name', type=str)
+    description = args.get('description', type=str)
     page_num = args.get('page_num', default=1, type=int)
     page_size = args.get('page_size', default=10, type=int)
 
     result = AircraftService.search_aircraft_type(
         type_name=type_name,
         page_num=page_num,
-        page_size=page_size
+        page_size=page_size,
+        description=description
     )
     return result.to_dict(), 200
+
 
 @aircraft_bp.post('/createAircraftImage')
 @permission_required(Permissions.AIRCRAFT_IMAGE_ADD.get('permission_name', ''), True)
@@ -142,12 +144,14 @@ def create_aircraft_image():
     except ValidationError as e:
         return ResponseModel.fail(msg=NetWorkConst.PARAMS_MISSING, data=str(e)).to_dict(), 400
 
+
 @aircraft_bp.get('/getAircraftImage/<string:image_id>')
 @permission_required(Permissions.AIRCRAFT_IMAGE_READ.get('permission_name', ''), True)
 def get_aircraft_image(image_id: str):
     """根据ID获取飞机参考图片"""
     result = AircraftReferenceImageService.get_image_by_id(image_id)
     return result.to_dict(), 200
+
 
 @aircraft_bp.post('/updateAircraftImage/<string:image_id>')
 @permission_required(Permissions.AIRCRAFT_IMAGE_UPDATE.get('permission_name', ''), True)
@@ -161,12 +165,14 @@ def update_aircraft_image(image_id: str):
     except ValidationError as e:
         return ResponseModel.fail(msg=NetWorkConst.PARAMS_MISSING, data=str(e)).to_dict(), 400
 
+
 @aircraft_bp.delete('/deleteAircraftImage/<string:image_id>')
 @permission_required(Permissions.AIRCRAFT_IMAGE_DELETE.get('permission_name', ''), True)
 def delete_aircraft_image(image_id: str):
     """删除飞机参考图片"""
     result = AircraftReferenceImageService.delete_image(image_id)
     return result.to_dict(), 200
+
 
 @aircraft_bp.get('/searchAircraftImage')
 @permission_required(Permissions.AIRCRAFT_IMAGE_READ.get('permission_name', ''), True)

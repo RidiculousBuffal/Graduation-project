@@ -1,3 +1,5 @@
+from typing import Optional
+
 from sqlalchemy import select
 
 from app.DTO.aircrafts import AircraftTypeCreateDTO, AircraftTypeDTO, AircraftTypeUpdateDTO, \
@@ -67,13 +69,18 @@ class AircraftTypeMapper:
     @staticmethod
     def search(
             type_name: str = None,
+            description: Optional[str] = None,
             pageNum: int = 1,
-            pageSize: int = 10
+            pageSize: int = 10,
+            fuzzySearch: Optional[bool] = False,
     ):
         """分页查询AircraftType记录"""
         query = select(AircraftType)
         if type_name:
-            query = query.where(AircraftType.type_name == type_name)
+            query = query.where(AircraftType.type_name.ilike(f'%{type_name}%')) if type_name else query.where(
+                AircraftType.type_name == type_name)
+        if description:
+            query = query.where(AircraftType.description.ilike(f'%{description}%'))
         query = query.order_by(AircraftType.type_name)
         pagination = db.paginate(
             select=query,

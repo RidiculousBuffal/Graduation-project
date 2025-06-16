@@ -224,7 +224,7 @@ class AircraftService:
         if success:
             return ResponseModel.success(
                 msg=AircraftConsts.DELETE_TYPE_SUCCESS,
-                data=None
+                data=True
             )
         return ResponseModel.fail(
             msg=AircraftConsts.DELETE_TYPE_ERROR,
@@ -234,9 +234,11 @@ class AircraftService:
     @staticmethod
     def search_aircraft_type(
             type_name: Optional[str] = None,
+            description: Optional[str] = None,
             page_num: int = 1,
             page_size: int = 10
     ) -> ResponseModel:
+
         """分页查询飞机类型记录"""
         if page_num < 1 or page_size < 1:
             return ResponseModel.fail(
@@ -247,7 +249,9 @@ class AircraftService:
         result = AircraftTypeMapper.search(
             type_name=type_name,
             pageNum=page_num,
-            pageSize=page_size
+            pageSize=page_size,
+            description=description,
+            fuzzySearch=True
         )
         return ResponseModel.success(
             msg=AircraftConsts.SEARCH_TYPE_SUCCESS,
