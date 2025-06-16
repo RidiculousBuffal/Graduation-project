@@ -88,7 +88,8 @@ class AircraftMapper:
             aircraftAge: int = None,
             aircraftTypeName: str = None,
             pageNum: int = 1,
-            pageSize: int = 10
+            pageSize: int = 10,
+            fuzzySearch=True
     ):
         """分页查询Aircraft记录"""
         query = (
@@ -97,11 +98,13 @@ class AircraftMapper:
         )
         conditions = []
         if aircraftName:
-            conditions.append(Aircraft.aircraft_name == aircraftName)
+            conditions.append(Aircraft.aircraft_name == aircraftName) if not fuzzySearch else conditions.append(
+                Aircraft.aircraft_name.ilike(f'''%{aircraftName}%'''))
         if aircraftAge:
             conditions.append(Aircraft.age == aircraftAge)
         if aircraftTypeName:
-            conditions.append(AircraftType.type_name == aircraftTypeName)
+            conditions.append(AircraftType.type_name == aircraftTypeName) if not fuzzySearch else conditions.append(
+                AircraftType.type_name.ilike(f'''%{aircraftTypeName}%'''))
 
         if conditions:
             query = query.where(*conditions)

@@ -81,7 +81,7 @@ class AircraftReferenceImageDTO(BaseModel):
 
 class AircraftReferenceImageCreateDTO(BaseModel):
     image_name: str
-    image_description: str
+    image_description: Optional[str]=None
     image_json: AircraftReferenceImageJson
     aircraft_id: str
 
