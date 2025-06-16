@@ -4768,6 +4768,11 @@ optionator@^0.9.3:
     type-check "^0.4.0"
     word-wrap "^1.2.5"
 
+overlayscrollbars@^2.11.4:
+  version "2.11.4"
+  resolved "https://registry.yarnpkg.com/overlayscrollbars/-/overlayscrollbars-2.11.4.tgz#68a776731106f9f767d5b667fb2024127d282a94"
+  integrity sha512-GKYQo3OZ1QWnppNjQVv5hfpn+glYUxc6+ufW+ivdXUyLWFNc01XoH2Z36KGM4I8e5pXYeA3ElNItcXiLvmUhnQ==
+
 p-limit@^3.0.2:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-3.1.0.tgz#e1daccbe78d0d1388ca18c64fea38e3e57e3706b"
