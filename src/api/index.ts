@@ -1,6 +1,6 @@
 import {useUserStore} from "../store/user/userStore.ts";
 import message from "../components/globalMessage/globalMessage.ts";
-import {NET_WORK_ERROR, TOKEN_EXPIRED, TOKEN_NOT_FOUND, UNAUTHORIZED} from "../consts/apiConsts.ts";
+import {NET_WORK_ERROR, TOKEN_EXPIRED, TOKEN_HAS_EXPIRED, TOKEN_NOT_FOUND, UNAUTHORIZED} from "../consts/apiConsts.ts";
 import {initUserInfoState} from "../store/user/initState.ts";
 
 export interface Result<T> {
@@ -10,7 +10,7 @@ export interface Result<T> {
 }
 
 const BASE_URL = import.meta.env.VITE_APP_API_URL
-const whiteList = ['/auth/login', '/auth/register','/auth/loginByFaceInfo']
+const whiteList = ['/auth/login', '/auth/register', '/auth/loginByFaceInfo']
 const refreshEndPoint = '/auth/refresh'
 
 class MyFetch {
@@ -40,7 +40,7 @@ class MyFetch {
                 return null
             }
             const result: Result<{ access_token: string }> = await res.json()
-            if (result.code === 200) {
+            if (result.code === 0) {
                 useUserStore.getState().setAccessToken(result.data.access_token)
                 return result.data.access_token
             }
@@ -75,7 +75,7 @@ class MyFetch {
         if (!res.ok) {
             if (res.status === 401) {
                 const result: { msg: string } = await res.json()
-                if (result.msg === TOKEN_EXPIRED) {
+                if (result.msg === TOKEN_HAS_EXPIRED) {
                     const token = await this.refreshToken()
                     if (token) {
                         //     刷新令牌成功
@@ -84,7 +84,7 @@ class MyFetch {
                         //     刷新令牌失败,身份过期
                         useUserStore.getState().setUser(initUserInfoState)
                         useUserStore.getState().setRefreshToken(null)
-                        useUserStore.getState().setRefreshToken(null)
+                        useUserStore.getState().setAccessToken(null)
                         useUserStore.getState().setPermissions([])
                         useUserStore.getState().setRoles([])
                         message.error(TOKEN_EXPIRED)
