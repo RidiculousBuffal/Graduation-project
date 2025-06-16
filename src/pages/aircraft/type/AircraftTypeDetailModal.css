@@ -1,0 +1,128 @@
+
+.aircraft-type-detail-modal .ant-modal-body {
+    padding: 24px;
+}
+
+.aircraft-type-detail-content {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.aircraft-type-description {
+    max-width: 100%;
+    word-break: break-word;
+}
+
+/* Markdown 样式 */
+.markdown-h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 16px 0 12px 0;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 8px;
+}
+
+.markdown-h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #374151;
+    margin: 14px 0 10px 0;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 6px;
+}
+
+.markdown-h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #4b5563;
+    margin: 12px 0 8px 0;
+}
+
+.markdown-p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #374151;
+    margin: 8px 0;
+}
+
+.markdown-ul,
+.markdown-ol {
+    margin: 8px 0;
+    padding-left: 24px;
+}
+
+.markdown-li {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #374151;
+    margin: 4px 0;
+}
+
+.markdown-blockquote {
+    border-left: 4px solid #3b82f6;
+    background-color: #f8fafc;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-style: italic;
+    color: #64748b;
+}
+
+.markdown-inline-code {
+    background-color: #f1f5f9;
+    color: #db2777;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.markdown-code-block {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+}
+
+.markdown-code-block code {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+.markdown-strong {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.markdown-em {
+    font-style: italic;
+    color: #4b5563;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .aircraft-type-detail-modal {
+        width: 95vw !important;
+        margin: 16px auto;
+    }
+
+    .aircraft-type-detail-content {
+        max-height: 60vh;
+    }
+
+    .markdown-h1 {
+        font-size: 20px;
+    }
+
+    .markdown-h2 {
+        font-size: 18px;
+    }
+
+    .markdown-h3 {
+        font-size: 16px;
+    }
+}
