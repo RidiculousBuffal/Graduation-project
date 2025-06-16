@@ -65,9 +65,11 @@ class MyFetch {
         }
 
         if (!options.headers || !('Content-Type' in options.headers)) {
-            options.headers = {
-                ...options.headers,
-                'Content-Type': 'application/json'
+            if (!(options.body instanceof FormData)) {
+                options.headers = {
+                    ...options.headers,
+                    'Content-Type': 'application/json'
+                }
             }
         }
 

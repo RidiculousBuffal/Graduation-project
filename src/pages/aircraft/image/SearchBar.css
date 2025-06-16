@@ -1,0 +1,110 @@
+
+.search-bar {
+    padding: 16px 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    margin-bottom: 16px;
+}
+
+.search-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.search-inputs {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex: 1;
+}
+
+.search-item {
+    margin-bottom: 0 !important;
+}
+
+.search-item .ant-form-item-label {
+    padding-bottom: 4px;
+}
+
+.search-item .ant-input,
+.search-item .ant-select {
+    width: 200px;
+}
+
+.search-actions {
+    margin-bottom: 0 !important;
+    margin-left: 16px;
+}
+
+.upload-section {
+    margin-left: auto;
+    padding-left: 24px;
+}
+
+.upload-button {
+    background: #52c41a;
+    border-color: #52c41a;
+    font-weight: 500;
+}
+
+.upload-button:hover {
+    background: #73d13d;
+    border-color: #73d13d;
+}
+
+.upload-button:focus {
+    background: #52c41a;
+    border-color: #52c41a;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .search-inputs {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-item .ant-input,
+    .search-item .ant-select {
+        width: 100%;
+    }
+
+    .upload-section {
+        margin-left: 0;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    .upload-button {
+        width: 100%;
+    }
+}
+
+/* 确保所有输入框高度一致 */
+.search-item .ant-input,
+.search-item .ant-select-selector,
+.search-actions .ant-btn {
+    height: 32px;
+}
+
+/* 标签对齐 */
+.search-item .ant-form-item-label > label {
+    font-weight: 500;
+    color: #262626;
+}
+
+/* 输入框聚焦效果 */
+.search-item .ant-input:focus,
+.search-item .ant-select-focused .ant-select-selector {
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}

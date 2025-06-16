@@ -1,4 +1,4 @@
-import type {AircraftArrayType, aircraftType_, aircraftTypeType} from "../store/aircraft/types.ts";
+import type {AircraftArrayType, AircraftImageType, aircraftType_, aircraftTypeType} from "../store/aircraft/types.ts";
 import {fetchAPI} from "./index.ts";
 import qs from "qs";
 import {clean, type Nullable} from "../publicTypes/typeUtils.ts";
@@ -48,4 +48,33 @@ export const searchAircraft = async (request: Pagination & Nullable<Omit<aircraf
     const {total, total_pages, ...rest} = request
     const payload = qs.stringify(clean(rest))
     return fetchAPI.req<PaginationResult<aircraftType_ & aircraftTypeType>>(`/aircraft/searchAircraft?${payload}`, {method: "GET"})
+}
+
+export const createAircraftImage = async (aircraftImage: Partial<AircraftImageType>) => {
+    return fetchAPI.req<AircraftImageType>('/aircraft/createAircraftImage', {
+        method: "POST",
+        body: JSON.stringify(aircraftImage)
+    })
+}
+
+export const getAircraftImage = async (imageId: string) => {
+    return fetchAPI.req<AircraftImageType>(`/aircraft/getAircraftImage/${imageId}`, {method: "GET"})
+}
+export const updateAircraftImage = async (aircraftImage: AircraftImageType) => {
+    return fetchAPI.req<AircraftImageType>(`/aircraft/updateAircraftImage/${aircraftImage.image_id}`, {
+        method: "POST",
+        body: JSON.stringify(aircraftImage)
+    })
+}
+export const deleteAircraftImage = async (imageId: string) => {
+    return fetchAPI.req<Boolean>(`/aircraft/deleteAircraftImage/${imageId}`, {method: "DELETE"})
+}
+export const searchAircraftImage = async (request: Pagination & {
+    image_name?: string,
+    aircraft_id?: string,
+    aircraft_name?: string
+}) => {
+    const {total, total_pages, ...rest} = request
+    const payload = qs.stringify(clean(rest))
+    return fetchAPI.req<PaginationResult<AircraftImageType>>(`/aircraft/searchAircraftImage?${payload}`, {method: "GET"})
 }

@@ -1,0 +1,343 @@
+
+.aircraft-image-manager {
+    padding: 24px;
+    background: #f5f5f5;
+    min-height: 100%;
+}
+
+.manager-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.manager-card .ant-card-head {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.manager-card .ant-card-head-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #262626;
+}
+
+/* 顶部操作区域 */
+.top-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    gap: 16px;
+}
+
+.upload-button {
+    flex-shrink: 0;
+    height: 40px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* ImageList组件样式 */
+.image-list-content {
+    width: 100%;
+}
+
+.list-header {
+    margin-bottom: 16px;
+}
+
+.list-pagination {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 16px;
+}
+
+/* 搜索栏样式 */
+.search-bar {
+    background: #fafafa;
+    padding: 16px;
+    border-radius: 6px;
+    border: 1px solid #e8e8e8;
+    margin-bottom: 16px;
+}
+
+.search-form {
+    margin: 0;
+}
+
+.search-form .ant-form-item {
+    margin-bottom: 0;
+    margin-right: 16px;
+}
+
+.search-form .ant-form-item:last-child {
+    margin-right: 0;
+}
+
+/* 表格样式 - 修复溢出问题 */
+.image-list-content .ant-table-wrapper {
+    overflow-x: auto;
+}
+
+.image-list-content .ant-table {
+    min-width: 800px; /* 设置最小宽度防止压缩过度 */
+}
+
+.image-list-content .ant-table-thead > tr > th {
+    background: #fafafa;
+    font-weight: 600;
+    color: #262626;
+    white-space: nowrap;
+}
+
+.image-list-content .ant-table-tbody > tr:hover > td {
+    background: #f5f5f5;
+}
+
+/* 表格列宽度控制 */
+.image-list-content .ant-table-tbody > tr > td:first-child {
+    width: 80px;
+    min-width: 80px;
+}
+
+.image-list-content .ant-table-tbody > tr > td:nth-child(2) {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.image-list-content .ant-table-tbody > tr > td:nth-child(3) {
+    width: 120px;
+    min-width: 120px;
+}
+
+.image-list-content .ant-table-tbody > tr > td:nth-child(4) {
+    width: 100px;
+    min-width: 100px;
+}
+
+/* 修复操作列溢出问题 */
+.image-list-content .ant-table-tbody > tr > td:last-child {
+    width: 180px;
+    min-width: 180px;
+    white-space: nowrap;
+}
+
+/* 操作按钮样式 */
+.image-list-content .ant-table-tbody .ant-space {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 4px;
+}
+
+.image-list-content .ant-table-tbody .ant-btn {
+    padding: 4px 8px;
+    height: auto;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+/* 分页样式 */
+.list-pagination .ant-pagination {
+    margin: 0;
+}
+
+.list-pagination .ant-pagination-total-text {
+    margin-right: 16px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* 上传模态框样式 */
+.ant-modal .ant-modal-header {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-modal .ant-modal-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* 图片上传器样式调整 */
+.image-uploader {
+    border: 2px dashed #d9d9d9;
+    border-radius: 6px;
+    background: #fafafa;
+    transition: all 0.3s;
+}
+
+.image-uploader:hover {
+    border-color: #1890ff;
+    background: #f0f8ff;
+}
+
+.image-uploader .ant-upload-drag-icon {
+    font-size: 48px;
+    color: #1890ff;
+}
+
+.image-uploader .ant-upload-text {
+    font-size: 16px;
+    color: #666;
+    margin: 8px 0;
+}
+
+.image-uploader .ant-upload-hint {
+    color: #999;
+    font-size: 14px;
+}
+
+/* 按钮样式 */
+.ant-btn-text {
+    border: none;
+    box-shadow: none;
+}
+
+.ant-btn-text:hover {
+    background: #f5f5f5;
+}
+
+/* 标签样式 */
+.ant-tag {
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* 图片预览样式 */
+.ant-image {
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+}
+
+.ant-image img {
+    transition: transform 0.3s;
+}
+
+.ant-image:hover img {
+    transform: scale(1.05);
+}
+
+/* 加载状态优化 */
+.ant-spin-nested-loading {
+    position: relative;
+}
+
+.ant-spin-container {
+    transition: opacity 0.3s;
+}
+
+.ant-spin-blur {
+    opacity: 0.5;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .image-list-content .ant-table-tbody > tr > td:nth-child(2) {
+        max-width: 150px;
+    }
+
+    .image-list-content .ant-table-tbody > tr > td:last-child {
+        width: 160px;
+        min-width: 160px;
+    }
+}
+
+@media (max-width: 768px) {
+    .aircraft-image-manager {
+        padding: 12px;
+    }
+
+    .top-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .upload-button {
+        width: 100%;
+    }
+
+    .search-form {
+        flex-direction: column;
+    }
+
+    .search-form .ant-form-item {
+        width: 100%;
+        margin-bottom: 8px;
+        margin-right: 0;
+    }
+
+    .list-pagination {
+        justify-content: center;
+    }
+
+    /* 移动端表格优化 */
+    .image-list-content .ant-table {
+        min-width: 600px;
+    }
+
+    .image-list-content .ant-table-tbody > tr > td:nth-child(2) {
+        max-width: 120px;
+    }
+
+    .image-list-content .ant-table-tbody > tr > td:last-child {
+        width: 140px;
+        min-width: 140px;
+    }
+
+    .image-list-content .ant-table-tbody .ant-btn {
+        padding: 2px 6px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .aircraft-image-manager {
+        padding: 8px;
+    }
+
+    .image-list-content .ant-table {
+        min-width: 500px;
+    }
+
+    .image-list-content .ant-table-tbody > tr > td:first-child {
+        width: 60px;
+        min-width: 60px;
+    }
+
+    .image-list-content .ant-table-tbody > tr > td:nth-child(2) {
+        max-width: 100px;
+    }
+
+    .image-list-content .ant-table-tbody > tr > td:last-child {
+        width: 120px;
+        min-width: 120px;
+    }
+}
+
+/* 表格滚动条样式 */
+.image-list-content .ant-table-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.image-list-content .ant-table-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.image-list-content .ant-table-wrapper::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.image-list-content .ant-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 空状态样式 

@@ -9,7 +9,6 @@ import Home from "./pages/Home";
 import DashBoard from "./pages/dashboard/DashBoard.tsx";
 import AircraftList from "./pages/aircraft/list/AircraftList.tsx";
 import AircraftType from "./pages/aircraft/type/AircraftType.tsx";
-import AircraftImage from "./pages/aircraft/image/AircraftImage.tsx";
 import Flight from "./pages/flight/Flight.tsx";
 import My from "./pages/user/my/My.tsx";
 import AdminUser from "./pages/user/admin/AdminUser.tsx";
@@ -17,6 +16,7 @@ import ModernPermissionDenied from "./pages/denied/ModernPermissionDenied.tsx";
 import {Permissions} from "./consts/permissions.ts";
 import Terminal from "./pages/terminal/Terminal.tsx";
 import Security from "./pages/user/secure/Security.tsx";
+import AircraftImageManager from "./pages/aircraft/image/AircraftImageManager.tsx";
 // 受保护的路由组件
 const ProtectedRoute = ({children, permission}: { children: React.ReactNode, permission?: string }) => {
     if (!AuthService.isLoggedIn()) {
@@ -60,7 +60,7 @@ function MyApp() {
                     <Route path="aircraft/type" element={<ProtectedRoute
                         permission={Permissions.AIRCRAFT_TYPE_READ.permission_name}><AircraftType/></ProtectedRoute>}/>
                     <Route path="aircraft/image" element={<ProtectedRoute
-                        permission={Permissions.AIRCRAFT_IMAGE_READ.permission_name}><AircraftImage/></ProtectedRoute>}/>
+                        permission={Permissions.AIRCRAFT_IMAGE_READ.permission_name}><AircraftImageManager/></ProtectedRoute>}/>
                     <Route path="flight" element={<ProtectedRoute
                         permission={Permissions.FLIGHT_READ.permission_name}><Flight/></ProtectedRoute>}/>
                     <Route path="terminal" element={<ProtectedRoute

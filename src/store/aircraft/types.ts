@@ -1,4 +1,6 @@
 import {z} from 'zod/v4'
+import type {ipfsFileType} from "../../publicTypes/ipfs.ts";
+import type {Point} from "../../components/imageInnot/types.ts";
 
 export const aircraftType = z.object({
     typeid: z.uuidv4(),
@@ -15,3 +17,14 @@ export const aircraft = z.object({
 )
 export type aircraftType_ = z.infer<typeof aircraft> //防止和aircraftType冲突
 export type AircraftArrayType = Array<aircraftTypeType & aircraftType_>
+
+export type AircraftImageType = {
+    image_id: string,
+    image_name: string,
+    image_json: {
+        fileInfo: ipfsFileType,
+        pointInfo: Point[]
+    },
+    aircraft_id: string,
+    image_description: string,
+}
