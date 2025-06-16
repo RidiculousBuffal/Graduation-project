@@ -1,6 +1,7 @@
 from sqlalchemy import select
 
-from app.DTO.aircrafts import AircraftDTO, AircraftCreateDTO, AircraftUpdateDTO, AircraftPagedResponseDTO
+from app.DTO.aircrafts import AircraftDTO, AircraftCreateDTO, AircraftUpdateDTO, AircraftPagedResponseDTO, \
+    AircraftCallBackDTO
 from app.DTO.pagination import PaginationDTO
 from app.ext.extensions import db
 from app.models.aircraft import Aircraft, AircraftType
@@ -84,7 +85,7 @@ class AircraftMapper:
     @staticmethod
     def searchAircraft(
             aircraftName: str = None,
-            aircraftAge: str = None,
+            aircraftAge: int = None,
             aircraftTypeName: str = None,
             pageNum: int = 1,
             pageSize: int = 10
@@ -98,7 +99,7 @@ class AircraftMapper:
         if aircraftName:
             conditions.append(Aircraft.aircraft_name == aircraftName)
         if aircraftAge:
-            conditions.append(Aircraft.age == int(aircraftAge))
+            conditions.append(Aircraft.age == aircraftAge)
         if aircraftTypeName:
             conditions.append(AircraftType.type_name == aircraftTypeName)
 
@@ -117,13 +118,13 @@ class AircraftMapper:
         aircraft_data = []
         # 打个断点,调试看看就是到是什么值了
         for item in pagination.items:
-            aircraft_data.append(AircraftDTO(
+            aircraft_data.append(AircraftCallBackDTO(
                 aircraft_id=item.aircraft_id,
                 aircraft_name=item.aircraft_name,
                 age=item.age,
                 typeid=item.typeid,
                 type_name=item.type.type_name,
-                type_description=item.type.description
+                description=item.type.description
             ))
 
         pagination_dto = PaginationDTO(

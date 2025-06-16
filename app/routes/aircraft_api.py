@@ -60,8 +60,8 @@ def delete_aircraft(aircraft_id: str):
 def search_aircraft():
     args = request.args
     aircraft_name = args.get('aircraft_name', type=str)
-    aircraft_age = args.get('aircraft_age', type=str)
-    aircraft_type_name = args.get('aircraft_type_name', type=str)
+    aircraft_age = args.get('aircraft_age', type=int) or args.get('age', type=int)
+    aircraft_type_name = args.get('aircraft_type_name', type=str) or args.get('type_name', type=str)
     page_num = args.get('page_num', default=1, type=int)
     page_size = args.get('page_size', default=10, type=int)
 

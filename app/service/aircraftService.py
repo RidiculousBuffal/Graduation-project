@@ -105,7 +105,7 @@ class AircraftService:
         if success:
             return ResponseModel.success(
                 msg=AircraftConsts.DELETE_PLANE_SUCCESS,
-                data=None
+                data=True
             )
         return ResponseModel.fail(
             msg=AircraftConsts.DELETE_PLANE_ERROR,
@@ -115,7 +115,7 @@ class AircraftService:
     @staticmethod
     def search_aircraft(
             aircraft_name: Optional[str] = None,
-            aircraft_age: Optional[str] = None,
+            aircraft_age: Optional[int] = None,
             aircraft_type_name: Optional[str] = None,
             page_num: int = 1,
             page_size: int = 10

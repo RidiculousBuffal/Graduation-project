@@ -29,6 +29,13 @@ class AircraftDTO(BaseModel):
     type_name: Optional[str] = None
     type_description: Optional[str] = None
 
+class AircraftCallBackDTO(BaseModel):
+    aircraft_id: str
+    aircraft_name: Optional[str] = None
+    age: Optional[int] = None
+    typeid: Optional[str] = None
+    type_name: Optional[str] = None
+    description: Optional[str] = None
 
 class AircraftCreateDTO(BaseModel):
     aircraft_name: str
@@ -43,7 +50,7 @@ class AircraftUpdateDTO(BaseModel):
 
 
 class AircraftPagedResponseDTO(BaseModel):
-    data: List[AircraftDTO]
+    data: List[AircraftCallBackDTO]
     pagination: PaginationDTO
 
 
