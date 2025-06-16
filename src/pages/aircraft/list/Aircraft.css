@@ -1,0 +1,113 @@
+.aircraft-page {
+    padding: 24px;
+    background: #f5f5f5;
+    min-height: 100%;
+}
+
+.aircraft-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 16px 24px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.aircraft-header h2 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.aircraft-table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+.aircraft-table-container .ant-table {
+    margin: 0;
+}
+
+.aircraft-table-container .ant-table-thead > tr > th {
+    background: #f8fafc;
+    border-bottom: 2px solid #e2e8f0;
+    font-weight: 600;
+    color: #374151;
+}
+
+.aircraft-table-container .ant-table-tbody > tr:hover > td {
+    background: #f8fafc;
+}
+
+.aircraft-table-container .ant-table-tbody > tr > td {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 16px;
+}
+
+.aircraft-table-container .ant-table-pagination {
+    padding: 16px 24px;
+    border-top: 1px solid #f0f0f0;
+    background: #fafafa;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .aircraft-page {
+        padding: 16px;
+    }
+
+    .aircraft-header {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+
+    .aircraft-header h2 {
+        font-size: 20px;
+    }
+
+    .aircraft-table-container .ant-table-tbody > tr > td {
+        padding: 12px 8px;
+        font-size: 14px;
+    }
+
+    .aircraft-table-container .ant-table-thead > tr > th {
+        padding: 12px 8px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .aircraft-table-container {
+        margin: 0 -8px;
+    }
+
+    .aircraft-table-container .ant-table-pagination {
+        padding: 12px 16px;
+    }
+}
+
+/* 表格行高亮 */
+.aircraft-table-container .ant-table-tbody > tr:nth-child(even) {
+    background: #fbfcfd;
+}
+
+/* 操作按钮样式 */
+.aircraft-table-container .ant-btn-link {
+    padding: 4px 8px;
+    height: auto;
+}
+
+.aircraft-table-container .ant-btn-link:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 4px;
+}
+
+.aircraft-table-container .ant-btn-link.ant-btn-dangerous:hover {
+    background: rgba(239, 68, 68, 0.1);
+}

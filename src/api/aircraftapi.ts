@@ -1,4 +1,4 @@
-import type {aircraftTypeType} from "../store/aircraft/types.ts";
+import type {AircraftArrayType, aircraftType_, aircraftTypeType} from "../store/aircraft/types.ts";
 import {fetchAPI} from "./index.ts";
 import qs from "qs";
 import {clean, type Nullable} from "../publicTypes/typeUtils.ts";
@@ -27,4 +27,25 @@ export const searchAircraftType = async (request: Pagination & Nullable<Omit<air
     const {total, total_pages, ...rest} = request
     const payload = qs.stringify(clean(rest))
     return fetchAPI.req<PaginationResult<aircraftTypeType>>(`/aircraft/searchAircraftType?${payload}`, {method: "GET"})
+}
+
+export const createAircraft = async (aircraft: Partial<aircraftType_>) => {
+    return fetchAPI.req<aircraftType_ & aircraftTypeType>('/aircraft/createAircraft', {
+        method: "POST",
+        body: JSON.stringify(aircraft)
+    })
+}
+export const updateAircraft = async (aircraft: aircraftType_) => {
+    return fetchAPI.req<aircraftType_ & aircraftTypeType>(`/aircraft/updateAircraft/${aircraft.aircraft_id}`, {
+        method: "POST",
+        body: JSON.stringify(aircraft)
+    })
+}
+export const deleteAircraft = async (aircraft: aircraftType_) => {
+    return fetchAPI.req<Boolean>(`/aircraft/deleteAircraft/${aircraft.aircraft_id}`, {method: "DELETE"})
+}
+export const searchAircraft = async (request: Pagination & Nullable<Omit<aircraftType_ & aircraftTypeType, 'aircraft_id' | 'typeid'>>) => {
+    const {total, total_pages, ...rest} = request
+    const payload = qs.stringify(clean(rest))
+    return fetchAPI.req<PaginationResult<aircraftType_ & aircraftTypeType>>(`/aircraft/searchAircraft?${payload}`, {method: "GET"})
 }

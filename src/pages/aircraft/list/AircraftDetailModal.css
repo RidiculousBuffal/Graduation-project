@@ -1,0 +1,34 @@
+.aircraft-detail-modal .ant-modal-body {
+    padding: 24px;
+}
+
+.aircraft-detail-content {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.aircraft-type-description {
+    max-width: 100%;
+    word-break: break-word;
+    line-height: 1.6;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .aircraft-detail-modal {
+        width: 95vw !important;
+        margin: 16px auto;
+    }
+
+    .aircraft-detail-content {
+        max-height: 60vh;
+    }
+
+    .aircraft-detail-modal .ant-descriptions {
+        font-size: 14px;
+    }
+
+    .aircraft-detail-modal .ant-descriptions-item-label {
+        font-size: 13px;
+    }
+}
