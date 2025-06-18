@@ -27,7 +27,7 @@ def make_celery(flask_app):
     beat_schedule = {
         'healthy_task': {
             'task': 'app.schedule.flight.health_check',
-            'schedule': timedelta(seconds=60),
+            'schedule': timedelta(hours=8),
         }
     }
     celery.conf.update(beat_schedule=beat_schedule, imports=imports,timezone=Config.timezone)
