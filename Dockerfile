@@ -40,7 +40,8 @@ RUN if [ "$APT_MIRROR_SOURCE" = "aliyun" ]; then \
       sed -i 's@security.debian.org@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list.d/debian.sources ; \
     fi
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc g++ libc-dev libffi-dev libmariadb-dev pkg-config
+    gcc g++ libc-dev libffi-dev libmariadb-dev pkg-config libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender1\
+
 WORKDIR /app
 ENV PATH="/app/.venv/bin:$PATH"
 COPY --from=builder /app/.venv /app/.venv
