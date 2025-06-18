@@ -42,3 +42,7 @@ logs/
 *.sqlite3
 
 .env.prod
+
+celerybeat-schedule.bak
+celerybeat-schedule.dat
+celerybeat-schedule.dir

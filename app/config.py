@@ -32,6 +32,9 @@ class Config:
     IPFS_MFS_BASE_DIR = os.getenv('IPFS_MFS_BASE_DIR') or '/upload'
     UPLOAD_ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx', 'xls', 'xlsx', 'zip', 'rar'}
     MAX_CONTENT_LENGTH = 1000 * 1024 * 1024  # 限制上传大小为1G
+    broker_url= os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+    result_backend = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
+    timezone = 'Asia/Shanghai'
 
 class DevelopmentConfig(Config):
     DEBUG = True

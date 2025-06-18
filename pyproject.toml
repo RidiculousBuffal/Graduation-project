@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "celery[redis]>=5.5.3",
     "flask==3.1.0",
     "flask-cors==5.0.1",
     "flask-jwt-extended==4.7.1",

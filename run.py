@@ -1,18 +1,15 @@
 import os
 
 if os.environ.get("FLASK_ENV") == "production":
-    from gevent import monkey;
+    from gevent import monkey
 
     monkey.patch_all()
 from dotenv import load_dotenv
 
-from app import create_app
+load_dotenv()
 from app.ext.extensions import db
 from scripts.startScripts import initRoles, initPermissions, combineRoleWithPermissions, initDictionaryData
-
-load_dotenv()
-
-app = create_app(os.getenv('FLASK_ENV', 'default'))
+from app import app,celery
 
 
 @app.shell_context_processor

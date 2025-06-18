@@ -53,4 +53,6 @@ RUN chmod +x /entrypoint.sh
 EXPOSE 5000
 ENV FLASK_ENV=production
 ENV FLASK_APP=run.py
+ARG MODE=api
+ENV MODE=${MODE}
 ENTRYPOINT ["/entrypoint.sh"]

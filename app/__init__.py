@@ -1,6 +1,9 @@
+import os
+
 from flask import Flask
 
 from app.config import config
+
 from app.ext.extensions import db, migrate, jwt, cors
 from app.routes.aircraft_api import aircraft_bp
 from app.routes.auth_api import auth_bp
@@ -25,7 +28,10 @@ def create_app(config_name='default'):
     print('✅ jwt初始化成功')
     cors.init_app(app)
     print('✅ cors初始化成功')
-
+    from app.ext.ext_celery import make_celery
+    app_celery = make_celery(app)
+    app.celery = app_celery
+    print('✅ celery初始化成功')
     # 注册蓝图
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(aircraft_bp, url_prefix='/api/aircraft')
@@ -36,3 +42,7 @@ def create_app(config_name='default'):
     app.register_blueprint(task_bp, url_prefix='/api/task')
     app.register_blueprint(inspection_bp, url_prefix='/api/inspection')
     return app
+
+
+app = create_app(os.getenv('FLASK_ENV', 'default'))
+celery = app.celery
