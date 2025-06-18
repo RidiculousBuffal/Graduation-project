@@ -52,6 +52,19 @@ flask db migrate -m "迁移信息"
 ## 启动ipfs分布式文件存储
 根据[install_windows_docker.md](docker%2Fmiddleware%2Fipfs%2Finstall_windows_docker.md)自行启动分布式文件存储服务
 
+
+# 启动Redis+Celery 异步[定时]任务
+## 安装redis
+[readme.md](docker%2Fmiddleware%2Fredis%2Freadme.md)
+## 启动worker
+```bash
+celery -A app.celery worker  --loglevel=info --pool=solo
+```
+## 启动beat
+```bash
+celery -A app.celery beat  --loglevel=info
+```
+
 ## 自动测试
 
 - 在[tests](tests)中书写,查看单元测试
