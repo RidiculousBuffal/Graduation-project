@@ -38,9 +38,10 @@ RUN if [ "$APT_MIRROR_SOURCE" = "aliyun" ]; then \
     elif [ "$APT_MIRROR_SOURCE" = "tsinghua" ]; then \
       sed -i 's@deb.debian.org@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list.d/debian.sources && \
       sed -i 's@security.debian.org@mirrors.tuna.tsinghua.edu.cn@g' /etc/apt/sources.list.d/debian.sources ; \
-    fi
+    fi \
+    
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc g++ libc-dev libffi-dev libmariadb-dev pkg-config libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender1\
+    gcc g++ libc-dev libffi-dev libmariadb-dev pkg-config libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender1
 
 WORKDIR /app
 ENV PATH="/app/.venv/bin:$PATH"
