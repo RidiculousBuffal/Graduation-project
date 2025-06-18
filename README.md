@@ -65,6 +65,11 @@ celery -A app.celery worker  --loglevel=info --pool=solo
 celery -A app.celery beat  --loglevel=info
 ```
 
+## pycharm 调试
+- 注意script去选到.venv目录下的`celery.exe`
+![img_3.png](readmeimg%2Fimg_3.png)
+![img_2.png](readmeimg%2Fimg_2.png)
+
 ## 自动测试
 
 - 在[tests](tests)中书写,查看单元测试
