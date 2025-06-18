@@ -1,9 +1,10 @@
 name: Publish Docker Image
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - dev_backend
+  workflow_run:
+    workflows: [ "Sync Gitee to GitHub" ]   # 名字必须与第一个工作流的 name 对应
+    types:
+      - completed
 jobs:
   build-and-push:
     runs-on: ubuntu-24.04
