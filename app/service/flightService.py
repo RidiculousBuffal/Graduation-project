@@ -130,7 +130,7 @@ class FlightService:
         if success:
             return ResponseModel.success(
                 msg=FlightConsts.DELETE_FLIGHT_SUCCESS,
-                data=None
+                data=True
             )
         return ResponseModel.fail(
             msg=FlightConsts.DELETE_FLIGHT_ERROR,

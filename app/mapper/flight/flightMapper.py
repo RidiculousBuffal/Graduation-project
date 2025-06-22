@@ -10,6 +10,7 @@ from app.exceptions.flights import FlightTimeConflictError, FlightTimestampOrder
 from app.ext.extensions import db
 from app.models import Aircraft, Terminal
 from app.models.flight import Flight
+from app.utils.timeUtils import parse_to_utc
 
 
 class FlightMapper:
@@ -207,34 +208,45 @@ class FlightMapper:
             query = query.join(Terminal)
             query = query.where(Terminal.terminal_name.ilike(f"%{terminal_name}%"))
 
-        if estimated_departure_start and estimated_departure_end:
-            query = query.where(between(Flight.estimated_departure, estimated_departure_start, estimated_departure_end))
-        elif estimated_departure_start:
-            query = query.where(Flight.estimated_departure >= estimated_departure_start)
-        elif estimated_departure_end:
-            query = query.where(Flight.estimated_departure <= estimated_departure_end)
+        est_dep_start = parse_to_utc(estimated_departure_start)
+        est_dep_end = parse_to_utc(estimated_departure_end)
+        est_arr_start = parse_to_utc(estimated_arrival_start)
+        est_arr_end = parse_to_utc(estimated_arrival_end)
+        act_dep_start = parse_to_utc(actual_departure_start)
+        act_dep_end = parse_to_utc(actual_departure_end)
+        act_arr_start = parse_to_utc(actual_arrival_start)
+        act_arr_end = parse_to_utc(actual_arrival_end)
 
-        if estimated_arrival_start and estimated_arrival_end:
-            query = query.where(between(Flight.estimated_arrival, estimated_arrival_start, estimated_arrival_end))
-        elif estimated_arrival_start:
-            query = query.where(Flight.estimated_arrival >= estimated_arrival_start)
-        elif estimated_arrival_end:
-            query = query.where(Flight.estimated_arrival <= estimated_arrival_end)
+        # 查询条件
+        if est_dep_start and est_dep_end:
+            query = query.where(between(Flight.estimated_departure, est_dep_start, est_dep_end))
+        elif est_dep_start:
+            query = query.where(Flight.estimated_departure >= est_dep_start)
+        elif est_dep_end:
+            query = query.where(Flight.estimated_departure <= est_dep_end)
 
-        if actual_departure_start and actual_departure_end:
-            query = query.where(between(Flight.actual_departure, actual_departure_start, actual_departure_end))
-        elif actual_departure_start:
-            query = query.where(Flight.actual_departure >= actual_departure_start)
-        elif actual_departure_end:
-            query = query.where(Flight.actual_departure <= actual_departure_end)
+        if est_arr_start and est_arr_end:
+            query = query.where(between(Flight.estimated_arrival, est_arr_start, est_arr_end))
+        elif est_arr_start:
+            query = query.where(Flight.estimated_arrival >= est_arr_start)
+        elif est_arr_end:
+            query = query.where(Flight.estimated_arrival <= est_arr_end)
 
-        if actual_arrival_start and actual_arrival_end:
-            query = query.where(between(Flight.actual_arrival, actual_arrival_start, actual_arrival_end))
-        elif actual_arrival_start:
-            query = query.where(Flight.actual_arrival >= actual_arrival_start)
-        elif actual_arrival_end:
-            query = query.where(Flight.actual_arrival <= actual_arrival_end)
+        if act_dep_start and act_dep_end:
+            query = query.where(between(Flight.actual_departure, act_dep_start, act_dep_end))
+        elif act_dep_start:
+            query = query.where(Flight.actual_departure >= act_dep_start)
+        elif act_dep_end:
+            query = query.where(Flight.actual_departure <= act_dep_end)
 
+        if act_arr_start and act_arr_end:
+            query = query.where(between(Flight.actual_arrival, act_arr_start, act_arr_end))
+        elif act_arr_start:
+            query = query.where(Flight.actual_arrival >= act_arr_start)
+        elif act_arr_end:
+            query = query.where(Flight.actual_arrival <= act_arr_end)
+
+        # 其他不变
         query = query.order_by(Flight.created_at.desc())
         pagination = db.paginate(
             select=query,

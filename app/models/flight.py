@@ -1,11 +1,12 @@
+import uuid
+from datetime import datetime
+
 from sqlalchemy_serializer import SerializerMixin
 
 from app.ext.extensions import db
-from datetime import datetime
-import uuid
 
 
-class Flight(db.Model,SerializerMixin):
+class Flight(db.Model, SerializerMixin):
     __tablename__ = 'flights'
     __table_args__ = {
         "mysql_charset": "utf8mb4"
@@ -20,15 +21,16 @@ class Flight(db.Model,SerializerMixin):
     actual_arrival = db.Column(db.DateTime, comment='实际到达')
     health_status = db.Column(db.String(50), db.ForeignKey('dictionary.dict_key'))
     approval_status = db.Column(db.String(50), db.ForeignKey('dictionary.dict_key'))
-    created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(),onupdate=datetime.now(), nullable=False)
-    updated_at = db.Column(db.TIMESTAMP,server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
+    created_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
+    updated_at = db.Column(db.TIMESTAMP, server_default=db.func.now(), onupdate=datetime.now(), nullable=False)
 
     # Relationships
     terminal = db.relationship('Terminal', backref='flights')
     flight_status_dict = db.relationship('Dictionary', foreign_keys=[flight_status])
     health_status_dict = db.relationship('Dictionary', foreign_keys=[health_status])
     approval_status_dict = db.relationship('Dictionary', foreign_keys=[approval_status])
-    tasks = db.relationship('Task', backref='flight', lazy='dynamic')
+    tasks = db.relationship('Task', backref='flight', lazy='dynamic', cascade='all, delete-orphan',
+                            passive_deletes=True)
 
     def __init__(self, **kwargs):
         if 'flight_id' not in kwargs:

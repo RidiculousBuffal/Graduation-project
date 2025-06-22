@@ -194,3 +194,10 @@ class DictionaryData:
         "parent_key": "inspection_status",
         "sort_order": 54
     }
+    PENDING_CHECK = {
+        "dict_key": "pending_check",
+        "dict_name": "等待检查",
+        "description": "还没开始健康检查",
+        "parent_key": "health_status",
+        "sort_order": 55
+    }

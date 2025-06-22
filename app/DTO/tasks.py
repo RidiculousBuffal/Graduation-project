@@ -1,11 +1,12 @@
 from datetime import datetime
 from typing import Optional, List
-from pydantic import BaseModel
+
+from app.DTO.Base import BaseDTO
 from app.DTO.pagination import PaginationDTO
 from app.consts.Dict import DictionaryData
 
 
-class TaskCreateDTO(BaseModel):
+class TaskCreateDTO(BaseDTO):
     flight_id: str
     estimated_start: Optional[datetime] = None
     estimated_end: Optional[datetime] = None
@@ -13,7 +14,7 @@ class TaskCreateDTO(BaseModel):
     task_status: Optional[str] = DictionaryData.TASK_PENDING.get('dict_key')
 
 
-class TaskUpdateDTO(BaseModel):
+class TaskUpdateDTO(BaseDTO):
     flight_id: Optional[str] = None
     estimated_start: Optional[datetime] = None
     estimated_end: Optional[datetime] = None
@@ -23,7 +24,7 @@ class TaskUpdateDTO(BaseModel):
     task_status: Optional[str] = None
 
 
-class TaskDTO(BaseModel):
+class TaskDTO(BaseDTO):
     task_id: str
     flight_id: str
     estimated_start: Optional[datetime] = None
@@ -42,6 +43,6 @@ class TaskDetailDTO(TaskDTO):
     admin_name: Optional[str] = None
 
 
-class TaskPagedResponseDTO(BaseModel):
+class TaskPagedResponseDTO(BaseDTO):
     data: List[TaskDetailDTO]
     pagination: PaginationDTO
