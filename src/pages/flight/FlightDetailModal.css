@@ -1,0 +1,57 @@
+
+.flight-detail-modal .ant-descriptions-item-label {
+    font-weight: 600;
+    color: #262626;
+    background-color: #fafafa;
+}
+
+.flight-detail-modal .ant-descriptions-item-content {
+    color: #595959;
+}
+
+.flight-detail-modal .ant-descriptions-bordered .ant-descriptions-item-label {
+    width: 120px;
+}
+
+.flight-detail-modal .ant-spin-container {
+    min-height: 200px;
+}
+
+/* 状态标签样式 */
+.flight-status-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.flight-status-tag.scheduled {
+    background-color: #e6f7ff;
+    color: #1890ff;
+    border: 1px solid #91d5ff;
+}
+
+.flight-status-tag.boarding {
+    background-color: #fff7e6;
+    color: #fa8c16;
+    border: 1px solid #ffd591;
+}
+
+.flight-status-tag.departed {
+    background-color: #f6ffed;
+    color: #52c41a;
+    border: 1px solid #b7eb8f;
+}
+
+.flight-status-tag.arrived {
+    background-color: #f9f0ff;
+    color: #722ed1;
+    border: 1px solid #d3adf7;
+}
+
+.flight-status-tag.cancelled {
+    background-color: #fff2f0;
+    color: #ff4d4f;
+    border: 1px solid #ffb3b3;
+}

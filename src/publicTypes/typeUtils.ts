@@ -1,11 +1,11 @@
 export type Nullable<T> = T extends object
     ? { [P in keyof T]: Nullable<T[P]> }
-    : T | null;
+    : T | null | undefined;
 
 type ShouldKeep = (value: any) => boolean;
 
 export function clean<T>(o: T, shouldKeep: ShouldKeep = (x) => {
-    return !(x == '' || x == null||x==undefined)
+    return !(x == '' || x == null || x == undefined)
 }): T {
     if (Array.isArray(o)) {
         // 筛选出需要保留的，然后递归清洗元素
