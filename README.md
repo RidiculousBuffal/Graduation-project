@@ -60,10 +60,55 @@ flask db migrate -m "迁移信息"
 ```bash
 celery -A app.celery worker  --loglevel=info --pool=solo
 ```
+- windows 下看到如下提示表示启动成功—— windows 加载比较慢,请见谅
+```txt
+✅ 数据库链接成功
+✅ 数据库迁移成功
+✅ jwt初始化成功
+✅ cors初始化成功
+✅ celery初始化成功
+✅ running in mode worker
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: C:\Users\Administrator/.insightface\models\buffalo_sc\det_500m.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: C:\Users\Administrator/.insightface\models\buffalo_sc\w600k_mbf.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+ 
+ -------------- celery@DESKTOP-MVAVNOB v5.5.3 (immunity)
+--- ***** ----- 
+-- ******* ---- Windows-11-10.0.26100-SP0 2025-06-23 21:59:34
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         app:0x22bb1616510
+- ** ---------- .> transport:   redis://localhost:6379/3
+- ** ---------- .> results:     redis://localhost:6379/4
+- *** --- * --- .> concurrency: 16 (solo)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . app.schedule.flight.health_check
+  . app.worker.faceRecognition.create_user_face_embedding
+  . app.worker.faceRecognition.delete_face_embedding
+  . app.worker.faceRecognition.get_user_id_by_face
+
+[2025-06-23 21:59:55,254: INFO/MainProcess] Connected to redis://localhost:6379/3
+[2025-06-23 22:00:37,369: INFO/MainProcess] mingle: searching for neighbors
+[2025-06-23 22:01:41,500: INFO/MainProcess] mingle: all alone
+[2025-06-23 22:03:05,683: INFO/MainProcess] celery@DESKTOP-MVAVNOB ready. 
+```
+
+
 ## 启动beat
 ```bash
 celery -A app.celery beat  --loglevel=info
 ```
+
+
+
 
 ## pycharm 调试
 - 注意script去选到.venv目录下的`celery.exe`
