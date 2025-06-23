@@ -1,14 +1,9 @@
-
-import React, { useEffect, useState } from 'react';
-import { Modal, Form, Select, DatePicker, message } from 'antd';
-
-import { useAircraftStore } from '../../store/aircraft/aircraftStore';
-import { useTerminalStore } from '../../store/terminal/terminalStore';
-import type { createFlightPayLoad } from '../../api/flightapi';
-import { formatLocalDateToISO } from '../../utils/dateUtils';
-import {TerminalService} from "../../services/TerminalService.ts";
-import {AircraftListService} from "../../services/AircraftListService.ts";
-import {FlightService} from "../../services/FlightService.ts";
+import React, {useState} from 'react';
+import {Modal, Form, DatePicker, message} from 'antd';
+import type {createFlightPayLoad} from '../../api/flightapi';
+import {formatLocalDateToISO} from '../../utils/dateUtils';
+import {FlightService} from "../../services/FlightService";
+import {AircraftSelector, TerminalSelector} from './selectors';
 
 interface FlightCreateModalProps {
     visible: boolean;
@@ -23,41 +18,6 @@ export const FlightCreateModal: React.FC<FlightCreateModalProps> = ({
                                                                     }) => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [loadingOptions, setLoadingOptions] = useState(false);
-
-    const { aircrafts } = useAircraftStore();
-    const { terminals } = useTerminalStore();
-
-    // 加载飞机和航站楼选项
-    useEffect(() => {
-        if (visible) {
-            loadOptions();
-        }
-    }, [visible]);
-
-    const loadOptions = async () => {
-        setLoadingOptions(true);
-        try {
-            // 并行加载飞机和航站楼数据
-            await Promise.all([
-                AircraftListService.getAircraftList({
-                    aircraft_name: null,
-                    age: null,
-                    type_name: null,
-                    description: null
-                }),
-                TerminalService.getTerminalList({
-                    terminal_name: null,
-                    description: null
-                })
-            ]);
-        } catch (error) {
-            console.error('加载选项失败:', error);
-            message.error('加载选项数据失败');
-        } finally {
-            setLoadingOptions(false);
-        }
-    };
 
     const handleSubmit = async () => {
         try {
@@ -89,6 +49,10 @@ export const FlightCreateModal: React.FC<FlightCreateModalProps> = ({
         onCancel();
     };
 
+    const handleSearchError = (error: any) => {
+        message.error('加载选项数据失败');
+    };
+
     return (
         <Modal
             title="新增航班"
@@ -107,20 +71,11 @@ export const FlightCreateModal: React.FC<FlightCreateModalProps> = ({
                 <Form.Item
                     label="飞机"
                     name="aircraft_id"
-                    rules={[{ required: true, message: '请选择飞机' }]}
+                    rules={[{required: true, message: '请选择飞机'}]}
                 >
-                    <Select
-                        placeholder="请选择飞机"
-                        loading={loadingOptions}
-                        showSearch
-                        filterOption={(input, option) =>
-                            (option?.label as string)?.toLowerCase().includes(input.toLowerCase())
-                        }
-                        options={aircrafts.map(aircraft => ({
-                            value: aircraft.aircraft_id,
-                            label: `${aircraft.aircraft_name} (${aircraft.type_name})`,
-                            key: aircraft.aircraft_id
-                        }))}
+                    <AircraftSelector
+                        placeholder="请输入飞机名称搜索"
+                        onSearchError={handleSearchError}
                     />
                 </Form.Item>
 
@@ -128,31 +83,22 @@ export const FlightCreateModal: React.FC<FlightCreateModalProps> = ({
                     label="航站楼"
                     name="terminal_id"
                 >
-                    <Select
-                        placeholder="请选择航站楼（可选）"
+                    <TerminalSelector
+                        placeholder="请输入航站楼名称搜索（可选）"
                         allowClear
-                        loading={loadingOptions}
-                        showSearch
-                        filterOption={(input, option) =>
-                            (option?.label as string)?.toLowerCase().includes(input.toLowerCase())
-                        }
-                        options={terminals.map(terminal => ({
-                            value: terminal.terminal_id,
-                            label: terminal.terminal_name,
-                            key: terminal.terminal_id
-                        }))}
+                        onSearchError={handleSearchError}
                     />
                 </Form.Item>
 
                 <Form.Item
                     label="预计起飞时间"
                     name="estimated_departure"
-                    rules={[{ required: true, message: '请选择预计起飞时间' }]}
+                    rules={[{required: true, message: '请选择预计起飞时间'}]}
                 >
                     <DatePicker
                         showTime
                         placeholder="请选择预计起飞时间"
-                        style={{ width: '100%' }}
+                        style={{width: '100%'}}
                         format="YYYY-MM-DD HH:mm:ss"
                     />
                 </Form.Item>
@@ -160,12 +106,12 @@ export const FlightCreateModal: React.FC<FlightCreateModalProps> = ({
                 <Form.Item
                     label="预计到达时间"
                     name="estimated_arrival"
-                    rules={[{ required: true, message: '请选择预计到达时间' }]}
+                    rules={[{required: true, message: '请选择预计到达时间'}]}
                 >
                     <DatePicker
                         showTime
                         placeholder="请选择预计到达时间"
-                        style={{ width: '100%' }}
+                        style={{width: '100%'}}
                         format="YYYY-MM-DD HH:mm:ss"
                     />
                 </Form.Item>

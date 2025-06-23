@@ -5,6 +5,7 @@ import type {terminalType} from "../terminal/types.ts";
 export const flight = z.object({
     flight_id: z.uuidv4().or(z.string()).nullable().nullish(),
     aircraft_id: z.uuidv4().nullable().nullish(),
+    terminal_id: z.uuidv4().nullable().nullish(),
     estimated_departure: z.string().nullable().nullish(),
     estimated_arrival: z.string().nullable().nullish(),
     flight_status: z.string().nullable().nullish(),

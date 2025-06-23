@@ -1,18 +1,13 @@
-
-import React, { useEffect, useState } from 'react';
-import { Modal, Form, Select, DatePicker, message } from 'antd';
-import { FlightService } from '../../services/FlightService';
-import { AircraftListService } from '../../services/AircraftListService';
-import { TerminalService } from '../../services/TerminalService';
-import { DictionaryService } from '../../services/DictionaryService';
-import { useAircraftStore } from '../../store/aircraft/aircraftStore';
-import { useTerminalStore } from '../../store/terminal/terminalStore';
-import { APPROVAL_STATUS, FLIGHT_STATUS, HEALTH_STATUS } from '../../consts/dictionary.ts';
-import type { flightListType, flightType } from '../../store/flight/types';
-import type { dictionaryType } from '../../store/dictionary/type';
-
+import React, {useEffect, useState} from 'react';
+import {Modal, Form, Select, DatePicker, message} from 'antd';
+import {FlightService} from '../../services/FlightService';
+import {DictionaryService} from '../../services/DictionaryService';
+import {APPROVAL_STATUS, FLIGHT_STATUS, HEALTH_STATUS} from '../../consts/dictionary';
+import type {flightListType, flightType} from '../../store/flight/types';
+import type {dictionaryType} from '../../store/dictionary/type';
+import {AircraftSelector, TerminalSelector} from './selectors';
 import dayjs from 'dayjs';
-import {formatUTCToLocal} from "../../utils/dateUtils.ts";
+import {formatUTCToLocal} from "../../utils/dateUtils";
 
 interface FlightEditModalProps {
     visible: boolean;
@@ -34,13 +29,10 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
     const [healthStatusOptions, setHealthStatusOptions] = useState<dictionaryType[]>([]);
     const [approvalStatusOptions, setApprovalStatusOptions] = useState<dictionaryType[]>([]);
 
-    const { aircrafts } = useAircraftStore();
-    const { terminals } = useTerminalStore();
-
-    // 加载所有选项数据
+    // 加载字典选项数据
     useEffect(() => {
         if (visible) {
-            loadAllOptions();
+            loadDictionaryOptions();
         }
     }, [visible]);
 
@@ -49,6 +41,7 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
         if (visible && flight) {
             form.setFieldsValue({
                 aircraft_id: flight.aircraft_id,
+                terminal_id: flight.terminal_id,
                 flight_status: flight.flight_status,
                 health_status: flight.health_status,
                 approval_status: flight.approval_status,
@@ -60,33 +53,21 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
         }
     }, [visible, flight, form]);
 
-    const loadAllOptions = async () => {
+    const loadDictionaryOptions = async () => {
         setLoadingOptions(true);
         try {
-            // 并行加载所有选项数据
             const [flightStatus, healthStatus, approvalStatus] = await Promise.all([
                 DictionaryService.getChildrenByParentId(FLIGHT_STATUS),
                 DictionaryService.getChildrenByParentId(HEALTH_STATUS),
                 DictionaryService.getChildrenByParentId(APPROVAL_STATUS),
-                // 同时加载飞机和航站楼数据（如果store中没有）
-                aircrafts.length === 0 ? AircraftListService.getAircraftList({
-                    aircraft_name: null,
-                    age: null,
-                    type_name: null,
-                    description: null
-                }) : Promise.resolve(),
-                terminals.length === 0 ? TerminalService.getTerminalList({
-                    terminal_name: null,
-                    description: null
-                }) : Promise.resolve(),
             ]);
 
             setFlightStatusOptions(flightStatus || []);
             setHealthStatusOptions(healthStatus || []);
             setApprovalStatusOptions(approvalStatus || []);
         } catch (error) {
-            console.error('加载选项数据失败:', error);
-            message.error('加载选项数据失败');
+            console.error('加载字典选项数据失败:', error);
+            message.error('加载字典选项数据失败');
         } finally {
             setLoadingOptions(false);
         }
@@ -105,7 +86,6 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
                 flight_status: values.flight_status,
                 health_status: values.health_status,
                 approval_status: values.approval_status,
-                // 转换为 Date 对象而不是字符串
                 estimated_departure: values.estimate_departure ? values.estimate_departure.toDate() : null,
                 estimated_arrival: values.estimate_arrival ? values.estimate_arrival.toDate() : null,
                 actual_departure: values.actual_departure ? values.actual_departure.toDate() : null,
@@ -129,6 +109,10 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
         onCancel();
     };
 
+    const handleSearchError = (error: any) => {
+        message.error('加载选项数据失败').then(r => r);
+    };
+
     return (
         <Modal
             title="编辑航班"
@@ -137,7 +121,7 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
             onCancel={handleCancel}
             confirmLoading={loading}
             width={700}
-            destroyOnClose
+            destroyOnHidden={true}
         >
             <Form
                 form={form}
@@ -147,20 +131,22 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
                 <Form.Item
                     label="飞机"
                     name="aircraft_id"
-                    rules={[{ required: true, message: '请选择飞机' }]}
+                    rules={[{required: true, message: '请选择飞机'}]}
                 >
-                    <Select
-                        placeholder="请选择飞机"
-                        loading={loadingOptions}
-                        showSearch
-                        filterOption={(input, option) =>
-                            (option?.label as string)?.toLowerCase().includes(input.toLowerCase())
-                        }
-                        options={aircrafts.map(aircraft => ({
-                            value: aircraft.aircraft_id,
-                            label: `${aircraft.aircraft_name} (${aircraft.type_name})`,
-                            key: aircraft.aircraft_id
-                        }))}
+                    <AircraftSelector
+                        placeholder="请输入飞机名称搜索"
+                        onSearchError={handleSearchError}
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    label="航站楼"
+                    name="terminal_id"
+                >
+                    <TerminalSelector
+                        placeholder="请输入航站楼名称搜索（可选）"
+                        allowClear
+                        onSearchError={handleSearchError}
                     />
                 </Form.Item>
 
@@ -219,7 +205,7 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
                     <DatePicker
                         showTime
                         placeholder="请选择预计起飞时间"
-                        style={{ width: '100%' }}
+                        style={{width: '100%'}}
                         format="YYYY-MM-DD HH:mm:ss"
                     />
                 </Form.Item>
@@ -231,7 +217,7 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
                     <DatePicker
                         showTime
                         placeholder="请选择预计到达时间"
-                        style={{ width: '100%' }}
+                        style={{width: '100%'}}
                         format="YYYY-MM-DD HH:mm:ss"
                     />
                 </Form.Item>
@@ -243,7 +229,7 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
                     <DatePicker
                         showTime
                         placeholder="请选择实际起飞时间"
-                        style={{ width: '100%' }}
+                        style={{width: '100%'}}
                         format="YYYY-MM-DD HH:mm:ss"
                     />
                 </Form.Item>
@@ -255,7 +241,7 @@ export const FlightEditModal: React.FC<FlightEditModalProps> = ({
                     <DatePicker
                         showTime
                         placeholder="请选择实际到达时间"
-                        style={{ width: '100%' }}
+                        style={{width: '100%'}}
                         format="YYYY-MM-DD HH:mm:ss"
                     />
                 </Form.Item>
