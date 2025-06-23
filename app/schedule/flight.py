@@ -4,3 +4,4 @@ from app import app,celery
 def health_check():
     print("healthy")
     return "healthy"
+

@@ -143,5 +143,14 @@ class FaceRecognition:
         return None
 
 
-# 全局单例实例
-frc = FaceRecognition()
+_instance = None
+_lock = threading.Lock()
+
+
+def get_singleton():
+    global _instance
+    if _instance is None:
+        with _lock:
+            if _instance is None:
+                _instance = FaceRecognition()
+    return _instance

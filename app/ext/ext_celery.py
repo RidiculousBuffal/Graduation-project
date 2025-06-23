@@ -23,7 +23,7 @@ def make_celery(flask_app):
     include = ['app.schedule.flight']
     # 把 Flask 配置合并进 Celery
     celery.conf.update(flask_app.config)
-    imports = ['app.schedule.flight']
+    imports = ['app.schedule.flight','app.worker.faceRecognition']
     beat_schedule = {
         'healthy_task': {
             'task': 'app.schedule.flight.health_check',

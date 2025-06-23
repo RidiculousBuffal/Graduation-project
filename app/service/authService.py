@@ -4,9 +4,6 @@ from werkzeug.security import generate_password_hash
 from app.DTO.user import UserDTO, ResetPasswordDTO
 from app.consts.Roles import RoleConsts
 from app.consts.auth import AuthConsts
-from app.exceptions.face import NoFaceFound
-from app.lib.face.faceRecognition import FaceRecognition
-from app.lib.face.faceRecognition import frc
 from app.mapper.auth.roleMapper import RoleMapper
 from app.mapper.auth.userMapper import UserMapper
 from app.mapper.auth.userRolePermissionMapper import UserRolePermissionMapper
@@ -15,9 +12,6 @@ from app.models.response import ResponseModel
 
 
 class AuthService:
-    # 登录注册服务
-    faceLoginClient = FaceRecognition()
-
     @staticmethod
     def _process_login_info(user: User):
         UserMapper.update_last_login(user.user_id)
@@ -68,21 +62,19 @@ class AuthService:
     @staticmethod
     def updateUserFaceInfo(user_id, face_info):
         UserMapper.update_user_face_login_info(user_id, face_info)
-        # 上传图片到向量数据库
-        try:
-            embed = frc.face_embedding(face_info)
-        except NoFaceFound as e:
-            return ResponseModel.fail(msg=AuthConsts.FACEINFO_REQUIRED)
-        frc.put_embedding_to_weaviate(embed, user_id)
+        # 同步调用 celery
+        from app.worker.faceRecognition import create_user_face_embedding
+        result = create_user_face_embedding.delay(face_info, user_id).get(timeout=120)
+        if not result.get("success"):
+            return ResponseModel.fail(msg=result.get("error") or "Face embedding failed")
         return ResponseModel.success(msg=None, data=face_info)
 
     @staticmethod
     def loginWithFaceInfo(face_info):
-        try:
-            embed = frc.face_embedding(face_info)
-        except NoFaceFound as e:
-            return ResponseModel.fail(msg=AuthConsts.FACEINFO_REQUIRED)
-        user_id = frc.check_without_uuid(embed)
+        # 同步调用 celery
+        from app.worker.faceRecognition import get_user_id_by_face
+        result = get_user_id_by_face.delay(face_info).get(timeout=120)
+        user_id = result.get("user_id")
         if user_id:
             user = UserMapper.get_user_by_user_id(user_id)
             if user:
@@ -96,10 +88,16 @@ class AuthService:
     def update_user_info(user: UserDTO, user_id: str):
         try:
             if user.faceInfo is None or user.faceInfo == '':
-                frc.delete_embedding(user_id)
+                # 同步删除
+                from app.worker.faceRecognition import delete_face_embedding
+                result = delete_face_embedding.delay(user_id).get(timeout=120)
+                if not result.get("success"):
+                    return ResponseModel.fail(msg=result.get("error") or "Delete embedding failed")
             UserMapper.update_user_basic_info(user, user_id)
-            return ResponseModel.success(msg=AuthConsts.UPDATE_USER_INFO_SUCCESS,
-                                         data=UserMapper.get_user_by_user_id(user_id).to_dict())
+            return ResponseModel.success(
+                msg=AuthConsts.UPDATE_USER_INFO_SUCCESS,
+                data=UserMapper.get_user_by_user_id(user_id).to_dict()
+            )
         except Exception as e:
             return ResponseModel.fail(msg=AuthConsts.UPDATE_USER_INFO_FAILURE, data=str(e))
 
