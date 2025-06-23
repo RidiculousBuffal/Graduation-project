@@ -4,11 +4,14 @@ from typing import Optional
 from sqlalchemy import select, between
 from sqlalchemy.orm import joinedload
 
-from app.DTO.flights import FlightCreateDTO, FlightUpdateDTO, FlightDTO, FlightDetailDTO, FlightPagedResponseDTO
+from app.DTO.aircrafts import AircraftReferenceImageJson
+from app.DTO.flights import FlightCreateDTO, FlightUpdateDTO, FlightDTO, FlightDetailDTO, FlightPagedResponseDTO, \
+    FlightAircraftImageDTO
 from app.DTO.pagination import PaginationDTO
 from app.exceptions.flights import FlightTimeConflictError, FlightTimestampOrderError, FlightActualVsEstimatedError
 from app.ext.extensions import db
 from app.models import Aircraft, Terminal
+from app.models.aircraft import AircraftReferenceImage
 from app.models.flight import Flight
 from app.utils.timeUtils import parse_to_utc
 
@@ -288,3 +291,49 @@ class FlightMapper:
             pagination=pagination_dto
         )
         return response
+
+    @staticmethod
+    def get_all_related_aircraft_image_by_flight_id(flight_id: str):
+        # 1. 查询（一次提取出 flight_id、aircraft_id、aircraft_name、参考图像相关所有字段）
+        query = (
+            db.session.query(
+                Flight.flight_id,
+                Aircraft.aircraft_id,
+                Aircraft.aircraft_name,
+                AircraftReferenceImage.image_id.label('aircraft_image_id'),
+                AircraftReferenceImage.image_json.label('aircraft_image_json')
+            )
+            .join(Aircraft, Flight.aircraft_id == Aircraft.aircraft_id)
+            .join(AircraftReferenceImage, AircraftReferenceImage.aircraft_id == Aircraft.aircraft_id)
+            .filter(Flight.flight_id == flight_id)
+        )
+        rows = query.all()
+
+        # 2. 组装 DTO 列表
+        result_list = []
+        for row in rows:
+            image_json = row.aircraft_image_json
+            if image_json:
+                try:
+                    arij = AircraftReferenceImageJson.model_validate(image_json)
+                except Exception as e:
+                    arij = None
+            else:
+                arij = None
+            dto = FlightAircraftImageDTO(
+                aircraft_id=row.aircraft_id,
+                aircraft_name=row.aircraft_name,
+                aircraft_image_id=row.aircraft_image_id,
+                aircraft_image_json=arij,
+                flight_id=row.flight_id
+            )
+            result_list.append(dto)
+        return result_list
+
+
+if __name__ == '__main__':
+    from app import create_app
+
+    fake_app = create_app()
+    with fake_app.app_context():
+        FlightMapper.get_all_related_aircraft_image_by_flight_id("4ed86373-b98c-8730-2e6ca1514bd3")

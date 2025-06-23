@@ -10,6 +10,7 @@ from app.service.flightService import FlightService
 
 flight_bp = Blueprint('flight', __name__)
 
+
 # Flight (航班) 相关接口
 @flight_bp.post('/createFlight')
 @permission_required(Permissions.FLIGHT_ADD.get('permission_name'), True)
@@ -23,12 +24,14 @@ def create_flight():
     except ValidationError as e:
         return ResponseModel.fail(msg=NetWorkConst.PARAMS_MISSING, data=str(e)).to_dict(), 400
 
+
 @flight_bp.get('/getFlight/<string:flight_id>')
 @permission_required(Permissions.FLIGHT_READ.get('permission_name'), True)
 def get_flight(flight_id: str):
     """根据ID获取航班记录，包含详细信息"""
     result = FlightService.get_flight_by_id(flight_id)
     return result.to_dict(), 200
+
 
 @flight_bp.post('/updateFlight/<string:flight_id>')
 @permission_required(Permissions.FLIGHT_UPDATE.get('permission_name'), True)
@@ -42,12 +45,14 @@ def update_flight(flight_id: str):
     except ValidationError as e:
         return ResponseModel.fail(msg=NetWorkConst.PARAMS_MISSING, data=str(e)).to_dict(), 400
 
+
 @flight_bp.delete('/deleteFlight/<string:flight_id>')
 @permission_required(Permissions.FLIGHT_DELETE.get('permission_name'), True)
 def delete_flight(flight_id: str):
     """删除航班记录"""
     result = FlightService.delete_flight(flight_id)
     return result.to_dict(), 200
+
 
 @flight_bp.get('/searchFlight')
 @permission_required(Permissions.FLIGHT_READ.get('permission_name'), True)
@@ -62,13 +67,13 @@ def search_flight():
     aircraft_name = args.get('aircraft_name', type=str)  # 新增：按飞机名称查询
     terminal_name = args.get('terminal_name', type=str)  # 新增：按航站楼名称查询
     estimated_departure_start = args.get('estimated_departure_start', type=str)  # 新增：预计起飞起始时间
-    estimated_departure_end = args.get('estimated_departure_end', type=str)      # 新增：预计起飞结束时间
-    estimated_arrival_start = args.get('estimated_arrival_start', type=str)      # 新增：预计到达起始时间
-    estimated_arrival_end = args.get('estimated_arrival_end', type=str)          # 新增：预计到达结束时间
-    actual_departure_start = args.get('actual_departure_start', type=str)        # 新增：实际起飞起始时间
-    actual_departure_end = args.get('actual_departure_end', type=str)            # 新增：实际起飞结束时间
-    actual_arrival_start = args.get('actual_arrival_start', type=str)            # 新增：实际到达起始时间
-    actual_arrival_end = args.get('actual_arrival_end', type=str)                # 新增：实际到达结束时间
+    estimated_departure_end = args.get('estimated_departure_end', type=str)  # 新增：预计起飞结束时间
+    estimated_arrival_start = args.get('estimated_arrival_start', type=str)  # 新增：预计到达起始时间
+    estimated_arrival_end = args.get('estimated_arrival_end', type=str)  # 新增：预计到达结束时间
+    actual_departure_start = args.get('actual_departure_start', type=str)  # 新增：实际起飞起始时间
+    actual_departure_end = args.get('actual_departure_end', type=str)  # 新增：实际起飞结束时间
+    actual_arrival_start = args.get('actual_arrival_start', type=str)  # 新增：实际到达起始时间
+    actual_arrival_end = args.get('actual_arrival_end', type=str)  # 新增：实际到达结束时间
     page_num = args.get('page_num', default=1, type=int)
     page_size = args.get('page_size', default=10, type=int)
 
@@ -92,3 +97,9 @@ def search_flight():
         page_size=page_size
     )
     return result.to_dict(), 200
+
+
+@flight_bp.get('/getFlightAircraftImage/<string:flight_id>')
+@permission_required(Permissions.AIRCRAFT_IMAGE_READ.get('permission_name'), True)
+def get_aircraft_image(flight_id: str):
+    return FlightService.getFlightAircraftImageId(flight_id).to_dict(), 200

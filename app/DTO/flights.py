@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Optional, List
 
 from app.DTO.Base import BaseDTO
+from app.DTO.aircrafts import AircraftReferenceImageJson
 from app.DTO.pagination import PaginationDTO
 
 
@@ -64,3 +65,11 @@ class FlightDetailDTO(BaseDTO):
 class FlightPagedResponseDTO(BaseDTO):
     data: List[FlightDetailDTO]  # 使用 FlightDetailDTO 替代 FlightDTO
     pagination: PaginationDTO
+
+
+class FlightAircraftImageDTO(BaseDTO):
+    aircraft_id: str
+    aircraft_name: Optional[str] = None
+    aircraft_image_id: str
+    aircraft_image_json: Optional[AircraftReferenceImageJson]
+    flight_id: str

@@ -190,6 +190,20 @@ class FlightService:
             )
         except Exception as e:
             return ResponseModel.fail(
+                msg=FlightConsts.SEARCH_FLIGHT_ERROR,
+                data={"error": str(e)}
+            )
+
+    @staticmethod
+    def getFlightAircraftImageId(flightId: str):
+        try:
+            res = FlightMapper.get_all_related_aircraft_image_by_flight_id(flightId)
+            return ResponseModel.success(
                 msg=FlightConsts.SEARCH_FLIGHT_SUCCESS,
+                data=res.model_dump()
+            )
+        except Exception as e:
+            return ResponseModel.fail(
+                msg=FlightConsts.SEARCH_FLIGHT_ERROR,
                 data={"error": str(e)}
             )

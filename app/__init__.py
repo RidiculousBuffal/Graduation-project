@@ -32,6 +32,10 @@ def create_app(config_name='default'):
     app_celery = make_celery(app)
     app.celery = app_celery
     print('✅ celery初始化成功')
+    if os.getenv('MODE')=='api':
+        print('✅ running in mode api')
+    if os.getenv('MODE')=='worker':
+        print('✅ running in mode worker')
     # 注册蓝图
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(aircraft_bp, url_prefix='/api/aircraft')
