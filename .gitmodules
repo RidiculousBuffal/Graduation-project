@@ -1,0 +1,8 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/RidiculousBuffal/Graduation-project.git
+	branch = dev_backend
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/RidiculousBuffal/Graduation-project.git
+	branch = zlc/pc-frontend
