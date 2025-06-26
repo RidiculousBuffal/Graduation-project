@@ -41,6 +41,7 @@ jobs:
           git push github --tags
   updateSubModule:
     runs-on: ubuntu-latest
+    needs: sync
     permissions:
       contents: write
     steps:
