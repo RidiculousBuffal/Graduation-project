@@ -13,3 +13,4 @@ class AuthConsts:
     UPDATE_USER_INFO_FAILURE='更新数据失败'
     ORIGIN_PASSWORD_WRONG='原密码错误'
     UPDATE_PASSWORD_SUCCESS='更新密码成功'
+    GET_ENGINEER_SUCCESS = '获取工程师成功'

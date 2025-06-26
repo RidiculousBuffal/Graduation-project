@@ -1,12 +1,12 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import select, between
+from sqlalchemy import select, between, or_
 from sqlalchemy.orm import joinedload
 
 from app.DTO.aircrafts import AircraftReferenceImageJson
 from app.DTO.flights import FlightCreateDTO, FlightUpdateDTO, FlightDTO, FlightDetailDTO, FlightPagedResponseDTO, \
-    FlightAircraftImageDTO
+    FlightAircraftImageDTO, FlightWithAircraftName
 from app.DTO.pagination import PaginationDTO
 from app.exceptions.flights import FlightTimeConflictError, FlightTimestampOrderError, FlightActualVsEstimatedError
 from app.ext.extensions import db
@@ -300,6 +300,7 @@ class FlightMapper:
                 Flight.flight_id,
                 Aircraft.aircraft_id,
                 Aircraft.aircraft_name,
+                AircraftReferenceImage.image_name,
                 AircraftReferenceImage.image_id.label('aircraft_image_id'),
                 AircraftReferenceImage.image_json.label('aircraft_image_json')
             )
@@ -325,9 +326,50 @@ class FlightMapper:
                 aircraft_name=row.aircraft_name,
                 aircraft_image_id=row.aircraft_image_id,
                 aircraft_image_json=arij,
-                flight_id=row.flight_id
+                flight_id=row.flight_id,
+                image_name=row.image_name
             )
-            result_list.append(dto)
+            result_list.append(dto.model_dump())
+        return result_list
+
+    @staticmethod
+    def AutoCompleteFlightId(flightId: str, aircraft_name: str):
+        query = db.session.query(
+            Flight.flight_id,
+            Aircraft.aircraft_id,
+            Aircraft.aircraft_name,
+        ).join(Aircraft, Flight.aircraft_id == Aircraft.aircraft_id)
+
+        # 拼接模糊条件
+        filter_clause = []
+        if flightId:
+            filter_clause.append(Flight.flight_id.like(f"%{flightId}%"))
+        if aircraft_name:
+            filter_clause.append(Aircraft.aircraft_name.like(f"%{aircraft_name}%"))
+
+        # 如果有搜索条件才过滤
+        if filter_clause:
+            query = query.filter(or_(*filter_clause))
+
+        # 去重-可根据业务需求distinct flight_id 不然多行重复aircraft也会出来
+        query = query.distinct()
+
+        # 查询并组装DTO
+        result_list = []
+        seen = set()
+        for row in query.all():
+            # 确保唯一 flight_id 返回
+            key = (row.flight_id, row.aircraft_id)
+            if key in seen:
+                continue
+            seen.add(key)
+            result_list.append(
+                FlightWithAircraftName(
+                    flight_id=row.flight_id,
+                    aircraft_id=row.aircraft_id,
+                    aircraft_name=row.aircraft_name,
+                ).model_dump()
+            )
         return result_list
 
 
@@ -336,4 +378,5 @@ if __name__ == '__main__':
 
     fake_app = create_app()
     with fake_app.app_context():
-        FlightMapper.get_all_related_aircraft_image_by_flight_id("4ed86373-b98c-8730-2e6ca1514bd3")
+       res =  FlightMapper.AutoCompleteFlightId("4ed86373-",'4ed86373-')
+       print(res)

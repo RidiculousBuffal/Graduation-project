@@ -69,7 +69,7 @@ def delete_task(task_id):
         result = TaskService.delete_task(task_id)
         if not result:
             return ResponseModel.fail(f"{TaskConsts.TASK_NOT_FOUND}: {task_id}").to_dict(), 404
-        return ResponseModel.success(msg=f'{TaskConsts.TASK_DELETE_SUCCESS}', data=None).to_dict()
+        return ResponseModel.success(msg=f'{TaskConsts.TASK_DELETE_SUCCESS}', data=True).to_dict()
     except Exception as e:
         return ResponseModel.fail(f"{TaskConsts.TASK_DELETE_FAIL}: {str(e)}").to_dict(), 400
 
@@ -94,7 +94,10 @@ def search_tasks():
         estimated_start_to = data.get('estimated_start_to')
         estimated_end_from = data.get('estimated_end_from')
         estimated_end_to = data.get('estimated_end_to')
-
+        actual_start_from = data.get('actual_start_from')
+        actual_start_to = data.get('actual_start_to')
+        actual_end_to = data.get('actual_end_to')
+        actual_end_from = data.get('actual_end_from')
         result = TaskService.search_tasks(
             flight_id=flight_id,
             admin_id=admin_id,
@@ -106,6 +109,10 @@ def search_tasks():
             estimated_start_to=estimated_start_to,
             estimated_end_from=estimated_end_from,
             estimated_end_to=estimated_end_to,
+            actual_start_from=actual_start_from,
+            actual_start_to=actual_start_to,
+            actual_end_from=actual_end_from,
+            actual_end_to=actual_end_to,
             page_num=page_num,
             page_size=page_size
         )

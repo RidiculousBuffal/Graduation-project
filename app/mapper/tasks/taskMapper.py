@@ -115,6 +115,10 @@ class TaskMapper:
             estimated_start_to: Optional[datetime] = None,
             estimated_end_from: Optional[datetime] = None,
             estimated_end_to: Optional[datetime] = None,
+            actual_start_from: Optional[datetime] = None,
+            actual_start_to: Optional[datetime] = None,
+            actual_end_to: Optional[datetime] = None,
+            actual_end_from: Optional[datetime] = None,
             page_num: int = 1,
             page_size: int = 10
     ) -> TaskPagedResponseDTO:
@@ -158,6 +162,20 @@ class TaskMapper:
         elif estimated_end_to:
             query = query.where(Task.estimated_end <= estimated_end_to)
 
+        if actual_start_from and actual_start_to:
+            query = query.where(between(Task.actual_start, actual_start_from, actual_start_to))
+        elif actual_start_from:
+            query = query.where(Task.actual_start >= actual_start_from)
+        elif actual_start_to:
+            query = query.where(Task.actual_start <= actual_start_to)
+
+        if actual_end_from and actual_end_to:
+            query = query.where(between(Task.actual_end, actual_end_from, actual_end_to))
+        elif actual_end_from:
+            query = query.where(Task.actual_end >= actual_end_from)
+        elif actual_end_to:
+            query = query.where(Task.actual_end <= actual_end_to)
+
         # 排序和分页
         query = query.order_by(Task.created_at.desc())
         pagination = db.paginate(
@@ -185,7 +203,6 @@ class TaskMapper:
             tasks_data.append(TaskDetailDTO(
                 task_id=task.task_id,
                 flight_id=task.flight_id,
-                flight_number=flight.flight_number if flight and hasattr(flight, 'flight_number') else None,
                 aircraft_id=flight.aircraft_id if flight and hasattr(flight, 'aircraft_id') else None,
                 aircraft_name=aircraft.aircraft_name if aircraft else None,
                 estimated_start=task.estimated_start,

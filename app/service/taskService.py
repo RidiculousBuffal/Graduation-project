@@ -16,7 +16,7 @@ class TaskService:
         :return: 创建的任务信息
         """
         return TaskMapper.create(task_data)
-    
+
     @staticmethod
     def get_task(task_id: str) -> Optional[TaskDetailDTO]:
         """
@@ -25,7 +25,7 @@ class TaskService:
         :return: 任务详情或None（如果不存在）
         """
         return TaskMapper.get_by_id(task_id)
-    
+
     @staticmethod
     def update_task(task_id: str, update_data: TaskUpdateDTO) -> Optional[TaskDTO]:
         """
@@ -35,7 +35,7 @@ class TaskService:
         :return: 更新后的任务或None（如果任务不存在）
         """
         return TaskMapper.update(task_id, update_data)
-    
+
     @staticmethod
     def delete_task(task_id: str) -> bool:
         """
@@ -44,7 +44,7 @@ class TaskService:
         :return: 删除操作是否成功
         """
         return TaskMapper.delete(task_id)
-    
+
     @staticmethod
     def search_tasks(
             flight_id: Optional[str] = None,
@@ -57,6 +57,10 @@ class TaskService:
             estimated_start_to: Optional[datetime] = None,
             estimated_end_from: Optional[datetime] = None,
             estimated_end_to: Optional[datetime] = None,
+            actual_start_from: Optional[datetime] = None,
+            actual_start_to: Optional[datetime] = None,
+            actual_end_to: Optional[datetime] = None,
+            actual_end_from: Optional[datetime] = None,
             page_num: int = 1,
             page_size: int = 10
     ) -> TaskPagedResponseDTO:
@@ -87,6 +91,10 @@ class TaskService:
             estimated_start_to=estimated_start_to,
             estimated_end_from=estimated_end_from,
             estimated_end_to=estimated_end_to,
+            actual_end_to=actual_end_to,
+            actual_start_from=actual_start_from,
+            actual_start_to=actual_start_to,
+            actual_end_from=actual_end_from,
             page_num=page_num,
             page_size=page_size
         )

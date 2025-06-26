@@ -14,12 +14,14 @@ class UserMapper:
         q = select(User).where(User.username == username)
         user = db.session.execute(q).scalar_one_or_none()
         return user
+
     @staticmethod
-    def updatePassword(user_id:str,hashed_pass:str):
+    def updatePassword(user_id: str, hashed_pass: str):
         u = update(User).where(User.user_id == user_id).values(password=hashed_pass)
         db.session.execute(u)
         db.session.commit()
         return True
+
     @staticmethod
     def get_user_by_user_id(user_id: str) -> Optional[User]:
         q = select(User).where(User.user_id == user_id)
@@ -70,7 +72,7 @@ class UserMapper:
 
     @staticmethod
     def add_user(username, password, email):
-        user = User(username=username, password=password, email=email)
+        user = User(username=username, password=password, email=email, name=username)
         db.session.add(user)
         db.session.commit()
         return user.user_id

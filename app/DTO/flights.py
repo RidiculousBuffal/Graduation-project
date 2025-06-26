@@ -71,5 +71,12 @@ class FlightAircraftImageDTO(BaseDTO):
     aircraft_id: str
     aircraft_name: Optional[str] = None
     aircraft_image_id: str
+    image_name: Optional[str] = None
     aircraft_image_json: Optional[AircraftReferenceImageJson]
     flight_id: str
+
+
+class FlightWithAircraftName(BaseDTO):
+    aircraft_id: Optional[str] = None
+    aircraft_name: Optional[str] = None
+    flight_id: Optional[str] = None

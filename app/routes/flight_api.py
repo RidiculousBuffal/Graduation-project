@@ -103,3 +103,9 @@ def search_flight():
 @permission_required(Permissions.AIRCRAFT_IMAGE_READ.get('permission_name'), True)
 def get_aircraft_image(flight_id: str):
     return FlightService.getFlightAircraftImageId(flight_id).to_dict(), 200
+
+
+@flight_bp.get('/autocompleteFlight/<string:payload>')
+@permission_required(Permissions.FLIGHT_READ.get('permission_name'), True)
+def autocomplete_flight(payload: str):
+    return FlightService.AutoCompleteFlightId(payload).to_dict(), 200

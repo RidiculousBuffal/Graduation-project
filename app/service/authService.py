@@ -57,7 +57,8 @@ class AuthService:
 
     @staticmethod
     def getAllEngineers():
-        return ResponseModel.success(UserMapper.get_users_by_role(RoleConsts.ENGINEER))
+        return ResponseModel.success(data=UserMapper.get_users_by_role(RoleConsts.ENGINEER),
+                                     msg=AuthConsts.GET_ENGINEER_SUCCESS)
 
     @staticmethod
     def updateUserFaceInfo(user_id, face_info):
