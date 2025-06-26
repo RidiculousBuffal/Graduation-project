@@ -37,7 +37,8 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git remote add github https://RidiculousBuffal:${{ secrets.PAT_GITHUB_PUSH }}@github.com/RidiculousBuffal/Graduation-project.git
-          git push github --mirror
+          git push github --all
+          git push github --tags
   updateSubModule:
     runs-on: ubuntu-latest
     permissions:
