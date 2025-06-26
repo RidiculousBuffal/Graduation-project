@@ -40,6 +40,7 @@ export const AircraftSelector: React.FC<AircraftSelectorProps> = ({
             let timeoutId: number;
             return (value: string) => {
                 clearTimeout(timeoutId);
+                // @ts-ignore
                 timeoutId = setTimeout(() => {
                     searchAircraft(value);
                 }, 300);

@@ -39,6 +39,7 @@ export const TerminalSelector: React.FC<TerminalSelectorProps> = ({
             let timeoutId: number;
             return (value: string) => {
                 clearTimeout(timeoutId);
+                // @ts-ignore
                 timeoutId = setTimeout(() => {
                     searchTerminal(value);
                 }, 300);
