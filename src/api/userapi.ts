@@ -47,3 +47,7 @@ export async function updateUserPassword(password: string, newPassword: string):
 export async function loginByFaceInfo(faceInfo: string) {
     return fetchAPI.req<loginResp>('/auth/loginByFaceInfo', {method: "POST", body: JSON.stringify({faceInfo: faceInfo})})
 }
+
+export async function getEngineers() {
+    return fetchAPI.req<userType[]>('/auth/getEngineers', {method: "GET"})
+}

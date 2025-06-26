@@ -1,8 +1,8 @@
 
 import React, { useCallback, useMemo } from 'react';
 import { Select, type SelectProps } from 'antd';
-import { useTerminalStore } from '../../../store/terminal/terminalStore';
-import { TerminalService } from '../../../services/TerminalService';
+import { useTerminalStore } from '../../store/terminal/terminalStore.ts';
+import { TerminalService } from '../../services/TerminalService.ts';
 
 interface TerminalSelectorProps extends Omit<SelectProps, 'options' | 'loading'> {
     onSearchError?: (error: any) => void;

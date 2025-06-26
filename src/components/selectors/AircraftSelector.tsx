@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { Select, type SelectProps } from 'antd';
-import { useAircraftStore } from '../../../store/aircraft/aircraftStore';
-import { AircraftListService } from '../../../services/AircraftListService';
+import { useAircraftStore } from '../../store/aircraft/aircraftStore.ts';
+import { AircraftListService } from '../../services/AircraftListService.ts';
 
 interface AircraftSelectorProps extends Omit<SelectProps, 'options' | 'loading'> {
     onSearchError?: (error: any) => void;

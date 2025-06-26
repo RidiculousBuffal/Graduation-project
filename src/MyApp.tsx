@@ -17,6 +17,9 @@ import {Permissions} from "./consts/permissions.ts";
 import Terminal from "./pages/terminal/Terminal.tsx";
 import Security from "./pages/user/secure/Security.tsx";
 import AircraftImageManager from "./pages/aircraft/image/AircraftImageManager.tsx";
+import TaskCenter from "@/pages/tasks/TaskCenter.tsx";
+import InspectionRecordCenter from "@/pages/inspection/inspectionRecords/InspectionRecordCenter.tsx";
+import InspectionRecordHall from "@/pages/inspection/inspectionRecords/InspectionRecordHall.tsx";
 // 受保护的路由组件
 const ProtectedRoute = ({children, permission}: { children: React.ReactNode, permission?: string }) => {
     if (!AuthService.isLoggedIn()) {
@@ -65,6 +68,12 @@ function MyApp() {
                         permission={Permissions.FLIGHT_READ.permission_name}><Flight/></ProtectedRoute>}/>
                     <Route path="terminal" element={<ProtectedRoute
                         permission={Permissions.TERMINAL_READ.permission_name}><Terminal/></ProtectedRoute>}></Route>
+                    <Route path="tasks" element={<ProtectedRoute
+                        permission={Permissions.TASK_READ.permission_name}><TaskCenter></TaskCenter></ProtectedRoute>}></Route>
+                    <Route path="inspection/records/:task_id" element={<ProtectedRoute
+                        permission={Permissions.INSPECTION_READ.permission_name}><InspectionRecordCenter></InspectionRecordCenter></ProtectedRoute>}></Route>
+                    <Route path="inspection/hall" element={<ProtectedRoute
+                        permission={Permissions.INSPECTION_READ.permission_name}><InspectionRecordHall></InspectionRecordHall></ProtectedRoute>}></Route>
                     <Route path="user/my" element={<ProtectedRoute
                         permission={Permissions.PROFILE_READ.permission_name}><My/></ProtectedRoute>}/>
                     <Route path="user/admin"

@@ -17,14 +17,14 @@ export const aircraft = z.object({
 )
 export type aircraftType_ = z.infer<typeof aircraft> //防止和aircraftType冲突
 export type AircraftArrayType = Array<aircraftTypeType & aircraftType_>
-
+export type AircraftImageJsonType = {
+    fileInfo: ipfsFileType,
+    pointInfo: Point[]
+}
 export type AircraftImageType = {
     image_id: string,
     image_name: string,
-    image_json: {
-        fileInfo: ipfsFileType,
-        pointInfo: Point[]
-    },
+    image_json: AircraftImageJsonType,
     aircraft_id: string,
     image_description: string,
 }

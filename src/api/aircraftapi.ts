@@ -42,7 +42,7 @@ export const updateAircraft = async (aircraft: aircraftType_) => {
     })
 }
 export const deleteAircraft = async (aircraft: aircraftType_) => {
-    return fetchAPI.req<Boolean>(`/aircraft/deleteAircraft/${aircraft.aircraft_id}`, {method: "DELETE"})
+    return fetchAPI.req<boolean>(`/aircraft/deleteAircraft/${aircraft.aircraft_id}`, {method: "DELETE"})
 }
 export const searchAircraft = async (request: Pagination & Nullable<Omit<aircraftType_ & aircraftTypeType, 'aircraft_id' | 'typeid'>>) => {
     const {total, total_pages, ...rest} = request
@@ -67,7 +67,7 @@ export const updateAircraftImage = async (aircraftImage: AircraftImageType) => {
     })
 }
 export const deleteAircraftImage = async (imageId: string) => {
-    return fetchAPI.req<Boolean>(`/aircraft/deleteAircraftImage/${imageId}`, {method: "DELETE"})
+    return fetchAPI.req<boolean>(`/aircraft/deleteAircraftImage/${imageId}`, {method: "DELETE"})
 }
 export const searchAircraftImage = async (request: Pagination & {
     image_name?: string,

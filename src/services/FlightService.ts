@@ -1,5 +1,6 @@
 import {BaseService} from "./BaseService.ts";
 import {
+    autocompleteFlightId,
     createFlight,
     type createFlightPayLoad, deleteFlight,
     getFlightDetailById, searchFlight,
@@ -58,4 +59,10 @@ export class FlightService extends BaseService {
         })
     }
 
+    public static async autocompleteFlightId(payload: string) {
+        /*
+        *  传入payload 可以是flight_id的一部分,也可以是飞机名称的一部分,快速找到flightid
+        * */
+        return await autocompleteFlightId(payload)
+    }
 }

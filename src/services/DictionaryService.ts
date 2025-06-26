@@ -4,8 +4,8 @@ import {
     getDictionaryById,
     searchDictionary,
     type SearchDictionaryPayload
-} from "../api/dictionaryapi.ts";
-import {useDictionaryStore} from "../store/dictionary/DictionaryStore.ts";
+} from "@/api/dictionaryapi.ts";
+import {useDictionaryStore} from "@/store/dictionary/DictionaryStore.ts";
 
 export class DictionaryService extends BaseService {
     public static async getDictionaryById(id: string) {

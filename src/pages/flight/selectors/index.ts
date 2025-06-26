@@ -1,2 +1,2 @@
-export { AircraftSelector } from './AircraftSelector';
-export { TerminalSelector } from './TerminalSelector';
+export { AircraftSelector } from '../../../components/selectors/AircraftSelector.tsx';
+export { TerminalSelector } from '../../../components/selectors/TerminalSelector.tsx';

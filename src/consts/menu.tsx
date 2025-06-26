@@ -1,7 +1,7 @@
 import {type MenuProps} from "antd";
 import type {permissionType} from "../store/user/types.ts";
 import {DashboardOutlined} from "@ant-design/icons";
-import {Plane, Terminal, TerminalIcon, TicketsPlane, User, WarehouseIcon} from "lucide-react";
+import {Bug, Cable, Plane, Terminal, TerminalIcon, TicketsPlane, User, WarehouseIcon} from "lucide-react";
 import {Permissions} from "./permissions.ts";
 
 
@@ -41,6 +41,23 @@ export class MyMenu {
         label: "航班管理",
         icon: <TicketsPlane/>,
         permission: Permissions.FLIGHT_READ,
+    }, {
+        key: "tasks",
+        label: "任务编排",
+        icon: <Cable/>,
+        permission: Permissions.TASK_READ,
+    }, {
+        key: "inspection",
+        label: "检测中心",
+        icon: <Bug/>,
+        permission: null,
+        children: [
+            {
+                key: "hall",
+                label: "检测列表",
+                permission: Permissions.INSPECTION_READ
+            }
+        ]
     }, {
         key: "user",
         label: "用户设置",

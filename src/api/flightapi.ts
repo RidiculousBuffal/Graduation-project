@@ -3,6 +3,7 @@ import type {flightListType, flightType} from "../store/flight/types.ts";
 import type {Pagination, PaginationResult} from "../publicTypes/pagination.ts";
 import {clean, type Nullable} from "../publicTypes/typeUtils.ts";
 import qs from "qs";
+import type {AircraftImageJsonType} from "@/store/aircraft/types.ts";
 
 export type createFlightPayLoad = {
     aircraft_id: string,
@@ -44,4 +45,23 @@ export const searchFlight = async (request: Pagination & Nullable<SearchFlightPa
     const {total, total_pages, ...rest} = request
     const payload = qs.stringify(clean(rest))
     return fetchAPI.req<PaginationResult<flightListType>>(`/flight/searchFlight?${payload}`, {method: "GET"})
+}
+export type FlightImage = {
+    aircraft_id: string,
+    aircraft_name: string,
+    image_name: string,
+    aircraft_image_id: string,
+    aircraft_image_json: AircraftImageJsonType,
+    flight_id: string,
+}
+export const getAllImageInOneFlight = async (flightId: string) => {
+    return fetchAPI.req<FlightImage[]>(`/flight/getFlightAircraftImage/${flightId}`, {method: "GET"})
+}
+export type autocompleteFlightIdResp = {
+    aircraft_id?: string,
+    aircraft_name?: string,
+    flight_id: string
+}
+export const autocompleteFlightId = async (payload: string) => {
+    return fetchAPI.req<autocompleteFlightIdResp[]>(`/flight/autocompleteFlight/${payload}`, {method: "GET"})
 }
