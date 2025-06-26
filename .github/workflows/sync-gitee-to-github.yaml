@@ -12,12 +12,7 @@ jobs:
       contents: write # 确保 GITHUB_TOKEN 有写入权限
 
     steps:
-      - name: Checkout GitHub Repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false # 不使用默认凭据，我们手动配置
-          fetch-depth: 0 # 获取所有历史记录和分支
-
+      # 1. 配置 SSH 拉取 Gitee 仓库
       - name: Setup SSH for Gitee
         run: |
           mkdir -p ~/.ssh
@@ -25,31 +20,60 @@ jobs:
             echo "Error: GITEE_SSH_KEY is empty!"
             exit 1
           else
-            echo "GITEE_SSH_KEY is not empty, writing to file..."
             echo "${{ secrets.GITEE_SSH_KEY }}" > ~/.ssh/id_rsa
           fi
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan gitee.com >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
         continue-on-error: true
 
-      - name: Test SSH Connection to Gitee
-        run: |
-          ssh -T git@gitee.com
-        continue-on-error: true
-
+      # 2. 克隆 Gitee 仓库（mirror全分支）
       - name: Clone Gitee Repository
-        run: |
-          git clone --mirror git@gitee.com:chai-xiaoxiexie/large_passenger_aircraft.git gitee-repo
-      - name: Push to GitHub
+        run: git clone --mirror git@gitee.com:chai-xiaoxiexie/large_passenger_aircraft.git gitee-repo
+
+      # 3. 推送所有分支和标签到 GitHub
+      - name: Push Mirror to GitHub
         run: |
           cd gitee-repo
-          # 设置 Git 用户信息
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          # 添加 GitHub 远程仓库，使用 HTTPS 和 GITHUB_TOKEN 认证
           git remote add github https://RidiculousBuffal:${{ secrets.PAT_GITHUB_PUSH }}@github.com/RidiculousBuffal/Graduation-project.git
-          # 推送所有分支
-          git push github --all
-          # 推送所有标签
-          git push github --tags
+          git push github --mirror
+
+      # 4. 检出 GitHub main 分支（不是 --mirror 了），可操作源码和子模块
+      - name: Checkout Main Branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 0
+          submodules: recursive
+
+      # 5. 拉取和更新 backend 子模块（dev_backend 最新）
+      - name: Update backend submodule to latest dev_backend
+        run: |
+          git submodule update --init --recursive
+          cd backend
+          git fetch origin dev_backend
+          git checkout dev_backend
+          git pull origin dev_backend
+          cd ..
+          git add backend
+
+      # 6. 拉取和更新 frontend 子模块（zlc/pc-frontend 最新）
+      - name: Update frontend submodule to latest zlc/pc-frontend
+        run: |
+          cd frontend
+          git fetch origin zlc/pc-frontend
+          git checkout zlc/pc-frontend
+          git pull origin zlc/pc-frontend
+          cd ..
+          git add frontend
+
+      # 7. 提交子模块的变动（如果有）
+      - name: Commit and push submodule updates
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git commit -m "chore: update submodules to latest commit" || echo "No update"
+          git remote set-url origin https://RidiculousBuffal:${{ secrets.PAT_GITHUB_PUSH }}@github.com/RidiculousBuffal/Graduation-project.git
+          git push origin main
