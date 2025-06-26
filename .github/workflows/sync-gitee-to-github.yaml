@@ -38,8 +38,11 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git remote add github https://RidiculousBuffal:${{ secrets.PAT_GITHUB_PUSH }}@github.com/RidiculousBuffal/Graduation-project.git
           git push github --mirror
-
-      # 4. 检出 GitHub main 分支（不是 --mirror 了），可操作源码和子模块
+  updateSubModule:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
       - name: Checkout Main Branch
         uses: actions/checkout@v4
         with:
