@@ -150,4 +150,8 @@ export class Permissions {
         "permission_name": "USER.READ.ALL",
         "description": "查看全部用户"
     }
+    public static PERMISSIONS_MANAGEMENT = {
+        "permission_name": "PERMISSIONS.READ",
+        "description": "支持访问权限列表"
+    }
 }

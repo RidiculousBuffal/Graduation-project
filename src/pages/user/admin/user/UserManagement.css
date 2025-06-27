@@ -1,0 +1,33 @@
+.user-management {
+    width: 100%;
+}
+
+.user-management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-search-form {
+    width: 100%;
+}
+
+.user-search-form .ant-form-item {
+    margin-bottom: 16px;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.table-header h3 {
+    margin: 0;
+}
+
+.user-table {
+    margin-top: 20px;
+}

@@ -1,0 +1,19 @@
+.role-management {
+    width: 100%;
+}
+
+.role-management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.role-management-header h3 {
+    margin: 0;
+}
+
+.ant-list-item-meta-title {
+    display: flex;
+    align-items: center;
+}

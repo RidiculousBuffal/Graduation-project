@@ -41,7 +41,7 @@ export class AuthService {
      * @param email 邮箱
      * @returns 注册是否成功
      */
-    static async register(username: string, password: string, email: string): Promise<boolean> {
+    static async register(username: string, password: string, email?: string): Promise<boolean> {
         try {
             await register(username, password, email);
             message.success('注册成功');

@@ -1,7 +1,7 @@
 import {type MenuProps} from "antd";
 import type {permissionType} from "../store/user/types.ts";
 import {DashboardOutlined} from "@ant-design/icons";
-import {Bug, Cable, Plane, Terminal, TerminalIcon, TicketsPlane, User, WarehouseIcon} from "lucide-react";
+import {Bug, Cable, Plane, Settings, Terminal, TerminalIcon, TicketsPlane, User, WarehouseIcon} from "lucide-react";
 import {Permissions} from "./permissions.ts";
 
 
@@ -68,13 +68,23 @@ export class MyMenu {
             label: "个人信息修改",
             permission: Permissions.PROFILE_READ,
         }, {
-            key: "admin",
-            label: "系统用户管理",
-            permission: Permissions.USER_READ_ALL
-        }, {
             key: "security",
             label: "账户安全",
             permission: Permissions.PROFILE_READ
+        }],
+    }, {
+        key: "admin",
+        label: "系统管理",
+        icon: <Settings/>,
+        permission: null,
+        children: [{
+            key: "userlist",
+            label: "用户管理",
+            permission: Permissions.USER_READ_ALL
+        }, {
+            key: "rolePermission",
+            label: "角色/权限管理",
+            permission: Permissions.PERMISSIONS_MANAGEMENT
         }]
     }]
 

@@ -1,8 +1,9 @@
 import {fetchAPI} from "./index.ts";
 import type {permissionType, roleType, userType} from "../store/user/types.ts";
+import {clean} from "@/publicTypes/typeUtils.ts";
 
 
-export async function register(username: string, password: string, email: string): Promise<null> {
+export async function register(username: string, password: string, email?: string): Promise<null> {
     const payload = {
         username: username,
         password: password,
@@ -33,6 +34,10 @@ export async function updateUserInfo(user: Partial<userType>): Promise<userType 
     return fetchAPI.req('/auth/updateInfo', {method: "POST", body: JSON.stringify(user)})
 }
 
+export async function forceUpdateUserInfo(user: Partial<userType>): Promise<userType | null> {
+    return fetchAPI.req('/auth/forceUpdateInfo', {method: "POST", body: JSON.stringify(clean(user))})
+}
+
 export async function updateUserFaceInfo(faceInfo: string): Promise<string | null> {
     return fetchAPI.req('/auth/updateFaceInfo', {method: "POST", body: JSON.stringify({faceInfo: faceInfo})})
 }
@@ -45,7 +50,10 @@ export async function updateUserPassword(password: string, newPassword: string):
 }
 
 export async function loginByFaceInfo(faceInfo: string) {
-    return fetchAPI.req<loginResp>('/auth/loginByFaceInfo', {method: "POST", body: JSON.stringify({faceInfo: faceInfo})})
+    return fetchAPI.req<loginResp>('/auth/loginByFaceInfo', {
+        method: "POST",
+        body: JSON.stringify({faceInfo: faceInfo})
+    })
 }
 
 export async function getEngineers() {

@@ -11,7 +11,6 @@ import AircraftList from "./pages/aircraft/list/AircraftList.tsx";
 import AircraftType from "./pages/aircraft/type/AircraftType.tsx";
 import Flight from "./pages/flight/Flight.tsx";
 import My from "./pages/user/my/My.tsx";
-import AdminUser from "./pages/user/admin/AdminUser.tsx";
 import ModernPermissionDenied from "./pages/denied/ModernPermissionDenied.tsx";
 import {Permissions} from "./consts/permissions.ts";
 import Terminal from "./pages/terminal/Terminal.tsx";
@@ -20,6 +19,8 @@ import AircraftImageManager from "./pages/aircraft/image/AircraftImageManager.ts
 import TaskCenter from "@/pages/tasks/TaskCenter.tsx";
 import InspectionRecordCenter from "@/pages/inspection/inspectionRecords/InspectionRecordCenter.tsx";
 import InspectionRecordHall from "@/pages/inspection/inspectionRecords/InspectionRecordHall.tsx";
+import UserManagement from "@/pages/user/admin/user/UserManagement.tsx";
+import RoleManagement from "@/pages/user/admin/role/RoleManagement.tsx";
 // 受保护的路由组件
 const ProtectedRoute = ({children, permission}: { children: React.ReactNode, permission?: string }) => {
     if (!AuthService.isLoggedIn()) {
@@ -76,11 +77,13 @@ function MyApp() {
                         permission={Permissions.INSPECTION_READ.permission_name}><InspectionRecordHall></InspectionRecordHall></ProtectedRoute>}></Route>
                     <Route path="user/my" element={<ProtectedRoute
                         permission={Permissions.PROFILE_READ.permission_name}><My/></ProtectedRoute>}/>
-                    <Route path="user/admin"
-                           element={<ProtectedRoute permission={Permissions.USER_READ_ALL.permission_name}><AdminUser/></ProtectedRoute>}/>
                     <Route path="user/security" element={<ProtectedRoute
                         permission={Permissions.PROFILE_READ.permission_name}><Security/></ProtectedRoute>}/>
-
+                    <Route path="admin/userlist"
+                           element={<ProtectedRoute
+                               permission={Permissions.USER_READ_ALL.permission_name}><UserManagement/></ProtectedRoute>}/>
+                    <Route path="admin/rolePermission" element={<ProtectedRoute
+                        permission={Permissions.PERMISSIONS_MANAGEMENT.permission_name}><RoleManagement></RoleManagement></ProtectedRoute>}></Route>
                 </Route>
                 <Route path="/permissiondenied" element={<ModernPermissionDenied/>}/>
                 <Route path="*" element={<Navigate to="/" replace/>}/>
