@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, {memo, useState } from 'react';
 import { Modal, Form, Input, Select, message, Row, Col } from 'antd';
 import { AuthService } from '@/services/AuthService';
 
@@ -124,4 +124,4 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
     );
 };
 
-export default CreateUserModal;
+export default memo(CreateUserModal);

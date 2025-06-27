@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo, useCallback} from 'react';
+import React, {useEffect, useState, useMemo, useCallback, memo} from 'react';
 import {Modal, Form, Input, Select, Switch, message, Row, Col, InputNumber} from 'antd';
 import {AdminService} from '@/services/AdminService';
 import {updateUserStatus} from '@/api/adminapi';
@@ -254,4 +254,4 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
     );
 };
 
-export default EditUserModal;
+export default memo(EditUserModal);

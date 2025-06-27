@@ -1,7 +1,7 @@
-
 import React from 'react';
-import { Modal, List, Tag } from 'antd';
-import type { RolePermission } from '@/store/admin/types';
+import {Modal, List, Tag} from 'antd';
+import type {RolePermission} from '@/store/admin/types';
+import {memo} from 'react'
 
 interface RolePermissionModalProps {
     visible: boolean;
@@ -24,7 +24,7 @@ const RolePermissionModal: React.FC<RolePermissionModalProps> = ({
             footer={null}
             width={600}
         >
-            <div style={{ marginBottom: 16 }}>
+            <div style={{marginBottom: 16}}>
                 <p><strong>角色描述：</strong>{role.role.description}</p>
                 <p><strong>权限数量：</strong><Tag color="blue">{role.permissions.length} 个</Tag></p>
             </div>
@@ -46,4 +46,4 @@ const RolePermissionModal: React.FC<RolePermissionModalProps> = ({
     );
 };
 
-export default RolePermissionModal;
+export default memo(RolePermissionModal);

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Checkbox, message, Row, Col } from 'antd';
-import { AdminService } from '@/services/AdminService';
-import type { RolePermission, Permission } from '@/store/admin/types';
+import React, {memo, useCallback, useEffect, useState} from 'react';
+import {Modal, Checkbox, message, Row, Col} from 'antd';
+import {AdminService} from '@/services/AdminService';
+import type {RolePermission, Permission} from '@/store/admin/types';
 
 interface EditRolePermissionModalProps {
     visible: boolean;
@@ -56,9 +56,9 @@ const EditRolePermissionModal: React.FC<EditRolePermissionModalProps> = ({
         }
     };
 
-    const handlePermissionChange = (permissionIds: number[]) => {
+    const handlePermissionChange = useCallback((permissionIds: number[]) => {
         setSelectedPermissions(permissionIds);
-    };
+    }, [])
 
     if (!role) return null;
 
@@ -71,7 +71,7 @@ const EditRolePermissionModal: React.FC<EditRolePermissionModalProps> = ({
             confirmLoading={loading}
             width={800}
         >
-            <div style={{ marginBottom: 16 }}>
+            <div style={{marginBottom: 16}}>
                 <p><strong>角色：</strong>{role.role.role_name}</p>
                 <p><strong>描述：</strong>{role.role.description}</p>
             </div>
@@ -79,17 +79,17 @@ const EditRolePermissionModal: React.FC<EditRolePermissionModalProps> = ({
             <Checkbox.Group
                 value={selectedPermissions}
                 onChange={handlePermissionChange}
-                style={{ width: '100%' }}
+                style={{width: '100%'}}
             >
                 <Row gutter={[16, 16]}>
                     {allPermissions.map((permission) => (
                         <Col span={8} key={permission.permission_id}>
                             <Checkbox value={permission.permission_id}>
                                 <div>
-                                    <div style={{ fontWeight: 'bold' }}>
+                                    <div style={{fontWeight: 'bold'}}>
                                         {permission.permission_name}
                                     </div>
-                                    <div style={{ fontSize: '12px', color: '#666' }}>
+                                    <div style={{fontSize: '12px', color: '#666'}}>
                                         {permission.description}
                                     </div>
                                 </div>
@@ -102,4 +102,4 @@ const EditRolePermissionModal: React.FC<EditRolePermissionModalProps> = ({
     );
 };
 
-export default EditRolePermissionModal;
+export default memo(EditRolePermissionModal);

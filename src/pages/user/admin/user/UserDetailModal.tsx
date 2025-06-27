@@ -1,7 +1,6 @@
-
-import React from 'react';
-import { Modal, Descriptions, Tag } from 'antd';
-import type { AdminUserDTO } from '@/store/admin/types';
+import React, {memo} from 'react';
+import {Modal, Descriptions, Tag} from 'antd';
+import type {AdminUserDTO} from '@/store/admin/types';
 
 interface UserDetailModalProps {
     visible: boolean;
@@ -55,4 +54,4 @@ const UserDetailModal: React.FC<UserDetailModalProps> = ({
     );
 };
 
-export default UserDetailModal;
+export default memo(UserDetailModal);

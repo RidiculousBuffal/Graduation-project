@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Card, Button, List, Tag, Space, Modal} from 'antd';
 import {PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from '@ant-design/icons';
 import {useAdminStore} from '@/store/admin/adminStore';
@@ -30,17 +30,17 @@ const RoleManagement: React.FC = () => {
         }
     };
 
-    const handleViewPermissions = (role: RolePermission) => {
+    const handleViewPermissions = useCallback((role: RolePermission) => {
         setSelectedRole(role);
         setPermissionModalVisible(true);
-    };
+    }, [])
 
-    const handleEditPermissions = (role: RolePermission) => {
+    const handleEditPermissions = useCallback((role: RolePermission) => {
         setSelectedRole(role);
         setEditModalVisible(true);
-    };
+    }, [])
 
-    const handleDeleteRole = (role: RolePermission) => {
+    const handleDeleteRole = useCallback((role: RolePermission) => {
         Modal.confirm({
             title: '确认删除',
             content: `确定要删除角色 "${role.role.role_name}" 吗？`,
@@ -53,11 +53,11 @@ const RoleManagement: React.FC = () => {
                 }
             },
         });
-    };
+    }, [])
 
-    const handleCreateRole = () => {
+    const handleCreateRole = useCallback(() => {
         setCreateModalVisible(true);
-    };
+    }, [])
 
     return (
         <div className="role-management">
