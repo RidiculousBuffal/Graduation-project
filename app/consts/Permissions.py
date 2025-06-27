@@ -136,7 +136,7 @@ class Permissions:
         "permission_name": "TASK.DELETE",
         "description": "删除任务"
     }
-    
+
     # 检查记录相关权限
     INSPECTION_ADD = {
         "permission_name": "INSPECTION.ADD",
@@ -154,7 +154,11 @@ class Permissions:
         "permission_name": "INSPECTION.DELETE",
         "description": "删除检查记录"
     }
-    
+    PERMISSIONS_MANAGEMENT = {
+        "permission_name": "PERMISSIONS.READ",
+        "description": "支持访问权限列表"
+    }
+
 
 if __name__ == '__main__':
     # 获取所有权限字典

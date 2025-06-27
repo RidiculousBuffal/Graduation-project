@@ -3,7 +3,8 @@ from typing import Optional
 
 from sqlalchemy import select, update
 
-from app.DTO.user import UserDTO
+from app.DTO.pagination import PaginationDTO
+from app.DTO.user import UserDTO, AdminUserDTOWithRolesAndPermissions, AdminUserPaginationDTO
 from app.ext.extensions import db
 from app.models.auth import User, Role, UserRole
 
@@ -14,6 +15,36 @@ class UserMapper:
         q = select(User).where(User.username == username)
         user = db.session.execute(q).scalar_one_or_none()
         return user
+
+    @staticmethod
+    def get_userInfo(username: Optional[str] = None, name: Optional[str] = None, email: Optional[str] = None, pageNum=1,
+                     pageSize=10):
+        q = select(User)
+        if username:
+            q = q.where(User.username.ilike(f'%{username}%'))
+        if name:
+            q = q.where(User.name.ilike(f'%{name}%'))
+        if email:
+            q = q.where(User.email.ilike(f'%{email}%'))
+        q = q.order_by(User.created_at.desc())
+        pagination = db.paginate(
+            select=q,
+            page=pageNum,
+            per_page=pageSize,
+            max_per_page=100,
+            error_out=False,
+            count=True
+        )
+        users = []
+        for user in pagination.items:
+            users.append(AdminUserDTOWithRolesAndPermissions.model_validate(user.to_dict()))
+        pagedDTO = PaginationDTO(
+            current_page=pagination.page,
+            page_size=pagination.per_page,
+            total=pagination.total or 0,
+            total_pages=pagination.pages
+        )
+        return AdminUserPaginationDTO(data=users, pagination=pagedDTO)
 
     @staticmethod
     def updatePassword(user_id: str, hashed_pass: str):
@@ -36,6 +67,12 @@ class UserMapper:
         db.session.execute(u)
         db.session.commit()
         return True
+
+    @staticmethod
+    def setUserStatus(user_id: str, status: bool):
+        u = update(User).where(User.user_id == user_id).values(status=status)
+        db.session.execute(u)
+        db.session.commit()
 
     @staticmethod
     def update_user_face_login_info(user_id: str, b64: str):

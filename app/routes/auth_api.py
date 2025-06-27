@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 from flask_jwt_extended.exceptions import JWTExtendedException
 
-from app.DTO.user import UserDTO, ResetPasswordDTO
+from app.DTO.user import UserDTO, ResetPasswordDTO, createRoleDTO
 from app.annotations.permissionAnnot import permission_required
 from app.consts.Network import NetWorkConst
 from app.consts.Permissions import Permissions
@@ -95,6 +95,14 @@ def updateUserInfo():
     return AuthService.update_user_info(userDto, user_id).to_dict(), 200
 
 
+@auth_bp.post("/forceUpdateInfo")
+@permission_required(permissions=Permissions.USER_UPDATE.get('permission_name'))
+def forceUpdateUserInfo():
+    userInfo = request.get_json()
+    userDto = UserDTO.model_validate(userInfo)
+    return AuthService.force_update_userInfo(userDto, userInfo.get("user_id")).to_dict(), 200
+
+
 @auth_bp.post("/updatePassword")
 @jwt_required()
 def updateUserPassword():
@@ -102,3 +110,67 @@ def updateUserPassword():
     password = ResetPasswordDTO.model_validate(password)
     user_id = get_jwt_identity()
     return AuthService.resetUserPassword(password, user_id).to_dict(), 200
+
+
+@auth_bp.post("/forceUpdateUserPassword")
+@permission_required(permissions=Permissions.USER_READ_ALL.get('permission_name'))
+def forceUpdateUserPassword():
+    payload = request.get_json()
+    return AuthService.forceResetUserPassword(payload.get("password"), payload.get("userId")).to_dict(), 200
+
+
+@auth_bp.get("/getAllUserInfo")
+@permission_required(permissions=Permissions.USER_READ_ALL.get("permission_name"))
+def searchAllUserInfo():
+    data = request.args.to_dict()
+    username = data.get("username", None)
+    name = data.get("name", None)
+    email = data.get("email", None)
+    pageNum = data.get("pageNum", 1)
+    pageSize = data.get("pageSize", 10)
+    return AuthService.getAllUsersInfo(username, name, email, pageNum, pageSize).to_dict(), 200
+
+
+@auth_bp.get("/getPermissionList")
+@permission_required(permissions=Permissions.PERMISSIONS_MANAGEMENT.get("permission_name"))
+def getAllPermissionList():
+    return AuthService.getAllPermissions().to_dict(), 200
+
+
+@auth_bp.get("/getRolePermList")
+@permission_required(permissions=Permissions.PERMISSIONS_MANAGEMENT.get("permission_name"))
+def getAllRoleWithPermList():
+    return AuthService.getAllRolesWithTheirPermissions().to_dict(), 200
+
+
+@auth_bp.post("/updateUserStatus")
+@permission_required(permissions=Permissions.USER_READ_ALL.get('permission_name'))
+def updateUserStatus():
+    payload = request.get_json()
+    return AuthService.updateUserStatus(payload.get("userId"), payload.get("status")).to_dict(), 200
+
+
+@auth_bp.post("/updateRolePerm")
+@permission_required(permissions=Permissions.PERMISSIONS_MANAGEMENT.get("permission_name"))
+def updateRolePerm():
+    payload = request.json
+    return AuthService.updateRolePermission(payload.get("roleId"), payload.get("permIds")).to_dict(), 200
+
+
+@auth_bp.post("/updateUserRole")
+@permission_required(permissions=Permissions.USER_READ_ALL.get('permission_name'))
+def updateUserRole():
+    payload = request.json
+    return AuthService.updateUserRole(payload.get("userId"), payload.get("roleIds")).to_dict(), 200
+
+
+@auth_bp.post("/createRole")
+@permission_required(permissions=Permissions.PERMISSIONS_MANAGEMENT.get("permission_name"))
+def createRole():
+    payload = request.json
+    return AuthService.createRole(createRoleDTO.model_validate(payload)).to_dict(), 200
+
+
+@auth_bp.delete("/deleteRole/<int:roleId>")
+def deleteRole(roleId: int):
+    return AuthService.deleteRole(roleId).to_dict(), 200

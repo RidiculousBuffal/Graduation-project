@@ -1,9 +1,12 @@
+from typing import Optional
+
 from flask_jwt_extended import create_access_token, create_refresh_token
 from werkzeug.security import generate_password_hash
 
-from app.DTO.user import UserDTO, ResetPasswordDTO
+from app.DTO.user import UserDTO, ResetPasswordDTO, Role, Permission, RolePermissionDTO, createRoleDTO
 from app.consts.Roles import RoleConsts
 from app.consts.auth import AuthConsts
+from app.mapper.auth.permissionMapper import PermissionMapper
 from app.mapper.auth.roleMapper import RoleMapper
 from app.mapper.auth.userMapper import UserMapper
 from app.mapper.auth.userRolePermissionMapper import UserRolePermissionMapper
@@ -13,12 +16,28 @@ from app.models.response import ResponseModel
 
 class AuthService:
     @staticmethod
-    def _process_login_info(user: User):
-        UserMapper.update_last_login(user.user_id)
-        roles = UserRolePermissionMapper.getUserRole(user.user_id)
+    def getAllUsersInfo(username: Optional[str] = None, name: Optional[str] = None, email: Optional[str] = None,
+                        pageNum=1,
+                        pageSize=10):
+        resultWithoutRP = UserMapper.get_userInfo(username, name, email, pageNum, pageSize)
+        for user in resultWithoutRP.data:
+            roles, permissions = AuthService._getRoleAndPermissionByUserId(user.user_id)
+            user.roles = [Role.model_validate(r) for r in roles]
+            user.permissions = [Permission.model_validate(p) for p in permissions]
+        return ResponseModel.success(msg=AuthConsts.GET_USERINFO_SUCCESS, data=resultWithoutRP.model_dump())
+
+    @staticmethod
+    def _getRoleAndPermissionByUserId(user_id):
+        roles = UserRolePermissionMapper.getUserRole(user_id)
         permissions = []
         for r in roles:
             permissions.extend(UserRolePermissionMapper.getRolePermissions(r.get('role_id')))
+        return roles, permissions
+
+    @staticmethod
+    def _process_login_info(user: User):
+        UserMapper.update_last_login(user.user_id)
+        roles, permissions = AuthService._getRoleAndPermissionByUserId(user.user_id)
         payload = {
             "user": user.to_dict(),
             "role": roles,
@@ -101,7 +120,16 @@ class AuthService:
             )
         except Exception as e:
             return ResponseModel.fail(msg=AuthConsts.UPDATE_USER_INFO_FAILURE, data=str(e))
-
+    @staticmethod
+    def force_update_userInfo(user: UserDTO, user_id: str):
+        try:
+            UserMapper.update_user_basic_info(user, user_id)
+            return ResponseModel.success(
+                msg=AuthConsts.UPDATE_USER_INFO_SUCCESS,
+                data=UserMapper.get_user_by_user_id(user_id).to_dict()
+            )
+        except Exception as e:
+            return ResponseModel.fail(msg=AuthConsts.UPDATE_USER_INFO_FAILURE, data=str(e))
     @staticmethod
     def resetUserPassword(password: ResetPasswordDTO, userId):
         user = UserMapper.get_user_by_user_id(userId)
@@ -110,3 +138,73 @@ class AuthService:
         else:
             UserMapper.updatePassword(userId, generate_password_hash(password.newPassword))
             return ResponseModel.success(msg=AuthConsts.UPDATE_PASSWORD_SUCCESS, data=True)
+
+    @staticmethod
+    def forceResetUserPassword(password: str, userId: str):
+        UserMapper.updatePassword(userId, generate_password_hash(password))
+        return ResponseModel.success(msg=AuthConsts.UPDATE_PASSWORD_SUCCESS, data=True)
+
+    @staticmethod
+    def getAllPermissions():
+        return ResponseModel.success(msg=AuthConsts.GET_USERINFO_SUCCESS,
+                                     data=[x.model_dump() for x in PermissionMapper.getAllPermissions()])
+
+    @staticmethod
+    def getAllRolesWithTheirPermissions():
+        AllRoles = RoleMapper.getAllRoles()
+        res = []
+        for r in AllRoles:
+            res.append(RolePermissionDTO(role=r, permissions=[Permission.model_validate(p) for p in
+                                                              UserRolePermissionMapper.getRolePermissions(
+                                                                  r.role_id)]).model_dump())
+        return ResponseModel.success(msg=AuthConsts.GET_ALL_ROLE_PERMISSION_LIST_SUCCESS, data=res)
+
+    @staticmethod
+    def updateUserStatus(userId, status):
+        UserMapper.setUserStatus(userId, status)
+        return ResponseModel.success(msg=AuthConsts.UPDATE_USER_STATUS_SUCCESS, data=True)
+
+    @staticmethod
+    def updateRolePermission(roleId, permissionIds: list[int]):
+        # clear role's perm
+        try:
+            UserRolePermissionMapper.clearRolePermission(roleId)
+            flag = False
+            for p in permissionIds:
+                try:
+                    UserRolePermissionMapper.combine_role_permission(roleId, p)
+                except Exception as e:
+                    flag = True
+            if flag:
+                return ResponseModel.fail(msg=AuthConsts.SOME_PERM_UPDATE_FAIL, data=False)
+            else:
+                return ResponseModel.success(msg=AuthConsts.ROLE_PERM_UPDATE_SUCCESS, data=True)
+        except Exception as e:
+            return ResponseModel.fail(msg=AuthConsts.SOME_PERM_UPDATE_FAIL, data=False)
+
+    @staticmethod
+    def updateUserRole(userId, roleIds: list[int]):
+        try:
+            UserRolePermissionMapper.clearUserRole(userId)
+            flag = False
+            for r in roleIds:
+                try:
+                    UserRolePermissionMapper.combineUserWithRole(userId, r)
+                except Exception as e:
+                    flag = True
+            if flag:
+                return ResponseModel.fail(msg=AuthConsts.SOME_ROLE_UPDATE_FAILURE, data=False)
+            else:
+                return ResponseModel.success(msg=AuthConsts.USER_ROLE_UPDATE_SUCCESS, data=True)
+        except Exception as e:
+            return ResponseModel.fail(msg=AuthConsts.SOME_ROLE_UPDATE_FAILURE, data=False)
+
+    @staticmethod
+    def createRole(role: createRoleDTO):
+        RoleMapper.createNewRole(role.role_name, role.description)
+        return ResponseModel.success(msg=AuthConsts.CREATE_ROLE_SUCCESS, data=True)
+
+    @staticmethod
+    def deleteRole(role_id: int):
+        RoleMapper.deleteRole(roleId=role_id)
+        return ResponseModel.success(msg=AuthConsts.DELETE_ROLE_SUCCESS, data=True)
