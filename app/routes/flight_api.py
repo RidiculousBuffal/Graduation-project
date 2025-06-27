@@ -74,7 +74,7 @@ def search_flight():
     actual_departure_end = args.get('actual_departure_end', type=str)  # 新增：实际起飞结束时间
     actual_arrival_start = args.get('actual_arrival_start', type=str)  # 新增：实际到达起始时间
     actual_arrival_end = args.get('actual_arrival_end', type=str)  # 新增：实际到达结束时间
-    page_num = args.get('page_num', default=1, type=int)
+    page_num = args.get('current_page', default=1, type=int)
     page_size = args.get('page_size', default=10, type=int)
 
     result = FlightService.search_flight(

@@ -62,7 +62,7 @@ def search_aircraft():
     aircraft_name = args.get('aircraft_name', type=str)
     aircraft_age = args.get('aircraft_age', type=int) or args.get('age', type=int)
     aircraft_type_name = args.get('aircraft_type_name', type=str) or args.get('type_name', type=str)
-    page_num = args.get('page_num', default=1, type=int)
+    page_num = args.get('current_page', default=1, type=int)
     page_size = args.get('page_size', default=10, type=int)
 
     result = AircraftService.search_aircraft(
@@ -120,7 +120,7 @@ def search_aircraft_type():
     args = request.args
     type_name = args.get('type_name', type=str)
     description = args.get('description', type=str)
-    page_num = args.get('page_num', default=1, type=int)
+    page_num = args.get('current_page', default=1, type=int)
     page_size = args.get('page_size', default=10, type=int)
 
     result = AircraftService.search_aircraft_type(
@@ -182,7 +182,7 @@ def search_aircraft_image():
     image_name = args.get('image_name', type=str)
     aircraft_id = args.get('aircraft_id', type=str)
     aircraft_name = args.get('aircraft_name', type=str)
-    page_num = args.get('page_num', default=1, type=int)
+    page_num = args.get('current_page', default=1, type=int)
     page_size = args.get('page_size', default=10, type=int)
 
     result = AircraftReferenceImageService.search_image(

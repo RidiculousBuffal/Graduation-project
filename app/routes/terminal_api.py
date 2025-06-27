@@ -59,7 +59,7 @@ def search_terminal():
     """分页查询航站楼记录"""
     args = request.args
     terminal_name = args.get('terminal_name', type=str)
-    page_num = args.get('page_num', default=1, type=int)
+    page_num = args.get('current_page', default=1, type=int)
     page_size = args.get('page_size', default=10, type=int)
     terminal_description = args.get('terminal_description', type=str)
     if not terminal_description:

@@ -126,8 +126,8 @@ def searchAllUserInfo():
     username = data.get("username", None)
     name = data.get("name", None)
     email = data.get("email", None)
-    pageNum = data.get("pageNum", 1)
-    pageSize = data.get("pageSize", 10)
+    pageNum = int(data.get("current_page", 1))
+    pageSize = int(data.get("page_size", 10))
     return AuthService.getAllUsersInfo(username, name, email, pageNum, pageSize).to_dict(), 200
 
 

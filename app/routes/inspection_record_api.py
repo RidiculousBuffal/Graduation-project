@@ -81,7 +81,7 @@ def search_inspections():
     try:
         data = request.args.to_dict()
         # 获取分页参数
-        page_num = int(data.get('page_num', 1))
+        page_num = int(data.get('current_page', 1))
         page_size = int(data.get('page_size', 10))
 
         # 获取查询参数
