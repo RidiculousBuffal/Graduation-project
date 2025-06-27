@@ -1,6 +1,5 @@
-
 import React, {useEffect, useState, useMemo, useCallback} from 'react';
-import {Modal, Form, Input, Select, Switch, message, Row, Col} from 'antd';
+import {Modal, Form, Input, Select, Switch, message, Row, Col, InputNumber} from 'antd';
 import {AdminService} from '@/services/AdminService';
 import {updateUserStatus} from '@/api/adminapi';
 import type {AdminUserDTOWithRolesAndPermissions, Role} from '@/store/admin/types';
@@ -46,7 +45,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                 phone: user.phone || '',
                 gender: user.gender || undefined,
                 department: user.department || '',
-                work_years: user.work_years || '',
+                work_years: user.work_years || null,
                 contact_info: user.contact_info || '',
                 status: user.status || false,
                 roleIds: userRoleIds,
@@ -214,7 +213,7 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
                             label="工作年限"
                             name="work_years"
                         >
-                            <Input placeholder="请输入工作年限"/>
+                            <InputNumber placeholder="请输入工作年限"/>
                         </Form.Item>
                     </Col>
                     <Col span={12}>

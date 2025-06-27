@@ -26,7 +26,7 @@ export interface AdminUserDTO {
     name?: string;
     gender?: string;
     department?: string;
-    work_years?: string;
+    work_years?: number;
     contact_info?: string;
 }
 
