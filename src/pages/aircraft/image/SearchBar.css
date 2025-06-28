@@ -45,18 +45,18 @@
 }
 
 .upload-button {
-    background: #52c41a;
+    background: linear-gradient(135deg, #1890ff, #722ed1);
     border-color: #52c41a;
     font-weight: 500;
 }
 
 .upload-button:hover {
-    background: #73d13d;
+    background: linear-gradient(135deg, #1890ff, #722ed1);
     border-color: #73d13d;
 }
 
 .upload-button:focus {
-    background: #52c41a;
+    background: linear-gradient(135deg, #1890ff, #722ed1);
     border-color: #52c41a;
 }
 
