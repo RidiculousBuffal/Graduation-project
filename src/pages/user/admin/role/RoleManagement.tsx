@@ -90,6 +90,7 @@ const RoleManagement: React.FC = () => {
                                     type="text"
                                     icon={<EditOutlined/>}
                                     onClick={() => handleEditPermissions(item)}
+                                    disabled={item.role.role_name == 'ADMIN'}
                                 >
                                     编辑权限
                                 </Button>,
@@ -98,6 +99,7 @@ const RoleManagement: React.FC = () => {
                                     danger
                                     icon={<DeleteOutlined/>}
                                     onClick={() => handleDeleteRole(item)}
+                                    disabled={item.role.role_name == 'ADMIN'}
                                 >
                                     删除
                                 </Button>,

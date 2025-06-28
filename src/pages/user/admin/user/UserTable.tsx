@@ -1,9 +1,9 @@
-
 import React from 'react';
-import { Table, Button, Tag, Space, Tooltip } from 'antd';
-import { EyeOutlined, EditOutlined, KeyOutlined, ReloadOutlined } from '@ant-design/icons';
-import type { AdminUserDTOWithRolesAndPermissions} from '@/store/admin/types';
-import type { Pagination } from '@/publicTypes/pagination';
+import {Table, Button, Tag, Space, Tooltip, type TableProps} from 'antd';
+import {EyeOutlined, EditOutlined, KeyOutlined, ReloadOutlined} from '@ant-design/icons';
+import type {AdminUserDTOWithRolesAndPermissions} from '@/store/admin/types';
+import type {Pagination} from '@/publicTypes/pagination';
+import {useUserStore} from "@/store/user/userStore.ts";
 
 interface UserTableProps {
     users: AdminUserDTOWithRolesAndPermissions[];
@@ -26,7 +26,7 @@ const UserTable: React.FC<UserTableProps> = ({
                                                  onPageChange,
                                                  onRefresh,
                                              }) => {
-    const columns = [
+    const columns: TableProps<AdminUserDTOWithRolesAndPermissions>['columns'] = [
         {
             title: '用户ID',
             dataIndex: 'user_id',
@@ -93,15 +93,16 @@ const UserTable: React.FC<UserTableProps> = ({
                         <Button
                             type="text"
                             size="small"
-                            icon={<EyeOutlined />}
+                            icon={<EyeOutlined/>}
                             onClick={() => onViewDetail(record)}
                         />
                     </Tooltip>
                     <Tooltip title="编辑用户">
                         <Button
+                            disabled={record.user_id == useUserStore.getState().user.user_id}
                             type="text"
                             size="small"
-                            icon={<EditOutlined />}
+                            icon={<EditOutlined/>}
                             onClick={() => onEditUser(record)}
                         />
                     </Tooltip>
@@ -109,7 +110,7 @@ const UserTable: React.FC<UserTableProps> = ({
                         <Button
                             type="text"
                             size="small"
-                            icon={<KeyOutlined />}
+                            icon={<ReloadOutlined/>}
                             onClick={() => onChangePassword(record)}
                         />
                     </Tooltip>
@@ -124,7 +125,7 @@ const UserTable: React.FC<UserTableProps> = ({
                 <h3>用户列表</h3>
                 <Button
                     type="text"
-                    icon={<ReloadOutlined />}
+                    icon={<ReloadOutlined/>}
                     onClick={onRefresh}
                     loading={loading}
                 >
@@ -137,7 +138,7 @@ const UserTable: React.FC<UserTableProps> = ({
                 dataSource={users}
                 rowKey="user_id"
                 loading={loading}
-                scroll={{ x: 1200 }}
+                scroll={{x: 1200}}
                 pagination={{
                     current: pagination.current_page,
                     pageSize: pagination.page_size,
