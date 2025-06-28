@@ -1,3 +1,4 @@
+
 .layout {
   min-height: 100vh;
 }
@@ -37,6 +38,38 @@
 .sider {
   background: #fff;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+/* 自定义菜单选中状态样式 */
+.sider :global(.ant-menu-item-selected) {
+  background-color: #1890ff !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.sider :global(.ant-menu-item-selected::after) {
+  border-right: 4px solid #fff !important;
+}
+
+.sider :global(.ant-menu-item-selected .ant-menu-title-content) {
+  color: #fff !important;
+}
+
+/* 菜单项悬停效果 */
+.sider :global(.ant-menu-item:hover) {
+  background-color: #e6f7ff !important;
+  color: #1890ff !important;
+}
+
+.sider :global(.ant-menu-item:hover .ant-menu-title-content) {
+  color: #1890ff !important;
+}
+
+/* 子菜单选中状态 */
+.sider :global(.ant-menu-submenu-selected .ant-menu-submenu-title) {
+  background-color: #e6f7ff !important;
+  color: #1890ff !important;
+  font-weight: 600;
 }
 
 .mainContent {

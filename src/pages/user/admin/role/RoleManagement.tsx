@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Card, Button, List, Tag, Space, Modal} from 'antd';
+import {Card, Button, List, Tag, Space, Modal, Alert} from 'antd';
 import {PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined} from '@ant-design/icons';
 import {useAdminStore} from '@/store/admin/adminStore';
 import {AdminService} from '@/services/AdminService';
@@ -72,7 +72,7 @@ const RoleManagement: React.FC = () => {
                         添加角色
                     </Button>
                 </div>
-
+                <Alert message="READ权限决定左侧列表是否渲染,建议先增加READ权限,部分功能可能需要多个权限才能使用" type="info" />
                 <List
                     loading={loading}
                     dataSource={roles}
