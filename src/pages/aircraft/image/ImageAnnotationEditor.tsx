@@ -43,16 +43,26 @@ const ImageAnnotationEditor: React.FC<ImageAnnotationEditorProps> = ({
         setPoints(newPoints);
         setNextId(nextId + 1);
         onSave(newPoints);
-        message.success(`添加点位 ${newPoint.id}`);
+
     };
 
     const handleDeletePoint = (id: number) => {
         if (readOnly) return;
 
-        const newPoints = points.filter(p => p.id !== id);
-        setPoints(newPoints);
-        onSave(newPoints);
-        message.success(`删除点位 ${id}`);
+        // 1. 删除指定ID的点位
+        const filteredPoints = points.filter(point => point.id !== id);
+
+        // 2. 按删除后的顺序重新编号
+        const reindexedPoints = filteredPoints.map((point, index) => ({
+            ...point,
+            id: index + 1
+        }));
+
+        // 3. 更新状态
+        setPoints(reindexedPoints);
+        setNextId(nextId - 1);
+        onSave(reindexedPoints);
+
     };
 
     const handleModeChange = (addMode: boolean) => {

@@ -106,7 +106,7 @@ const InspectionRecordDetailModal: React.FC<InspectionRecordDetailModalProps> = 
                                     <AnnotationCanvas
                                         image={imageData.aircraft_image_json?.fileInfo.download_url || ''}
                                         points={points}
-                                        isAddMode={false}
+                                        isAddMode={true}
                                         showCurve={true}
                                         onAddPoint={() => {
                                         }} // 详情页面不允许添加点位
