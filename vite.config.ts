@@ -39,8 +39,6 @@ export default defineConfig({
                     'store': ['zustand'],
                     // 图标库
                     'icons': ['lucide-react', 'react-nice-avatar'],
-                    // 滚动条
-                    'scrollbar': ['overlayscrollbars']
                 },
                 chunkFileNames: 'assets/js/[name]-[hash].js',
                 entryFileNames: 'assets/js/[name]-[hash].js'
