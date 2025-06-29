@@ -1,4 +1,4 @@
-name: Publish Docker Image
+name: Publish hardhat Docker Image
 on:
   workflow_dispatch:
 jobs:
