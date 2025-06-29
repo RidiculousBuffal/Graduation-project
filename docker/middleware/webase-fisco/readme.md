@@ -19,7 +19,7 @@ docker run -d \
 # 查看前端
 
 ```bash
-loaclhost:5002/WeBASE-Front
+localhost:5002/WeBASE-Front
 ```
 # 测试镜像是否生效:
 部署完成后，可以分步验证：

@@ -5,6 +5,7 @@ from app.DTO.aircrafts import (
     AircraftCreateDTO, AircraftUpdateDTO,
     AircraftTypeCreateDTO, AircraftTypeUpdateDTO, AircraftReferenceImageUpdateDTO, AircraftReferenceImageCreateDTO
 )
+from app.annotations.loggingAnnot import logging_to_blockchain
 from app.annotations.permissionAnnot import permission_required
 from app.consts.Network import NetWorkConst
 from app.consts.Permissions import Permissions
@@ -18,6 +19,7 @@ aircraft_bp = Blueprint('aircraft', __name__)
 # Aircraft 相关接口
 @aircraft_bp.post('/createAircraft')
 @permission_required(Permissions.AIRCRAFT_ADD.get('permission_name'), True)
+@logging_to_blockchain("createAircraft")
 def create_aircraft():
     data = request.get_json()
     try:
