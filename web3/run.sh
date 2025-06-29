@@ -7,7 +7,7 @@ npx hardhat node &
 sleep 6
 
 # 部署报名
-npx hardhat ignition deploy ./ignition/modules/OperationLogger.ts --network localhost
+npx hardhat ignition deploy ./ignition/modules/OperationLogger.ts --network hardhat
 
 # 用 tail 阻塞，防止容器退出（可选，方便查看日志）
 tail -f /dev/null

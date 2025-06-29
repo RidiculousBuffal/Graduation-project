@@ -11,8 +11,8 @@ const config: HardhatUserConfig = {
             gasPrice: 875000000, // 可选：调整 gas 价格
         },
         sepolia: {
-            url: process.env.ALCHEMY_SEPOLIA_URL,
-            accounts: [process.env.SEPOLIA_PRIVATE_KEY!]
+            url: process.env.ALCHEMY_SEPOLIA_URL??"http://localhost:8545",
+            accounts: [process.env.SEPOLIA_PRIVATE_KEY??"5267f2103eab089b87b113e3ce8d2489dc417f92e74e87455321584d44512eda"]
         }
     }
 };
