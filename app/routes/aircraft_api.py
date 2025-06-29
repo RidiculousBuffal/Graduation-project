@@ -19,7 +19,7 @@ aircraft_bp = Blueprint('aircraft', __name__)
 # Aircraft 相关接口
 @aircraft_bp.post('/createAircraft')
 @permission_required(Permissions.AIRCRAFT_ADD.get('permission_name'), True)
-@logging_to_blockchain("createAircraft")
+# @logging_to_blockchain("createAircraft")
 def create_aircraft():
     data = request.get_json()
     try:
