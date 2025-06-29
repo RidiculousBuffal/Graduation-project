@@ -28,6 +28,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./web3
-          file: Dockerfile
+          file: ./web3/Dockerfile
           push: true
           tags: ridiculousbuffalo/large-aircraft-hardhat:latest
