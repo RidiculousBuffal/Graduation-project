@@ -27,7 +27,7 @@ jobs:
       - name: Build & push image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./web3/Dockerfile
+          context: ./web3
+          file: Dockerfile
           push: true
           tags: ridiculousbuffalo/large-aircraft-hardhat:latest
