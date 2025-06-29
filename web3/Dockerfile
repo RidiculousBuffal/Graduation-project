@@ -1,7 +1,8 @@
 FROM node:22-alpine
 WORKDIR /app
 COPY . .
-RUN npm install --legacy-peer-deps
+RUN npm install
+RUN npm install --save-dev typescript
 COPY run.sh /app/run.sh
 RUN chmod +x /app/run.sh
 EXPOSE 8545
