@@ -154,4 +154,8 @@ export class Permissions {
         "permission_name": "PERMISSIONS.READ",
         "description": "支持访问权限列表"
     }
+    public static LOG_READ = {
+        "permission_name": "LOG.READ",
+        "description": "支持阅读系统区块链日志"
+    }
 }

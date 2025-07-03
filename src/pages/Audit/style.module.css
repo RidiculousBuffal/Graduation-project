@@ -1,0 +1,115 @@
+
+/* Layout 布局样式 */
+.layout {
+    min-height: 100vh;
+    background-color: #f0f2f5;
+}
+
+/* 主内容区域 */
+.mainContent {
+    padding: 24px;
+    margin: 0;
+    background-color: #f0f2f5;
+}
+
+/* 内容容器 */
+.content {
+    margin: 0 auto;
+    padding: 24px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 页面标题样式 */
+.content h2 {
+    color: #1f2937;
+    font-weight: 600;
+    margin-bottom: 24px;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 12px;
+}
+
+/* 标题图标样式 */
+.content h2 .anticon {
+    color: #1890ff;
+    font-size: 24px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .mainContent {
+        padding: 16px;
+    }
+
+    .content {
+        padding: 16px;
+        margin: 0 8px;
+    }
+
+    .content h2 {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mainContent {
+        padding: 8px;
+    }
+
+    .content {
+        padding: 12px;
+        margin: 0 4px;
+    }
+
+    .content h2 {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+}
+
+/* 加载状态样式 */
+.loading {
+    text-align: center;
+    padding: 40px;
+}
+
+/* 错误状态样式 */
+.error {
+    text-align: center;
+    padding: 40px;
+    color: #f5222d;
+}
+
+/* 空数据状态样式 */
+.empty {
+    text-align: center;
+    padding: 40px;
+    color: #8c8c8c;
+}
+
+/* 卡片间距调整 */
+.content .ant-space-item {
+    width: 100%;
+}
+
+/* 自定义滚动条样式 */
+.content::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

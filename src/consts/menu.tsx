@@ -85,6 +85,10 @@ export class MyMenu {
             key: "rolePermission",
             label: "角色/权限管理",
             permission: Permissions.PERMISSIONS_MANAGEMENT
+        }, {
+            key: "log",
+            label: "系统日志",
+            permission: Permissions.LOG_READ
         }]
     }]
 

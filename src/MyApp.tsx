@@ -21,6 +21,7 @@ import InspectionRecordCenter from "@/pages/inspection/inspectionRecords/Inspect
 import InspectionRecordHall from "@/pages/inspection/inspectionRecords/InspectionRecordHall.tsx";
 import UserManagement from "@/pages/user/admin/user/UserManagement.tsx";
 import RoleManagement from "@/pages/user/admin/role/RoleManagement.tsx";
+import LogManagement from "@/pages/Audit/LogManagement.tsx";
 // 受保护的路由组件
 const ProtectedRoute = ({children, permission}: { children: React.ReactNode, permission?: string }) => {
     if (!AuthService.isLoggedIn()) {
@@ -84,6 +85,8 @@ function MyApp() {
                                permission={Permissions.USER_READ_ALL.permission_name}><UserManagement/></ProtectedRoute>}/>
                     <Route path="admin/rolePermission" element={<ProtectedRoute
                         permission={Permissions.PERMISSIONS_MANAGEMENT.permission_name}><RoleManagement></RoleManagement></ProtectedRoute>}></Route>
+                    <Route path="admin/log" element={<ProtectedRoute
+                        permission={Permissions.LOG_READ.permission_name}><LogManagement/></ProtectedRoute>}></Route>
                 </Route>
                 <Route path="/permissiondenied" element={<ModernPermissionDenied/>}/>
                 <Route path="*" element={<Navigate to="/" replace/>}/>
