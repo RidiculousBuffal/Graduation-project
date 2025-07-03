@@ -158,6 +158,10 @@ class Permissions:
         "permission_name": "PERMISSIONS.READ",
         "description": "支持访问权限列表"
     }
+    LOG_READ = {
+        "permission_name": "LOG.READ",
+        "description": "支持阅读系统区块链日志"
+    }
 
 
 if __name__ == '__main__':

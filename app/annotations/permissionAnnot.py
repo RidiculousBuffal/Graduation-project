@@ -6,7 +6,7 @@ from app.mapper.auth.userRolePermissionMapper import UserRolePermissionMapper
 from app.models.response import ResponseModel
 
 
-def permission_required(permissions, all_required=True):
+def permission_required(permissions: str | list, all_required: bool = True):
     if isinstance(permissions, str):
         permissions = [permissions]
 

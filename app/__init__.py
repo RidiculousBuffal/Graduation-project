@@ -11,6 +11,7 @@ from app.routes.dictionary_api import dictionary_bp
 from app.routes.flight_api import flight_bp
 from app.routes.inspection_record_api import inspection_bp
 from app.routes.ipfs_api import ipfs_bp
+from app.routes.logger_api import logger_bp
 from app.routes.task_api import task_bp
 from app.routes.terminal_api import terminal_bp
 
@@ -32,9 +33,9 @@ def create_app(config_name='default'):
     app_celery = make_celery(app)
     app.celery = app_celery
     print('✅ celery初始化成功')
-    if os.getenv('MODE')=='api':
+    if os.getenv('MODE') == 'api':
         print('✅ running in mode api')
-    if os.getenv('MODE')=='worker':
+    if os.getenv('MODE') == 'worker':
         print('✅ running in mode worker')
     # 注册蓝图
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
@@ -45,6 +46,7 @@ def create_app(config_name='default'):
     app.register_blueprint(dictionary_bp, url_prefix='/api/dict')
     app.register_blueprint(task_bp, url_prefix='/api/task')
     app.register_blueprint(inspection_bp, url_prefix='/api/inspection')
+    app.register_blueprint(logger_bp, url_prefix='/api/log')
     return app
 
 
