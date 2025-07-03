@@ -58,7 +58,7 @@ def delete_aircraft(aircraft_id: str):
 
 @aircraft_bp.get('/searchAircraft')
 @permission_required(Permissions.AIRCRAFT_READ.get('permission_name'), True)
-# @logging_to_blockchain(event_name='SEARCH_AIRCRAFT')  ##测试阶段等下测试区块链
+@logging_to_blockchain(event_name='SEARCH_AIRCRAFT')  ##测试阶段等下测试区块链
 def search_aircraft():
     args = request.args
     aircraft_name = args.get('aircraft_name', type=str)
