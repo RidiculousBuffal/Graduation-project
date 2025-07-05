@@ -720,6 +720,164 @@ hr {
     border-radius: var(--vp-radius-sm);
 }
 
+/* 搜索框弹出动画 */
+
+/* 搜索遮罩层动画 */
+.VPLocalSearchBox {
+    animation: searchOverlayFadeIn 0.3s ease-out;
+}
+
+/* 搜索容器弹出动画 */
+.VPLocalSearchBox .shell {
+    animation: searchBoxSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center top;
+}
+
+/* 搜索输入框动画 */
+.VPLocalSearchBox input {
+    animation: searchInputFadeIn 0.5s ease-out 0.1s both;
+}
+
+/* 搜索结果列表动画 */
+#localsearch-list.results {
+    scrollbar-width: thin;
+    scrollbar-color: #eaeaea transparent;
+
+    /* 背景模糊效果 */
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+    /* 结果列表动画 */
+    animation: searchResultsSlideUp 0.5s ease-out 0.2s both;
+}
+
+/* 搜索结果项动画 */
+#localsearch-list .result {
+    animation: searchItemFadeIn 0.3s ease-out both;
+}
+
+#localsearch-list .result:nth-child(1) { animation-delay: 0.3s; }
+#localsearch-list .result:nth-child(2) { animation-delay: 0.35s; }
+#localsearch-list .result:nth-child(3) { animation-delay: 0.4s; }
+#localsearch-list .result:nth-child(4) { animation-delay: 0.45s; }
+#localsearch-list .result:nth-child(5) { animation-delay: 0.5s; }
+
+/* 深色主题适配 */
+.dark #localsearch-list.results {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* 动画关键帧定义 */
+
+/* 遮罩层淡入 */
+@keyframes searchOverlayFadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(4px);
+    }
+}
+
+/* 搜索框滑入 */
+@keyframes searchBoxSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* 输入框淡入 */
+@keyframes searchInputFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 结果列表向上滑入 */
+@keyframes searchResultsSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 搜索结果项淡入 */
+@keyframes searchItemFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 搜索框关闭动画 */
+.VPLocalSearchBox.closing {
+    animation: searchOverlayFadeOut 0.2s ease-in;
+}
+
+.VPLocalSearchBox.closing .shell {
+    animation: searchBoxSlideOut 0.3s ease-in;
+}
+
+@keyframes searchOverlayFadeOut {
+    from {
+        opacity: 1;
+        backdrop-filter: blur(4px);
+    }
+    to {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+}
+
+@keyframes searchBoxSlideOut {
+    from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+}
+
+/* 减少动画偏好设置 */
+@media (prefers-reduced-motion: reduce) {
+    .VPLocalSearchBox,
+    .VPLocalSearchBox .shell,
+    .VPLocalSearchBox input,
+    #localsearch-list.results,
+    #localsearch-list .result {
+        animation: none !important;
+    }
+}
+
+
 /* ===== 实用工具类 ===== */
 .neo-glow {
     box-shadow: 0 0 20px var(--neo-glow-primary);
