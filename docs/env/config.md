@@ -46,11 +46,11 @@ CELERY_RESULT_BACKEND=redis://localhost:6379/4
 MODE=api/worker 
 ```
 
-::: 注意
+::: info
 这里要准备2份`.env` 一份中`MODE=api` 另一份中`MODE=worker`
 :::
 
-::: 注意
+::: warning
 在`docker`容器中使用本地或者其他`docker`容器中的服务: `HOST`要从`ip`更改为`host.docker.internal`
 :::
 

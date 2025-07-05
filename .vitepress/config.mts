@@ -2,7 +2,7 @@ import {defineConfig} from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    title: "LargePassenger Aircraft Docs",
+    title: "LargePassenger Aircraft",
     head: [
         ['link', {rel: 'icon', href: 'https://zlcminio.ridiculousbuffal.com/dhu/dhu.svg'}],
 
@@ -45,6 +45,9 @@ export default defineConfig({
             '/docs/api':[
                 {text:"开始",link:"/docs/api/index"},
                 {text:"登录/注册/刷新令牌",link:"/docs/api/auth"},
+                {text:"飞机 aircraft",link:"docs/api/aircraft"},
+                {text:"飞机类型",link:"docs/api/aircraft"},
+                {text:"ipfs",link:"docs/api/ipfs"}
             ]
         }
     }
