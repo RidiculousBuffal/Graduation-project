@@ -149,7 +149,7 @@ src/
 ## 发版/开发流程
 
 <ThemeImage
-lightSrc="/architecture-light.png"
-darkSrc="/architecture-dark.png"
+lightSrc="./architecture-light.png"
+darkSrc="./architecture-dark.png"
 alt="开发流程"
 />

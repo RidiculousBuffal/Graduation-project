@@ -25,6 +25,6 @@ next:
   title="毕业设计，基于区块链的大飞机检测系统 - GitHub"
   description="公开源码仓库，欢迎 Star 和 Issue"
   link="https://github.com/RidiculousBuffal/Graduation-project"
-  darkSrc="/github-mark-white.svg"
-  lightSrc="/github-mark.svg"
+  darkSrc="./github-mark-white.svg"
+  lightSrc="./github-mark.svg"
   />
