@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useData} from "vitepress";
+import {useData, withBase} from "vitepress";
 
 const {isDark} = useData();
 defineProps({
@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <img :src="isDark ? darkSrc : lightSrc" :alt="alt">
+  <img :src="isDark ? withBase(darkSrc) : withBase(lightSrc)" :alt="alt">
 </template>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useData} from "vitepress";
+import {useData, withBase} from "vitepress";
 
 defineProps({
   title: String,
@@ -13,7 +13,7 @@ const {isDark} = useData();
 
 <template>
   <a :href="link" target="_blank" rel="noopener" class="git-card">
-    <img :src="isDark ? darkSrc : lightSrc" alt="" class="git-card-logo"/>
+    <img :src="isDark ? withBase(darkSrc) : withBase(lightSrc)" alt="" class="git-card-logo"/>
     <div class="git-card-info">
       <strong>{{ title }}</strong>
       <p>{{ description }}</p>

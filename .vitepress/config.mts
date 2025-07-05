@@ -3,6 +3,10 @@ import {defineConfig} from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
     title: "LargePassenger Aircraft Docs",
+    head:[
+        ['link', {rel: 'icon', href: 'https://zlcminio.ridiculousbuffal.com/dhu/dhu.svg'}],
+
+    ],
     vite: {
         server: {
             port: 25375
@@ -11,6 +15,7 @@ export default defineConfig({
     description: "Api docs for largepassenger Aircraft proj",
     base: "/Graduation-project/",
     themeConfig: {
+        logo:"https://zlcminio.ridiculousbuffal.com/dhu/dhu.svg",
         // https://vitepress.dev/reference/default-theme-config
         nav: [
             {text: '首页', link: '/'},

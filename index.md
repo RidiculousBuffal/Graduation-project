@@ -1,7 +1,7 @@
 ---
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
-
+title: "首页"
 hero:
   name: "LargePassenger Aircraft API Doc"
   text: "大飞机检测项目接口文档"
