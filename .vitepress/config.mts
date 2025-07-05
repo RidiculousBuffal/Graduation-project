@@ -30,7 +30,8 @@ export default defineConfig({
         sidebar: {
             '/docs/env/': [
                 {text: "开始", link: '/docs/env/index'},
-                {text: "技术架构", link: "/docs/env/architecture"}
+                {text: "技术架构", link: "/docs/env/architecture"},
+                {text:"Apifox调试",link:"/docs/env/apifox"}
             ]
         }
     }
