@@ -6,15 +6,16 @@ import './index.css'
 import TeamMembers from "./components/TeamMembers.vue";
 import './cyberdocs-theme.css'
 import {EnhanceAppContext} from "vitepress";
+import Layout from "./Layout.vue";
 
 export default {
     extends: DefaultTheme,
+    Layout: Layout,
     enhanceApp({app, router}: EnhanceAppContext) {
         app.component('ThemeImage', ThemeImage)
         app.component('GitCard', GitCard)
         app.component('AttachmentDownload', AttachmentDownload)
         app.component('TeamMembers', TeamMembers)
-
         // 页面切换动画
         if (typeof window !== 'undefined') {
             let isTransitioning = false
