@@ -8,7 +8,13 @@ hero:
   image:
     src: /Airplane.svg
 
-
+  actions:
+    - theme: brand
+      text: Get started
+      link: /docs/env/index.md      
+    - theme: alt
+      text: 学习YOLO
+      link: /docs/yolo/index.md
 features:
   - title: 后端
     details: 基于python 3.12 使用Flask构建

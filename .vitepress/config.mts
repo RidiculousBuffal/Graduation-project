@@ -33,6 +33,7 @@ export default defineConfig({
             {text: '首页', link: '/'},
             {text: "项目说明", link: '/docs/env/index.md'},
             {text: '接口文档', link: '/docs/api/index.md'},
+            {text: 'Change Log', link: '/docs/changelog/changelog.md'},
         ],
         search: {
             provider: 'local'
@@ -67,6 +68,10 @@ export default defineConfig({
                 {text: "个人信息", link: "/docs/api/useredit"},
                 {text: "管理员特权接口", link: "/docs/api/admin"},
                 {text: "区块链相关", link: "/docs/api/blockchain"}
+            ],
+            '/docs/yolo': [
+                {text: "开始", link: "/docs/yolo/index"},
+                {text:"公式解析",link:"/docs/yolo/formula"},
             ]
         }
     }
