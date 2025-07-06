@@ -219,6 +219,23 @@ body {
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--vp-c-border);
 }
+.VPNavScreen {
+    background: var(--vp-c-bg);
+    border-top: 1px solid var(--vp-c-border);
+    /* 确保移动端导航有正确的高度 */
+    min-height: auto;
+    height: max-content;
+    /* 添加过渡动画 */
+    transition: all var(--vp-transition-normal);
+}
+
+.VPNavScreen.open {
+    /* 当导航打开时确保有足够的高度 */
+    height: auto;
+    min-height: calc(100vh - var(--vp-nav-height, 64px));
+    max-height: calc(100vh - var(--vp-nav-height, 64px));
+    overflow-y: auto;
+}
 
 .dark .VPNav {
     background-color: rgba(15, 23, 42, 0.8);
