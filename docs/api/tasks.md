@@ -1,9 +1,11 @@
 # **创建任务**
 
 ## **接口地址**
+
 ```bash
 POST /task/create
 ```
+
 ## **鉴权/权限**
 
 - 要求鉴权：是（JWT）
@@ -22,7 +24,6 @@ POST（application/json）
 | estimated_end   | 预计结束时间           | 否        | string (ISO8601) |
 | admin_id        | 管理员ID（自动传入，无需上传） | 否        | string           |
 | task_status     | 任务状态             | 否        | string           |
-
 
 ## **成功返回示例**
 
@@ -109,7 +110,6 @@ POST（application/json）
 | admin_id        | 管理员ID  | 否        | string          |
 | task_status     | 任务状态   | 否        | string          |
 
-
 ## **返回示例**
 
 （成功与上方创建一致，仅 msg 不同；失败 msg 异常/未找到均出错）
@@ -132,7 +132,11 @@ POST（application/json）
 ## **成功返回示例**
 
 ```json
-{  "code": 0,  "data": true,  "msg": "任务删除成功"}
+{
+  "code": 0,
+  "data": true,
+  "msg": "任务删除成功"
+}
 ```
 
 # **分页&条件查询任务**
@@ -168,7 +172,6 @@ POST（application/json）
 | actual_end_to        | 实际结束止  | string(ISO8601) |
 | current_page（必须）     | 页码     | int             |
 | page_size（必须）        | 每页个数   | int             |
-
 
 **返回值**
 
@@ -223,7 +226,6 @@ POST（application/json）
 | start_time         | 开始时间   | 否        | string(ISO8601) |
 | end_time           | 结束时间   | 否        | string(ISO8601) |
 | inspection_status  | 检查状态   | 否        | string          |
-
 
 ## **成功返回**
 

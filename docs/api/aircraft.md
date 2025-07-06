@@ -16,27 +16,26 @@
 
 要求权限:`AIRCRAFT.ADD`
 
-|参数名|描述|是否必须|
-|-|-|-|
-|`**aircraft_name**`|飞机名|是|
-|`typeid`|飞机类型ID|是|
-|`age`|飞机年龄|否|
-
+| 参数名                 | 描述     | 是否必须 |
+|---------------------|--------|------|
+| `**aircraft_name**` | 飞机名    | 是    |
+| `typeid`            | 飞机类型ID | 是    |
+| `age`               | 飞机年龄   | 否    |
 
 ## 返回值——成功
 
 ```JSON
 {
-    "code": 0,
-    "data": {
-        "age": 10,
-        "aircraft_id": "a468b3a7-46b6-485f-80be-3c518995f7e7",
-        "aircraft_name": "测试飞机2",
-        "type_description": "A short- to medium-range twinjet narrow-body airliner.",
-        "type_name": "Boeing 737",
-        "typeid": "TYPE001"
-    },
-    "msg": "添加飞机成功"
+  "code": 0,
+  "data": {
+    "age": 10,
+    "aircraft_id": "a468b3a7-46b6-485f-80be-3c518995f7e7",
+    "aircraft_name": "测试飞机2",
+    "type_description": "A short- to medium-range twinjet narrow-body airliner.",
+    "type_name": "Boeing 737",
+    "typeid": "TYPE001"
+  },
+  "msg": "添加飞机成功"
 }
 ```
 
@@ -83,20 +82,20 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var raw = JSON.stringify({
-   "aircraft_name": "测试飞机2",
-   "typeid": "TYPE001",
-   "age": 10
+    "aircraft_name": "测试飞机2",
+    "typeid": "TYPE001",
+    "age": 10
 });
 var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: raw,
-   redirect: 'follow'
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/createAircraft", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # 获取飞机详细信息
@@ -164,14 +163,14 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/getAircraft/a468b3a7-46b6-485f-80be-3c518995f7e7", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # 更新飞机
@@ -192,12 +191,11 @@ fetch("http://localhost:5000/api/aircraft/getAircraft/a468b3a7-46b6-485f-80be-3c
 
 要求权限:`AIRCRAFT_UPDATE`
 
-|参数名|描述|是否必须|
-|-|-|-|
-|`**aircraft_name**`|飞机名|是|
-|`typeid`|飞机类型ID|是|
-|`age`|飞机年龄|否|
-
+| 参数名                 | 描述     | 是否必须 |
+|---------------------|--------|------|
+| `**aircraft_name**` | 飞机名    | 是    |
+| `typeid`            | 飞机类型ID | 是    |
+| `age`               | 飞机年龄   | 否    |
 
 ## 返回值——成功
 
@@ -251,20 +249,20 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var raw = JSON.stringify({
-   "aircraft_name": "更新飞机信息",
-   "typeid": "TYPE002",
-   "age": 11
+    "aircraft_name": "更新飞机信息",
+    "typeid": "TYPE002",
+    "age": 11
 });
 var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: raw,
-   redirect: 'follow'
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/updateAircraft/AC004", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # 删除飞机
@@ -317,14 +315,14 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var requestOptions = {
-   method: 'DELETE',
-   headers: myHeaders,
-   redirect: 'follow'
+    method: 'DELETE',
+    headers: myHeaders,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/deleteAircraft/AC004", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # 分页查询飞机
@@ -351,14 +349,13 @@ fetch("http://localhost:5000/api/aircraft/deleteAircraft/AC004", requestOptions)
 
 要求权限:`AIRCRAFT_READ`
 
-|参数名|描述|是否必须|
-|-|-|-|
-|`**aircraft_name**`|飞机名|否|
-|`**aircraft_type_name**`|飞机类型名|否|
-|`**aircraft_age**`|飞机年龄|否|
-|**current_page**|当前页数|否|
-|`**page_size**`|每页展示条数|否|
-
+| 参数名                      | 描述     | 是否必须 |
+|--------------------------|--------|------|
+| `**aircraft_name**`      | 飞机名    | 否    |
+| `**aircraft_type_name**` | 飞机类型名  | 否    |
+| `**aircraft_age**`       | 飞机年龄   | 否    |
+| **current_page**         | 当前页数   | 否    |
+| `**page_size**`          | 每页展示条数 | 否    |
 
 ## 返回值——查询成功
 
@@ -487,14 +484,14 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/searchAircraft?aircraft_name=%E6%B5%8B%E8%AF%95%E9%A3%9E%E6%9C%BA&aircraft_age=10&aircraft_type_name=1Boeing%20737", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 ```javascript
@@ -505,12 +502,12 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/searchAircraft?current_page=2&page_size=5", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```

@@ -16,7 +16,18 @@
     --vp-font-size-2xl: 1.5rem;
     --vp-font-size-3xl: 1.875rem;
     --vp-font-size-4xl: 2.25rem;
-
+    --vp-home-hero-name-color: transparent;
+    --vp-home-hero-name-background: -webkit-linear-gradient(
+            120deg,
+            #bd34fe 30%,
+            #41d1ff
+    );
+    --vp-home-hero-image-background-image: linear-gradient(
+            -45deg,
+            #bd34fe 50%,
+            #47caff 50%
+    );
+    --vp-home-hero-image-filter: blur(44px);
     /* 间距系统 */
     --vp-space-1: 0.25rem;
     --vp-space-2: 0.5rem;
@@ -44,7 +55,26 @@
     --vp-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --vp-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
+@media (min-width: 640px) {
+    :root {
+        --vp-home-hero-image-filter: blur(56px);
+    }
+}
 
+@media (min-width: 960px) {
+    :root {
+        --vp-home-hero-image-filter: blur(68px);
+    }
+}
+
+.VPHero .VPImage {
+    filter: drop-shadow(-2px 4px 6px rgba(0, 0, 0, 0.2));
+    padding: 18px;
+}
+.VPHero .VPImage {
+    filter: drop-shadow(-2px 4px 6px rgba(0, 0, 0, 0.2));
+    padding: 18px;
+}
 /* ===== 明亮主题 ===== */
 :root {
     /* 背景色 */
@@ -916,6 +946,4 @@ hr {
 .neo-bg-gradient {
     background: var(--neo-gradient-subtle);
 }
-
-/* ===== 结束 ===== */
 

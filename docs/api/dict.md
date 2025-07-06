@@ -11,10 +11,9 @@
 - 传入方式：路径参数
 - 要求权限：DICTIONARY.READ
 
-|**参数名**|**描述**|**是否必须**|**类型**|
-|-|-|-|-|
-|dict_key|字典键|是|string|
-
+| **参数名**  | **描述** | **是否必须** | **类型** |
+|----------|--------|----------|--------|
+| dict_key | 字典键    | 是        | string |
 
 ## **返回值——成功**
 
@@ -86,14 +85,14 @@
 var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0NTEyNzI1NCwianRpIjoiMjk4MTM3ZTUtZWRmOS00ZWYyLTlhY2EtNDllN2YwYTZhMjc5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImU1Y2RlYWZkLTA5NmMtNDUzZC05MzM5LTU1ODY5MzE5MzJiYyIsIm5iZiI6MTc0NTEyNzI1NCwiY3NyZiI6IjU0NmEyMWI0LWYyY2QtNGQ3OC1iZGYxLWE5YmVmMWYyOGY0ZCIsImV4cCI6MTc0NTIxMzY1NH0.8fZIwcWjVk4fFL_hSVUibjZB1KkpSYN4-tHP8AWTYk4");
 var requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-  redirect: 'follow'
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/dictionary/getDictionary/flight_status", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # **查询某个父字典下的所有子字典**
@@ -109,10 +108,9 @@ fetch("http://localhost:5000/api/dictionary/getDictionary/flight_status", reques
 - 传入方式：路径参数
 - 要求权限：DICTIONARY.READ
 
-|**参数名**|**描述**|**是否必须**|**类型**|
-|-|-|-|-|
-|parent_key|父字典键|是|string|
-
+| **参数名**    | **描述** | **是否必须** | **类型** |
+|------------|--------|----------|--------|
+| parent_key | 父字典键   | 是        | string |
 
 ## **返回值——成功**
 
@@ -173,14 +171,14 @@ fetch("http://localhost:5000/api/dictionary/getDictionary/flight_status", reques
 var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0NTEyNzI1NCwianRpIjoiMjk4MTM3ZTUtZWRmOS00ZWYyLTlhY2EtNDllN2YwYTZhMjc5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImU1Y2RlYWZkLTA5NmMtNDUzZC05MzM5LTU1ODY5MzE5MzJiYyIsIm5iZiI6MTc0NTEyNzI1NCwiY3NyZiI6IjU0NmEyMWI0LWYyY2QtNGQ3OC1iZGYxLWE5YmVmMWYyOGY0ZCIsImV4cCI6MTc0NTIxMzY1NH0.8fZIwcWjVk4fFL_hSVUibjZB1KkpSYN4-tHP8AWTYk4");
 var requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-  redirect: 'follow'
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/dictionary/getChildrenByParentKey/flight_status", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # **分页查询字典记录**
@@ -196,13 +194,12 @@ fetch("http://localhost:5000/api/dictionary/getChildrenByParentKey/flight_status
 - 传入方式：query参数
 - 要求权限：DICTIONARY.READ
 
-|**参数名**|**描述**|**是否必须**|**类型**|
-|-|-|-|-|
-|dict_name|字典名称（模糊查询）|否|string|
-|parent_key|父字典键|否|string|
-|current_page|页码，默认值为1|否|integer|
-|page_size|每页数量，默认值为10|否|integer|
-
+| **参数名**      | **描述**      | **是否必须** | **类型**  |
+|--------------|-------------|----------|---------|
+| dict_name    | 字典名称（模糊查询）  | 否        | string  |
+| parent_key   | 父字典键        | 否        | string  |
+| current_page | 页码，默认值为1    | 否        | integer |
+| page_size    | 每页数量，默认值为10 | 否        | integer |
 
 ## **返回值——成功**
 
@@ -262,12 +259,12 @@ fetch("http://localhost:5000/api/dictionary/getChildrenByParentKey/flight_status
 var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc0NTEyNzI1NCwianRpIjoiMjk4MTM3ZTUtZWRmOS00ZWYyLTlhY2EtNDllN2YwYTZhMjc5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImU1Y2RlYWZkLTA5NmMtNDUzZC05MzM5LTU1ODY5MzE5MzJiYyIsIm5iZiI6MTc0NTEyNzI1NCwiY3NyZiI6IjU0NmEyMWI0LWYyY2QtNGQ3OC1iZGYxLWE5YmVmMWYyOGY0ZCIsImV4cCI6MTc0NTIxMzY1NH0.8fZIwcWjVk4fFL_hSVUibjZB1KkpSYN4-tHP8AWTYk4");
 var requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-  redirect: 'follow'
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/dictionary/searchDictionary?dict_name=状态&parent_key=status&current_page=1&page_size=10", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```

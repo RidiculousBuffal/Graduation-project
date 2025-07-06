@@ -1,7 +1,8 @@
 # 上传文件到IPFS——单文件上传
 
 :::tip
-需要安装配置IPFS`docker` 参考[docker/middleware/ipfs · github](https://github.com/RidiculousBuffal/Graduation-project/tree/dev_backend/docker/middleware/ipfs)
+需要安装配置IPFS`docker`
+参考[docker/middleware/ipfs · github](https://github.com/RidiculousBuffal/Graduation-project/tree/dev_backend/docker/middleware/ipfs)
 :::
 
 ## 接口地址
@@ -20,16 +21,16 @@
 
 要求权限:`IPFS.FILE.UPLOAD`
 
-|参数名|描述|是否必须|类型|
-|-|-|-|-|
-|`**file**`|单个文件|是|`file`二进制|
-|`**directory**`|上传到的文件夹,不填默认`/upload`|否|`string`|
-|`**add_timestamp**`|是否添加时间戳保证文件名不重复|否|`bool`|
-
+| 参数名                 | 描述                    | 是否必须 | 类型        |
+|---------------------|-----------------------|------|-----------|
+| `**file**`          | 单个文件                  | 是    | `file`二进制 |
+| `**directory**`     | 上传到的文件夹,不填默认`/upload` | 否    | `string`  |
+| `**add_timestamp**` | 是否添加时间戳保证文件名不重复       | 否    | `bool`    |
 
 ## 返回值——成功
 
-可以通过`download_url`来直接在前端展示,最好保留一下这个`json`的`data`部分,别的接口可能要传的。需要把前端的地址加入到`ipfs`的跨域请求中,参考
+可以通过`download_url`来直接在前端展示,最好保留一下这个`json`的`data`部分,别的接口可能要传的。需要把前端的地址加入到
+`ipfs`的跨域请求中,参考
 
 ```Bash
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
@@ -77,15 +78,15 @@ myHeaders.append("Content-Type", "multipart/form-data; boundary=----------------
 var formdata = new FormData();
 formdata.append("file", fileInput.files[0], "C:\Users\Administrator\Downloads\吴国文.pdf");
 var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: formdata,
-   redirect: 'follow'
+    method: 'POST',
+    headers: myHeaders,
+    body: formdata,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/ipfs/upload", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # 上传文件到IPFS——并行批量上传
@@ -106,13 +107,12 @@ fetch("http://localhost:5000/api/ipfs/upload", requestOptions)
 
 要求权限:`IPFS.FILE.UPLOAD`
 
-|参数名|描述|是否必须|类型|
-|-|-|-|-|
-|`**files**`|单个文件|是|`file`二进制|
-|`**directory**`|上传到的文件夹,不填默认`/upload`|否|`string`|
-|`**add_timestamp**`|是否添加时间戳保证文件名不重复,默认为是|否|`bool`|
-|`**parallel**`|是否采用并行上传，默认为是|否|`bool`|
-
+| 参数名                 | 描述                    | 是否必须 | 类型        |
+|---------------------|-----------------------|------|-----------|
+| `**files**`         | 单个文件                  | 是    | `file`二进制 |
+| `**directory**`     | 上传到的文件夹,不填默认`/upload` | 否    | `string`  |
+| `**add_timestamp**` | 是否添加时间戳保证文件名不重复,默认为是  | 否    | `bool`    |
+| `**parallel**`      | 是否采用并行上传，默认为是         | 否    | `bool`    |
 
 ## 返回值——上传成功
 
@@ -161,15 +161,15 @@ formdata.append("parallel", "True");
 formdata.append("files", fileInput.files[0], "C:\Users\Administrator\Downloads\案例分析.pptx.md");
 formdata.append("files", fileInput.files[0], "C:\Users\Administrator\Downloads\585210030103011311.pdf");
 var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: formdata,
-   redirect: 'follow'
+    method: 'POST',
+    headers: myHeaders,
+    body: formdata,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/ipfs/upload/multiple", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 
 ```
 

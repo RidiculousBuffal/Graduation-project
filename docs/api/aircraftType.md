@@ -16,11 +16,10 @@
 
 要求权限:`AIRCRAFT_TYPE_ADD`
 
-|参数名|描述|是否必须|
-|-|-|-|
-|`**type_name**`|类型名|是|
-|`description`|描述|否|
-
+| 参数名             | 描述  | 是否必须 |
+|-----------------|-----|------|
+| `**type_name**` | 类型名 | 是    |
+| `description`   | 描述  | 否    |
 
 ## 返回值——成功
 
@@ -67,19 +66,19 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var raw = JSON.stringify({
-   "type_name": "测试类型12345",
-   "description": "测试类型123"
+    "type_name": "测试类型12345",
+    "description": "测试类型123"
 });
 var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: raw,
-   redirect: 'follow'
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/createAircraftType", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # 获得飞机类型详细信息
@@ -136,14 +135,14 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/getAircraftType/TYPE0051", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # 更新飞机类型详细信息
@@ -164,11 +163,10 @@ fetch("http://localhost:5000/api/aircraft/getAircraftType/TYPE0051", requestOpti
 
 要求权限:`AIRCRAFT_TYPE_UPDATE`
 
-|参数名|描述|是否必须|
-|-|-|-|
-|`**type_name**`|类型名|否|
-|`description`|描述|否|
-
+| 参数名             | 描述  | 是否必须 |
+|-----------------|-----|------|
+| `**type_name**` | 类型名 | 否    |
+| `description`   | 描述  | 否    |
 
 ## 返回值——修改成功
 
@@ -217,18 +215,18 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var raw = JSON.stringify({
-   "description": "update1231322131123"
+    "description": "update1231322131123"
 });
 var requestOptions = {
-   method: 'POST',
-   headers: myHeaders,
-   body: raw,
-   redirect: 'follow'
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/updateAircraftType/TYPE004", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # 删除飞机类型
@@ -281,14 +279,14 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var requestOptions = {
-   method: 'DELETE',
-   headers: myHeaders,
-   redirect: 'follow'
+    method: 'DELETE',
+    headers: myHeaders,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/deleteAircraftType/TYPE001", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```
 
 # 飞机类型分页查询
@@ -309,12 +307,11 @@ fetch("http://localhost:5000/api/aircraft/deleteAircraftType/TYPE001", requestOp
 
 要求权限:`AIRCRAFT_TYPE_READ`
 
-|参数名|描述|是否必须|
-|-|-|-|
-|`**type_name**`|飞机类型名|否|
-|**current_page**|当前页数|否|
-|`**page_size**`|每页展示条数|否|
-
+| 参数名              | 描述     | 是否必须 |
+|------------------|--------|------|
+| `**type_name**`  | 飞机类型名  | 否    |
+| **current_page** | 当前页数   | 否    |
+| `**page_size**`  | 每页展示条数 | 否    |
 
 ## 返回值——成功
 
@@ -375,12 +372,12 @@ myHeaders.append("Accept", "*/*");
 myHeaders.append("Host", "localhost:5000");
 myHeaders.append("Connection", "keep-alive");
 var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
 };
 fetch("http://localhost:5000/api/aircraft/searchAircraftType?type_name=&current_page=1", requestOptions)
-   .then(response => response.text())
-   .then(result => console.log(result))
-   .catch(error => console.log('error', error));
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
 ```

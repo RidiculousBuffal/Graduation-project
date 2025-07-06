@@ -12,6 +12,9 @@ export default defineConfig({
             port: 25375
         }
     },
+    markdown: {
+        math: true
+    },
     lang: "zh-CN",
     lastUpdated: true,
     description: "Api docs for largepassenger Aircraft proj",
@@ -21,7 +24,7 @@ export default defineConfig({
             pattern: ({filePath}) => {
                 return `https://github.com/RidiculousBuffal/Graduation-project/tree/docs/${filePath}`
             },
-            text:"在github上编辑本页面"
+            text: "在github上编辑本页面"
         },
         outline: [1, 6],
         logo: "https://zlcminio.ridiculousbuffal.com/dhu/dhu.svg",
@@ -57,9 +60,13 @@ export default defineConfig({
                 {text: "飞机底图", link: "/docs/api/aircraft_image"},
                 {text: "航站楼", link: "/docs/api/terminal"},
                 {text: "ipfs", link: "/docs/api/ipfs"},
-                {text:"字典",link:"/docs/api/dict"},
-                {text:"航班",link:"/docs/api/flight"},
-                {text:"工程师",link:"/docs/api/engineers"},
+                {text: "字典", link: "/docs/api/dict"},
+                {text: "航班", link: "/docs/api/flight"},
+                {text: "工程师", link: "/docs/api/engineers"},
+                {text: "检测记录", link: "/docs/api/inspectionrecord"},
+                {text: "个人信息", link: "/docs/api/useredit"},
+                {text: "管理员特权接口", link: "/docs/api/admin"},
+                {text: "区块链相关", link: "/docs/api/blockchain"}
             ]
         }
     }

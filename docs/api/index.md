@@ -3,22 +3,28 @@ next:
   text: 登录/注册/刷新令牌
   link: /docs/api/auth
 ---
+
 # 开始
+
 > 本板块对各个接口进行详细说明
 
 # BaseUrl与基本返回值格式
+
 ### BaseUrl:
+
 ```bash
 http://localhost:5000/api
 ```
+
 ## 返回值格式:
+
 > 如果是程序自身的问题发生异常,会返回400,500,404等状态码,如果是因为用户请求的问题,如字段不存在,操作失败等,统一返回200,用code表示失败和成功
 
-|字段名|类型|描述|
-|-|-|-|
-|code|int|1表示失败,0表示成功|
-|msg|string|描述|
-|data|object|负载|
+| 字段名  | 类型     | 描述          |
+|------|--------|-------------|
+| code | int    | 1表示失败,0表示成功 |
+| msg  | string | 描述          |
+| data | object | 负载          |
 
 ## 鉴权请求头:
 
@@ -47,23 +53,28 @@ import {useUserStore} from "../store/user/userStore.ts";
 import message from "../components/globalMessage/globalMessage.ts";
 import {NET_WORK_ERROR, TOKEN_EXPIRED, TOKEN_HAS_EXPIRED, TOKEN_NOT_FOUND, UNAUTHORIZED} from "../consts/apiConsts.ts";
 import {initUserInfoState} from "../store/user/initState.ts";
+
 export interface Result<T> {
     code: number
     data: T
     msg: string
 }
+
 const BASE_URL = import.meta.env.VITE_APP_API_URL
 const whiteList = ['/auth/login', '/auth/register', '/auth/loginByFaceInfo']
 const refreshEndPoint = '/auth/refresh'
+
 class MyFetch {
     private readonly BASE_URL: string
     private readonly RefreshEndPoint: string
     private readonly whiteList: string[]
+
     constructor(BASE_URL: string, RefreshEndPoint: string, whiteList: string[]) {
         this.BASE_URL = BASE_URL
         this.RefreshEndPoint = RefreshEndPoint
         this.whiteList = whiteList
     }
+
     private refreshToken = async () => {
         const refreshToken = useUserStore.getState().refresh_token
         if (!refreshToken) {
@@ -147,5 +158,6 @@ class MyFetch {
         }
     }
 }
+
 export const fetchAPI = new MyFetch(BASE_URL, refreshEndPoint, whiteList)
 ```
