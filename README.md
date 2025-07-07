@@ -15,7 +15,10 @@ train: /workspace/Deepseek-R1-Chat-7_8B/large_passenger_aircraft/traindata/train
 val: /workspace/Deepseek-R1-Chat-7_8B/large_passenger_aircraft/traindata/vaild/images
 test: /workspace/Deepseek-R1-Chat-7_8B/large_passenger_aircraft/traindata/test/images
 ```
-
+# 训练
+```bash
+yolo detect train data=/root/traindata/data.yaml model=yolo11m.pt epochs=50 imgsz=640 batch=8
+```
 # 性能实测
 ## 规格
 ```txt
