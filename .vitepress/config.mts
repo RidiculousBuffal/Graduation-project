@@ -71,7 +71,9 @@ export default defineConfig({
             ],
             '/docs/yolo': [
                 {text: "开始", link: "/docs/yolo/index"},
-                {text:"公式解析",link:"/docs/yolo/formula"},
+                {text: "公式解析", link: "/docs/yolo/formula"},
+                {text: "完整教学", link: "/docs/yolo/yolo_full"},
+                {text: "Example", link: "/docs/yolo/yolo_result"}
             ]
         }
     }
