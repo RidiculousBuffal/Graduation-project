@@ -1,6 +1,8 @@
 from app.consts.Dict import DictionaryData
 from app.consts.Permissions import Permissions
 from app.consts.Roles import RoleConsts
+from app.consts.model import Model as ModelConsts
+from app.models.model import Model
 from app.mapper.auth.permissionMapper import PermissionMapper
 from app.mapper.auth.userRolePermissionMapper import UserRolePermissionMapper
 from app.models import Dictionary
@@ -58,10 +60,11 @@ def combineRoleWithPermissions():
         for p in permissionArray:
             dbPerm = PermissionMapper.get_permission_by_name(p.get('permission_name'))
             rp = UserRolePermissionMapper.getRolePermissionsByRoleIdAndPermissionId(roleId,
-                                                                                      dbPerm.permission_id)
+                                                                                    dbPerm.permission_id)
             if not rp:
                 UserRolePermissionMapper.combine_role_permission(roleId=roleId,
                                                                  permissionId=dbPerm.permission_id)
+
     # 给普通用户增加查看个人资料和编辑个人资料的权限
     from app.mapper.auth.roleMapper import RoleMapper
     user_role = RoleMapper.getRole(RoleConsts.USER)
@@ -72,6 +75,8 @@ def combineRoleWithPermissions():
     admin_permissions = [getattr(Permissions, attr) for attr in dir(Permissions) if not attr.startswith('__')]
     _quickAddRolePermissions(admin_role.role_id, admin_permissions)
     print('✅角色绑定到权限成功')
+
+
 def initDictionaryData():
     from sqlalchemy import inspect
     from app.ext.extensions import db
@@ -124,3 +129,24 @@ def initDictionaryData():
             print(f" - {item.get('dict_key')} (parent_key: {item.get('parent_key')})")
     else:
         print('✅字典表初始化成功')
+
+
+def initModels():
+    from sqlalchemy import inspect
+    from app.ext.extensions import db
+    inspector = inspect(db.engine)
+    if 'models' not in inspector.get_table_names():
+        return
+    models = [getattr(ModelConsts, attr) for attr in dir(ModelConsts) if not attr.startswith("__")]
+    for model in models:
+        m = db.session.query(Model).get(model.get('model_id'))
+        if not m:
+            mod = Model(model_id=model.get('model_id'), model_name=model.get('model_name'),
+                        model_description=model.get('model_description'), model_api_path=model.get('model_api_path'))
+            db.session.add(mod)
+        else:
+            m.model_name = model.get('model_name')
+            m.model_description = model.get('model_description')
+            m.model_api_path = model.get('model_api_path')
+    db.session.commit()
+    print('✅模型表初始化成功')

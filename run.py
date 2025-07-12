@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 from app.ext.extensions import db
-from scripts.startScripts import initRoles, initPermissions, combineRoleWithPermissions, initDictionaryData
+from scripts.startScripts import initRoles, initPermissions, combineRoleWithPermissions, initDictionaryData, initModels
 from app import app,celery
 
 
@@ -26,5 +26,7 @@ with app.app_context():
     combineRoleWithPermissions()
     # 字典表
     initDictionaryData()
+    #模型表
+    initModels()
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
