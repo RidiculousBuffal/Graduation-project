@@ -162,7 +162,10 @@ class Permissions:
         "permission_name": "LOG.READ",
         "description": "支持阅读系统区块链日志"
     }
-
+    INSPECTION_READ_SELF = {
+        "permission_name": "INSPECTION.READ.SELF",
+        "description": "仅查看自己的检查记录"
+    }
 
 if __name__ == '__main__':
     # 获取所有权限字典
