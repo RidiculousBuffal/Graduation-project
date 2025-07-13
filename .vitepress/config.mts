@@ -64,10 +64,13 @@ export default defineConfig({
                 {text: "字典", link: "/docs/api/dict"},
                 {text: "航班", link: "/docs/api/flight"},
                 {text: "工程师", link: "/docs/api/engineers"},
-                {text: "检测记录", link: "/docs/api/inspectionrecord"},
+                {text: "检测条目上传", link: "/docs/api/inspectionitem"},
+                {text: "区块链相关", link: "/docs/api/blockchain"},
                 {text: "个人信息", link: "/docs/api/useredit"},
                 {text: "管理员特权接口", link: "/docs/api/admin"},
-                {text: "区块链相关", link: "/docs/api/blockchain"}
+                {text: "区块链相关", link: "/docs/api/blockchain"},
+                {text: "模型相关", link: "/docs/api/model"},
+
             ],
             '/docs/yolo': [
                 {text: "开始", link: "/docs/yolo/index"},

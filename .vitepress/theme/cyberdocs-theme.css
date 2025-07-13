@@ -218,8 +218,8 @@ body {
 
 /* ===== 滚动条样式 ===== */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: #eaeaea transparent;
 }
 
 ::-webkit-scrollbar-track {
