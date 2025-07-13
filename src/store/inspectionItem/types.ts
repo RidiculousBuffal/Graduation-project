@@ -24,7 +24,7 @@ export type InspectionItemResult = {
     resultImage: YoloResult
     isPassed: boolean
     inputImage: ipfsFileType
-    progress:"pending"|"detecting"|"done"
+    progress:"pending"|"detecting"|"done"|"canceled"|"error"
     version: number
 }
 export type InspectionItem={
