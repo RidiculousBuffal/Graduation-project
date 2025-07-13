@@ -154,6 +154,22 @@ class Permissions:
         "permission_name": "INSPECTION.DELETE",
         "description": "删除检查记录"
     }
+    INSPECTION_ITEM_ADD = {
+        "permission_name": "INSPECTION.ITEM.ADD",
+        "description": "添加某个点位的照片"
+    }
+    INSPECTION_ITEM_READ = {
+        "permission_name": "INSPECTION.ITEM.READ",
+        "description": "看某个点位的提交信息"
+    }
+    INSPECTION_ITEM_UPDATE = {
+        "permission_name": "INSPECTION.ITEM.UPDATE",
+        "description": "更新某个点位的照片"
+    }
+    INSPECTION_ITEM_DELETE = {
+        "permission_name": "INSPECTION.ITEM.DELETE",
+        "description": "删除某个点位的照片"
+    }
     PERMISSIONS_MANAGEMENT = {
         "permission_name": "PERMISSIONS.READ",
         "description": "支持访问权限列表"

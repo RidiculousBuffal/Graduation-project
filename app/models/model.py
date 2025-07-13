@@ -1,11 +1,8 @@
 import uuid
-
-from sqlalchemy_serializer import SerializerMixin
-
 from app.ext.extensions import db
 
 
-class Model(db.Model, SerializerMixin):
+class Model(db.Model):
     __tablename__ = 'models'
     __table_args__ = {
         "mysql_charset": "utf8mb4"
@@ -14,6 +11,14 @@ class Model(db.Model, SerializerMixin):
     model_name = db.Column(db.String(255))
     model_description = db.Column(db.Text)
     model_api_path = db.Column(db.Text)
+
+    def to_dict(self):
+        return {
+            'model_id': self.model_id,
+            'model_name': self.model_name,
+            'model_description': self.model_description,
+            'model_api_path': self.model_api_path,
+        }
 
     def __init__(self, **kwargs):
         if 'model_id' not in kwargs:

@@ -54,7 +54,7 @@ class InspectionRecord(db.Model):
         }
 
 
-class InspectionItem(db.Model, SerializerMixin):
+class InspectionItem(db.Model):
     __tablename__ = 'inspection_item'
     __table_args__ = {
         "mysql_charset": "utf8mb4"
@@ -70,7 +70,17 @@ class InspectionItem(db.Model, SerializerMixin):
     model_id = db.Column(db.String(50), db.ForeignKey('models.model_id'), comment='使用的模型')
     model = db.relationship('Model', backref='inspection_item')
 
-    # Relationships
+    def to_dict(self):
+        return {
+            'item_id': self.item_id,
+            'item_name': self.item_name,
+            'inspection_id': self.inspection_id,
+            'item_point': self.item_point,
+            'description': self.description,
+            'result': self.result,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
+        }
 
     def __init__(self, **kwargs):
         if 'item_id' not in kwargs:

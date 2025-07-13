@@ -148,7 +148,8 @@ def create_aircraft_image():
 
 
 @aircraft_bp.get('/getAircraftImage/<string:image_id>')
-@permission_required(Permissions.AIRCRAFT_IMAGE_READ.get('permission_name', ''), True)
+@permission_required([Permissions.AIRCRAFT_IMAGE_READ.get('permission_name', ''),
+                      Permissions.INSPECTION_ITEM_READ.get("permission_name", '')], False)
 def get_aircraft_image(image_id: str):
     """根据ID获取飞机参考图片"""
     result = AircraftReferenceImageService.get_image_by_id(image_id)

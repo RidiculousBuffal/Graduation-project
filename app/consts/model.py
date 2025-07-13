@@ -7,5 +7,3 @@ class Model:
     }
 
 
-models = [getattr(Model, attr) for attr in dir(Model) if not attr.startswith("__")]
-print(models)

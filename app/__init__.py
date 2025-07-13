@@ -9,9 +9,11 @@ from app.routes.aircraft_api import aircraft_bp
 from app.routes.auth_api import auth_bp
 from app.routes.dictionary_api import dictionary_bp
 from app.routes.flight_api import flight_bp
+from app.routes.inspection_item_api import inspection_item_bp
 from app.routes.inspection_record_api import inspection_bp
 from app.routes.ipfs_api import ipfs_bp
 from app.routes.logger_api import logger_bp
+from app.routes.model_api import model_bp
 from app.routes.task_api import task_bp
 from app.routes.terminal_api import terminal_bp
 
@@ -47,6 +49,8 @@ def create_app(config_name='default'):
     app.register_blueprint(task_bp, url_prefix='/api/task')
     app.register_blueprint(inspection_bp, url_prefix='/api/inspection')
     app.register_blueprint(logger_bp, url_prefix='/api/log')
+    app.register_blueprint(inspection_item_bp, url_prefix='/api/inspection_item')
+    app.register_blueprint(model_bp, url_prefix='/api/model')
     return app
 
 
