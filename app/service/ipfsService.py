@@ -14,7 +14,9 @@ from app import config
 from app.DTO.file import FileDTO
 from app.ipfs.Client import IPFSClient
 import dotenv
+
 dotenv.load_dotenv()
+
 
 class IPFSService:
     """处理IPFS相关业务逻辑的服务"""
@@ -242,6 +244,7 @@ class IPFSService:
 
     def download_file(self, fileDTO: FileDTO):
         download_url = fileDTO.download_url
+        download_url = f"{download_url.replace('localhost','127.0.0.1')}&download=true"
         filename = fileDTO.filename
 
         # Validate that essential information is present
@@ -261,17 +264,17 @@ class IPFSService:
 
         self.logger.info(f"Downloading file from {download_url} to {file_path}...")
         try:
-            response = requests.get(download_url,timeout=30,allow_redirects=False)
+            response = requests.get(download_url, timeout=30)
             response.raise_for_status()  # 响应异常就抛出
             with open(file_path, 'wb') as f:
                 f.write(response.content)
             print(f"文件已保存: {file_path}")
-            return file_path
+            return file_path, new_filename
         except requests.exceptions.RequestException as e:
             print(e)
-            return None
+            return file_path, None
         except IOError as e:
-            return None
+            return file_path, None
+
 
 IPFSService_ = IPFSService(config=config[os.getenv('FLASK_ENV', 'default')])
-

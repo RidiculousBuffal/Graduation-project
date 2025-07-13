@@ -25,6 +25,7 @@ dependencies = [
     "python-dotenv==1.1.0",
     "requests==2.32.3",
     "sqlalchemy-serializer==1.4.22",
+    "ultralytics>=8.3.165",
     "weaviate-client==4.15.0",
     "web3==7.10.0",
 ]

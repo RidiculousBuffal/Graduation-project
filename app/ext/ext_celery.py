@@ -23,13 +23,17 @@ def make_celery(flask_app):
     include = ['app.schedule.flight']
     # 把 Flask 配置合并进 Celery
     celery.conf.update(flask_app.config)
-    imports = ['app.schedule.flight','app.worker.faceRecognition']
+    imports = ['app.schedule.flight', 'app.worker.faceRecognition', 'app.schedule.inspectionDetect']
     beat_schedule = {
         'healthy_task': {
             'task': 'app.schedule.flight.health_check',
             'schedule': timedelta(hours=8),
+        },
+        "schedule_detect": {
+            'task': 'app.schedule.inspectionDetect.detect_images',
+            'schedule': timedelta(hours=8)
         }
     }
-    celery.conf.update(beat_schedule=beat_schedule, imports=imports,timezone=Config.timezone)
+    celery.conf.update(beat_schedule=beat_schedule, imports=imports, timezone=Config.timezone)
     celery.flask_app = flask_app  # 备用，在 Task 里仍可访问
     return celery

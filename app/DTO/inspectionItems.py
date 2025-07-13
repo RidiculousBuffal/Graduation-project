@@ -22,21 +22,21 @@ class YoloBoxDTO(BaseDTO):
 
 
 class YoloDetect(BaseModel):
-    points: YoloBoxDTO
-    label: str
-    confidence: float
+    points: Optional[YoloBoxDTO] = None
+    label: Optional[str] = None
+    confidence: Optional[float] = None
 
 
 class YoloResult(BaseModel):
-    boxes: List[YoloDetect]
+    boxes: Optional[List[YoloDetect]] = None
     resultImage: FileDTO
 
 
 class InspectionItemResultDTO(BaseModel):
-    resultImage: Optional[YoloDetect] = None
+    resultImage: Optional[YoloResult] = None
     isPassed: Optional[bool] = False
     inputImage: FileDTO
-    progress: Literal["pending", "detecting", "done", "canceled"]
+    progress: Literal["pending", "detecting", "done", "canceled", "error"]
     version: int
 
 
