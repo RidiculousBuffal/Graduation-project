@@ -54,3 +54,8 @@ export const searchInspectionRecords = async (request: SearchInspectionRecordPay
     const payload = qs.stringify(clean(rest))
     return fetchAPI.req<PaginationResult<InspectionRecordListType>>(`/inspection/search?${payload}`, {method: "GET"})
 }
+export const searchMyInspectionRecords = async (request: SearchInspectionRecordPayload & Pagination) => {
+    const {total, total_pages, ...rest} = request
+    const payload = qs.stringify(clean(rest))
+    return fetchAPI.req<PaginationResult<InspectionRecordListType>>(`/inspection/getMyInspections?${payload}`, {method: "GET"})
+}

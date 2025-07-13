@@ -3,7 +3,7 @@ import {
     searchInspectionRecords,
     type SearchInspectionRecordPayload,
     type createInspectionRecordPayload, createInspectionRecord, getInspectionRecordById, updateInspectionRecord,
-    deleteInspectionRecord, type updateInspectionRecordPayload
+    deleteInspectionRecord, type updateInspectionRecordPayload, searchMyInspectionRecords
 } from "@/api/inspectionRecordapi.ts";
 import {useInspectionStore} from "@/store/inspection/inspectionStore.ts";
 
@@ -14,6 +14,18 @@ export class InspectionRecordService extends BaseService {
             ...useInspectionStore.getState().inspectionRecordsPagination
         }
         const searchData = await searchInspectionRecords(payload)
+        return this.processResultSync(searchData, () => {
+            useInspectionStore.getState().setInspectionRecords(searchData?.data!);
+            useInspectionStore.getState().setInspectionRecordsPagination(searchData?.pagination!);
+        })
+    }
+
+    public static async getMyInspectionRecordList(params: SearchInspectionRecordPayload) {
+        const payload = {
+            ...params,
+            ...useInspectionStore.getState().inspectionRecordsPagination
+        }
+        const searchData = await searchMyInspectionRecords(payload)
         return this.processResultSync(searchData, () => {
             useInspectionStore.getState().setInspectionRecords(searchData?.data!);
             useInspectionStore.getState().setInspectionRecordsPagination(searchData?.pagination!);

@@ -56,6 +56,10 @@ export class MyMenu {
                 key: "hall",
                 label: "检测列表",
                 permission: Permissions.INSPECTION_READ
+            }, {
+                key: "myInspect",
+                label: "我的待检测",
+                permission: Permissions.INSPECTION_ITEM_READ
             }
         ]
     }, {

@@ -78,3 +78,6 @@ export const searchAircraftImage = async (request: Pagination & {
     const payload = qs.stringify(clean(rest))
     return fetchAPI.req<PaginationResult<AircraftImageType>>(`/aircraft/searchAircraftImage?${payload}`, {method: "GET"})
 }
+export const getAircraftImageById=async (imageId:string)=>{
+    return fetchAPI.req<AircraftImageType>(`/aircraft/getAircraftImage/${imageId}`, {method: "GET"})
+}

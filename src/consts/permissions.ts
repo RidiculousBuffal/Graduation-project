@@ -158,4 +158,20 @@ export class Permissions {
         "permission_name": "LOG.READ",
         "description": "支持阅读系统区块链日志"
     }
+    public static INSPECTION_ITEM_ADD = {
+        "permission_name": "INSPECTION.ITEM.ADD",
+        "description": "添加某个点位的照片"
+    }
+    public static INSPECTION_ITEM_READ = {
+        "permission_name": "INSPECTION.ITEM.READ",
+        "description": "看某个点位的提交信息"
+    }
+    public static INSPECTION_ITEM_UPDATE = {
+        "permission_name": "INSPECTION.ITEM.UPDATE",
+        "description": "更新某个点位的照片"
+    }
+    public static INSPECTION_ITEM_DELETE = {
+        "permission_name": "INSPECTION.ITEM.DELETE",
+        "description": "删除某个点位的照片"
+    }
 }

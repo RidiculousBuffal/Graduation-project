@@ -3,7 +3,7 @@ import type {AircraftImageType} from "../store/aircraft/types.ts";
 import {useAircraftStore} from "../store/aircraft/aircraftStore.ts";
 import {
     createAircraftImage,
-    deleteAircraftImage,
+    deleteAircraftImage, getAircraftImageById,
     searchAircraftImage,
     updateAircraftImage
 } from "../api/aircraftapi.ts";
@@ -66,5 +66,9 @@ export class AircraftImageService extends BaseService {
         return await this.getAircraftImageList({
             aircraft_id: aircraftId
         })
+    }
+
+    public static async getAircraftImageById(imageId: string) {
+        return await getAircraftImageById(imageId);
     }
 }

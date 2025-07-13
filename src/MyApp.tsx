@@ -22,6 +22,8 @@ import InspectionRecordHall from "@/pages/inspection/inspectionRecords/Inspectio
 import UserManagement from "@/pages/user/admin/user/UserManagement.tsx";
 import RoleManagement from "@/pages/user/admin/role/RoleManagement.tsx";
 import LogManagement from "@/pages/Audit/LogManagement.tsx";
+import EngineerInspectionPage from "@/pages/inspection/InspectionItems/EngineerInspectionPage.tsx";
+import InspectionSubmitPage from "@/pages/inspection/InspectionItems/InspectionSubmitPage.tsx";
 // 受保护的路由组件
 const ProtectedRoute = ({children, permission}: { children: React.ReactNode, permission?: string }) => {
     if (!AuthService.isLoggedIn()) {
@@ -76,10 +78,15 @@ function MyApp() {
                         permission={Permissions.INSPECTION_READ.permission_name}><InspectionRecordCenter></InspectionRecordCenter></ProtectedRoute>}></Route>
                     <Route path="inspection/hall" element={<ProtectedRoute
                         permission={Permissions.INSPECTION_READ.permission_name}><InspectionRecordHall></InspectionRecordHall></ProtectedRoute>}></Route>
+                    <Route path="inspection/myInspect" element={<ProtectedRoute
+                        permission={Permissions.INSPECTION_ITEM_READ.permission_name}><EngineerInspectionPage></EngineerInspectionPage></ProtectedRoute>}></Route>
+                    <Route path="inspection/inspection-submit" element={<ProtectedRoute
+                        permission={Permissions.INSPECTION_ITEM_READ.permission_name}><InspectionSubmitPage></InspectionSubmitPage></ProtectedRoute>}></Route>
                     <Route path="user/my" element={<ProtectedRoute
                         permission={Permissions.PROFILE_READ.permission_name}><My/></ProtectedRoute>}/>
                     <Route path="user/security" element={<ProtectedRoute
                         permission={Permissions.PROFILE_READ.permission_name}><Security/></ProtectedRoute>}/>
+
                     <Route path="admin/userlist"
                            element={<ProtectedRoute
                                permission={Permissions.USER_READ_ALL.permission_name}><UserManagement/></ProtectedRoute>}/>

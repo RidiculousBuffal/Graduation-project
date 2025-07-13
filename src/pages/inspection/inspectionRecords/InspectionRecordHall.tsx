@@ -106,6 +106,16 @@ const InspectionRecordHall: React.FC = () => {
             title: '执行工程师',
             dataIndex: 'executor_name',
             key: 'executor_name',
+            render: (_, record) => {
+                if (record.executor_name && record.executor_name.trim() !== '') {
+                    return <>{record.executor_name}</>;
+                } else if (record.executor_id && record.executor_id.trim() !== '') {
+                    return <>{record.executor_id}</>;
+                } else {
+                    return <>-</>;
+                }
+
+            }
         },
         {
             title: '进度',
