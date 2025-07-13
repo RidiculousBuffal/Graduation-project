@@ -1,14 +1,15 @@
-import React, {useState, useRef} from 'react';
-import {Card, Button, message} from 'antd';
-import {SelectOutlined} from '@ant-design/icons';
-import type {InspectionItem} from '@/store/inspectionItem/types';
-import type {Point} from '@/components/imageInnot/types';
-import type {AircraftImageType} from "@/store/aircraft/types.ts";
+import React, { useState, useRef } from 'react';
+import { Card, Button, message } from 'antd';
+import { SelectOutlined } from '@ant-design/icons';
+import type { InspectionItem } from '@/store/inspectionItem/types';
+import type { Point } from '@/components/imageInnot/types';
+import type { AircraftImageType } from "@/store/aircraft/types.ts";
 
 interface InspectionImageViewerProps {
     aircraftImage: AircraftImageType | null;
     inspectionItems: InspectionItem[];
-    onPointsSelect: (points: Point[]) => void;
+    // 【重构修改】: onPointsSelect现在接收单个Point对象
+    onPointsSelect: (point: Point) => void;
 }
 
 const InspectionImageViewer: React.FC<InspectionImageViewerProps> = ({
@@ -22,24 +23,15 @@ const InspectionImageViewer: React.FC<InspectionImageViewerProps> = ({
 
     const allPoints = aircraftImage?.image_json.pointInfo || [] as Point[];
     const uploadedPointIds = new Set(
-        inspectionItems.flatMap(item =>
-            item.item_point.point.id
-        )
+        inspectionItems.map(item => item.item_point.point.id)
     );
 
     const handlePointClick = (point: Point) => {
         if (!isSelectMode) return;
 
-        if (uploadedPointIds.has(point.id)) {
-            message.warning('该点位已上传，无法重复选择');
-            return;
-        }
-
-        // 如果点击的是当前已选择的点位，则取消选择
         if (selectedPoint?.id === point.id) {
             setSelectedPoint(null);
         } else {
-            // 否则选择新的点位
             setSelectedPoint(point);
         }
     };
@@ -49,7 +41,8 @@ const InspectionImageViewer: React.FC<InspectionImageViewerProps> = ({
             message.warning('请先选择点位');
             return;
         }
-        onPointsSelect([selectedPoint]);
+        // 【重构修改】: 直接传递单个点位对象
+        onPointsSelect(selectedPoint);
         setSelectedPoint(null);
         setIsSelectMode(false);
     };
@@ -63,11 +56,12 @@ const InspectionImageViewer: React.FC<InspectionImageViewerProps> = ({
         const isUploaded = uploadedPointIds.has(point.id);
         const isSelected = selectedPoint?.id === point.id;
 
-        let backgroundColor = '#1890ff';
+        let backgroundColor = '#1890ff'; // normal
         if (isUploaded) {
-            backgroundColor = '#52c41a';
-        } else if (isSelected) {
-            backgroundColor = '#722ed1';
+            backgroundColor = '#52c41a'; // uploaded
+        }
+        if (isSelected) {
+            backgroundColor = '#722ed1'; // selected
         }
 
         return {
@@ -85,13 +79,13 @@ const InspectionImageViewer: React.FC<InspectionImageViewerProps> = ({
             justifyContent: 'center',
             fontSize: '12px',
             fontWeight: 'bold',
-            cursor: isSelectMode && !isUploaded ? 'pointer' : 'default',
+            cursor: isSelectMode ? 'pointer' : 'default',
             border: '2px solid white',
             boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
             zIndex: 10,
             userSelect: 'none',
             transition: 'all 0.2s ease',
-            opacity: isSelectMode && !isUploaded ? 1 : 0.8
+            opacity: isSelectMode ? 1 : 0.8
         };
     };
 
@@ -101,7 +95,7 @@ const InspectionImageViewer: React.FC<InspectionImageViewerProps> = ({
         <Card
             title="飞机底图与点位"
             extra={
-                <div style={{display: 'flex', gap: '8px'}}>
+                <div style={{ display: 'flex', gap: '8px' }}>
                     {isSelectMode ? (
                         <>
                             <Button onClick={handleCancelSelect}>取消</Button>
@@ -110,13 +104,14 @@ const InspectionImageViewer: React.FC<InspectionImageViewerProps> = ({
                                 onClick={handleConfirmSelect}
                                 disabled={!selectedPoint}
                             >
-                                确认选择 {selectedPoint ? `(id=${selectedPoint.id})` : ''}
+                                {/* 【重构修改】: 文本微调，更明确 */}
+                                确认选择 {selectedPoint ? `点位 ${selectedPoint.id}` : ''}
                             </Button>
                         </>
                     ) : (
                         <Button
                             type="primary"
-                            icon={<SelectOutlined/>}
+                            icon={<SelectOutlined />}
                             onClick={() => setIsSelectMode(true)}
                         >
                             选择点位
@@ -125,59 +120,59 @@ const InspectionImageViewer: React.FC<InspectionImageViewerProps> = ({
                 </div>
             }
         >
-            <div style={{position: 'relative', maxHeight: '600px', overflow: 'auto'}}>
+            <div style={{
+                position: 'relative',
+
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#f5f5f5',
+                borderRadius: '4px',
+
+            }}>
                 {imageUrl ? (
-                    <div ref={containerRef} style={{position: 'relative', display: 'inline-block'}}>
+                    <div ref={containerRef} style={{ position: 'relative', display: 'inline-block' }}>
                         <img
                             src={imageUrl}
                             alt="飞机底图"
-                            style={{width: '100%', height: 'auto', display: 'block'}}
+                            style={{
+                                display: 'block',
+                                maxWidth: '100%',
+                                maxHeight: '100%',
+                                objectFit: 'contain'
+                            }}
                         />
                         {allPoints.map((point) => (
                             <div
                                 key={point.id}
                                 style={getPointStyle(point)}
                                 onClick={() => handlePointClick(point)}
+                                title={`点位 ${point.id}`}
                             >
                                 {point.id}
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <div style={{textAlign: 'center', padding: '40px', color: '#999'}}>
+                    <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>
                         暂无底图数据
                     </div>
                 )}
             </div>
 
-            <div style={{marginTop: '16px', fontSize: '14px'}}>
-                <div style={{display: 'flex', gap: '16px'}}>
-                    <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-                        <div style={{
-                            width: '12px',
-                            height: '12px',
-                            backgroundColor: '#1890ff',
-                            borderRadius: '50%'
-                        }}/>
+            <div style={{ marginTop: '16px', fontSize: '14px' }}>
+                <div style={{ display: 'flex', gap: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <div style={{ width: '12px', height: '12px', backgroundColor: '#1890ff', borderRadius: '50%' }} />
                         <span>未上传点位</span>
                     </div>
-                    <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-                        <div style={{
-                            width: '12px',
-                            height: '12px',
-                            backgroundColor: '#52c41a',
-                            borderRadius: '50%'
-                        }}/>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <div style={{ width: '12px', height: '12px', backgroundColor: '#52c41a', borderRadius: '50%' }} />
                         <span>已上传点位</span>
                     </div>
-                    <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-                        <div style={{
-                            width: '12px',
-                            height: '12px',
-                            backgroundColor: '#722ed1',
-                            borderRadius: '50%'
-                        }}/>
-                        <span>已选择点位</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <div style={{ width: '12px', height: '12px', backgroundColor: '#722ed1', borderRadius: '50%' }} />
+                        <span>当前选择</span>
                     </div>
                 </div>
             </div>

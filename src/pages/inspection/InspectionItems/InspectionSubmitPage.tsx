@@ -9,9 +9,11 @@ import { useInspectionItemStore } from '@/store/inspectionItem/InspectionItemSto
 import InspectionImageViewer from './InspectionImageViewer';
 import InspectionItemList from './InspectionItemList';
 import InspectionItemUploader from './InspectionItemUploader';
-import type {AircraftImageType} from "@/store/aircraft/types.ts";
-import type {Point} from "@/components/imageInnot/types.ts";
+import type { AircraftImageType } from "@/store/aircraft/types.ts";
+import type { InspectionItem } from "@/store/inspectionItem/types.ts";
+import type { Point } from "@/components/imageInnot/types.ts";
 import './InspectionItem.css'
+
 const InspectionSubmitPage: React.FC = () => {
     const navigate = useNavigate();
     const { currentInspectionRecord } = useCurrentStore();
@@ -20,7 +22,9 @@ const InspectionSubmitPage: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [aircraftImage, setAircraftImage] = useState<AircraftImageType | null>(null);
     const [uploaderVisible, setUploaderVisible] = useState(false);
-    const [selectedPoints, setSelectedPoints] = useState<Point[]>([]);
+    // 【重构修改】: 状态从数组变为单个对象或null
+    const [selectedPoint, setSelectedPoint] = useState<Point | null>(null);
+    const [selectedExistingItem, setSelectedExistingItem] = useState<InspectionItem | null>(null);
 
     useEffect(() => {
         if (!currentInspectionRecord) {
@@ -37,15 +41,12 @@ const InspectionSubmitPage: React.FC = () => {
 
         setLoading(true);
         try {
-            // 加载飞机图像
             const imageResult = await AircraftImageService.getAircraftImageById(
                 currentInspectionRecord.reference_image_id
             );
             if (imageResult) {
                 setAircraftImage(imageResult);
             }
-
-            // 加载已上传的检测条目
             await InspectionRecordItemService.getInspectionRecordItemList();
         } catch (error) {
             message.error('加载数据失败');
@@ -54,19 +55,32 @@ const InspectionSubmitPage: React.FC = () => {
         }
     };
 
-    const handlePointsSelect = (points: Point[]) => {
-        setSelectedPoints(points);
+    // 【重构修改】: handler现在接收单个point对象
+    const handlePointsSelect = (point: Point) => {
+        const existingItem = inspectionItems.find(item => item.item_point.point.id === point.id);
+        setSelectedExistingItem(existingItem || null);
+
+        setSelectedPoint(point);
         setUploaderVisible(true);
     };
 
     const handleUploadSuccess = () => {
         setUploaderVisible(false);
-        setSelectedPoints([]);
-        loadData(); // 重新加载数据
+        // 【重构修改】: 重置为null
+        setSelectedPoint(null);
+        setSelectedExistingItem(null);
+        loadData();
     };
 
     const handleBack = () => {
         navigate('/console/inspection/myInspect');
+    };
+
+    const handleUploaderCancel = () => {
+        setUploaderVisible(false);
+        // 【重构修改】: 重置为null
+        setSelectedPoint(null);
+        setSelectedExistingItem(null);
     };
 
     if (!currentInspectionRecord) {
@@ -109,10 +123,12 @@ const InspectionSubmitPage: React.FC = () => {
 
             <InspectionItemUploader
                 visible={uploaderVisible}
-                selectedPoints={selectedPoints}
+                // 【重构修改】: 传递单个point对象
+                selectedPoint={selectedPoint}
                 aircraftImage={aircraftImage}
-                onCancel={() => setUploaderVisible(false)}
+                onCancel={handleUploaderCancel}
                 onSuccess={handleUploadSuccess}
+                existingItem={selectedExistingItem}
             />
         </div>
     );
