@@ -1,5 +1,6 @@
 # app/services/ipfs_service.py
 import concurrent.futures
+import logging
 import mimetypes
 import os
 import tempfile
@@ -7,11 +8,13 @@ import time
 import urllib.parse
 import uuid
 from datetime import datetime
-
+import requests
 from werkzeug.utils import secure_filename
-
+from app import config
+from app.DTO.file import FileDTO
 from app.ipfs.Client import IPFSClient
-
+import dotenv
+dotenv.load_dotenv()
 
 class IPFSService:
     """处理IPFS相关业务逻辑的服务"""
@@ -27,6 +30,9 @@ class IPFSService:
 
         # 是否将文件存储到MFS目录树
         self.use_mfs = config.IPFS_USE_MFS
+        self.IPFS_FILE_SAVE_DIR = config.IPFS_FILE_SAVE_DIR
+        os.makedirs(self.IPFS_FILE_SAVE_DIR, exist_ok=True)
+        self.logger = logging.getLogger(__name__)
         # MFS中的基础目录
         self.mfs_base_dir = config.IPFS_MFS_BASE_DIR
         # 并行上传的线程数
@@ -233,3 +239,39 @@ class IPFSService:
             # 串行上传
             return [self.upload_file(file_obj, filename=filename, directory=directory, add_timestamp=add_timestamp)
                     for file_obj, filename in file_list]
+
+    def download_file(self, fileDTO: FileDTO):
+        download_url = fileDTO.download_url
+        filename = fileDTO.filename
+
+        # Validate that essential information is present
+        if not download_url:
+            self.logger.error("Error: Download URL is missing.")
+            return
+
+        if not filename:
+            self.logger.error("Error: Filename is missing.")
+            return
+
+        filename = fileDTO.filename
+        file_basename, file_ext = os.path.splitext(filename)
+        timestamp = int(time.time())
+        new_filename = f"{file_basename}_{timestamp}{file_ext}"
+        file_path = os.path.abspath(os.path.join(self.IPFS_FILE_SAVE_DIR, new_filename))
+
+        self.logger.info(f"Downloading file from {download_url} to {file_path}...")
+        try:
+            response = requests.get(download_url,timeout=30,allow_redirects=False)
+            response.raise_for_status()  # 响应异常就抛出
+            with open(file_path, 'wb') as f:
+                f.write(response.content)
+            print(f"文件已保存: {file_path}")
+            return file_path
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return None
+        except IOError as e:
+            return None
+
+IPFSService_ = IPFSService(config=config[os.getenv('FLASK_ENV', 'default')])
+

@@ -1,9 +1,9 @@
-from typing import List, Optional
+from typing import List, Optional, Literal
 from datetime import datetime
 
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
-
+from sqlalchemy import func, cast
 from app.DTO.inspectionItems import (
     InspectionItemCreateDTO,
     InspectionItemUpdateDTO,
@@ -124,3 +124,24 @@ class InspectionItemMapper:
             data=dto_list,
             pagination=pagination_dto
         )
+
+    @staticmethod
+    def get_items_by_progress(progress: Literal["pending", "detecting", "done", "canceled"]):
+        res = db.session.query(InspectionItem).filter(
+            func.json_search(
+                InspectionItem.result,
+                'one',
+                progress,
+                None,
+                '$[*].progress'
+            ).isnot(None)
+        ).all()
+        return [InspectionItemDTO.model_validate(r) for r in res]
+
+if __name__ == '__main__':
+    from app import create_app
+
+    fake_app = create_app()
+    with fake_app.app_context():
+        print(InspectionItemMapper.get_items_by_progress("pending"))
+

@@ -14,6 +14,7 @@ class IPFSClient:
         Initialize the IPFS client.
         """
         # 确保URL包含协议前缀
+
         if not host.startswith(('http://', 'https://')):
             host = f"http://{host}"
         if not gateway_host.startswith(('http://', 'https://')):

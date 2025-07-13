@@ -7,11 +7,9 @@ from app.config import config
 from app.consts.IPFS import IPFSConsts
 from app.consts.Permissions import Permissions
 from app.models.response import ResponseModel
-from app.service.ipfsService import IPFSService
+from app.service.ipfsService import IPFSService_
 
 ipfs_bp = Blueprint('ipfs', __name__)
-
-IPFSService_ = IPFSService(config=config[os.getenv('FLASK_ENV', 'default')])
 
 
 def allowed_file(filename):
