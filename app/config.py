@@ -30,7 +30,7 @@ class Config:
     IPFS_MAX_UPLOAD_WORKERS = int(os.getenv('IPFS_MAX_UPLOAD_WORKERS')) or 4
     IPFS_TIMESTAMP_FORMAT = os.environ.get('IPFS_TIMESTAMP_FORMAT') or 'timestamp'
     IPFS_MFS_BASE_DIR = os.getenv('IPFS_MFS_BASE_DIR') or '/upload'
-    UPLOAD_ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'doc', 'docx', 'xls', 'xlsx', 'zip', 'rar'}
+    UPLOAD_ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg','bmp', 'gif', 'doc', 'docx', 'xls', 'xlsx', 'zip', 'rar'}
     MAX_CONTENT_LENGTH = 1000 * 1024 * 1024  # 限制上传大小为1G
     broker_url= os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
     result_backend = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
