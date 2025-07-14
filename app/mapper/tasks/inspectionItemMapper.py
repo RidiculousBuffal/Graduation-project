@@ -92,7 +92,7 @@ class InspectionItemMapper:
             select=query,
             page=page_num,
             per_page=page_size,
-            max_per_page=100,
+            max_per_page=None,
             error_out=False,
             count=True
         )
@@ -138,10 +138,10 @@ class InspectionItemMapper:
         ).all()
         return [InspectionItemDTO.model_validate(r) for r in res]
 
+
 if __name__ == '__main__':
     from app import create_app
 
     fake_app = create_app()
     with fake_app.app_context():
         print(InspectionItemMapper.get_items_by_progress("pending"))
-

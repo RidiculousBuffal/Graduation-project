@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy_serializer import SerializerMixin
+
 
 from app.ext.extensions import db
 
